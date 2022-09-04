@@ -1,0 +1,56 @@
+<h2>Register</h2>
+<table>
+    <tr>
+        <td>Username:</td>
+        <td>
+            <input type="text" name="username" [(ngModel)]="username">
+        </td>
+    </tr>
+    <tr>
+        <td>Password:</td>
+        <td>
+            <input type="password" name="password" [(ngModel)]="password">
+        </td>
+    </tr>
+    <tr>
+        <td>Firstname:</td>
+        <td>
+            <input type="text" name="firstname" [(ngModel)]="firstname">
+        </td>
+    </tr>
+    <tr>
+        <td>Lastname:</td>
+        <td>
+            <input type="text" name="lastname" [(ngModel)]="lastname">
+        </td>
+    </tr>
+    <tr>
+        <td>Address:</td>
+        <td>
+            <input type="text" name="address" [(ngModel)]="address">
+        </td>
+    </tr>
+    <tr>
+        <td>Contact phone:</td>
+        <td>
+            <input type="text" name="tel" [(ngModel)]="tel">
+        </td>
+    </tr>
+    <tr>
+        <td>email:</td>
+        <td>
+            <form enctype="multipart/form-data">
+                <input type="text" name="email" [(ngModel)]="email">
+            </form>
+        </td>
+    </tr>
+    <tr>
+        <input type="file" (change)="uploadImage($event)">
+    </tr>
+    <tr>
+        <td colspan="2">
+            <button (click)="register()">Register</button>
+        </td>
+    </tr>
+</table>
+{{message}}

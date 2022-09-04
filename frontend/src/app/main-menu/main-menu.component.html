@@ -1,0 +1,11 @@
+<div *ngIf="user==null">
+    Prijavite se <a routerLink="/login">ovde.</a> <br>
+    Nemate nalog? Registrujte se <a routerLink="/register">ovde.</a> <br>
+</div>
+<div *ngIf="user!=null">
+    <a routerLink="/profile">
+        <img [src]="userImageUrl" class="image">
+    </a>
+    <br>
+    <button (click)="logout()">Odjavi se</button>
+</div>
