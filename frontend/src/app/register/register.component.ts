@@ -16,7 +16,8 @@ export class RegisterComponent implements OnInit {
   }
 
   username: string;
-  password: string;
+  password1: string;
+  password2: string;
   firstname: string;
   lastname: string;
   address: string;
@@ -28,7 +29,11 @@ export class RegisterComponent implements OnInit {
   message: string;
 
   register() {
-    this.userService.register(this.username, this.password, this.firstname, this.lastname, this.address, this.tel, this.email, this.image).subscribe(respObj => {
+    if (this.password1 != this.password2) {
+      this.message = 'Unete lozinke se ne podudaraju!';
+      return;
+    }
+    this.userService.register(this.username, this.password1, this.firstname, this.lastname, this.address, this.tel, this.email, this.image).subscribe(respObj => {
        if (respObj['message'] == 'ok') {
          this.message = 'User added';
        } else {

@@ -19,22 +19,6 @@ class BookController {
             }).sort({ "rentals": -1 }).limit(3);
         };
         this.getBookOfTheDay = (req, res) => {
-            /*BookModel.aggregate([{$sample: {size: 1}}], (err, book) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log(book.title);
-                    console.log(book.authors);
-                    res.json(book);
-                }
-            })*/
-            /*BookModel.aggregate([{$sample: {size: 1}}]).exec((err, book) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    res.json(book);
-                }
-            })*/
             book_1.default.count().exec((err, count) => {
                 var random = Math.floor(Math.random() * count);
                 book_1.default.findOne().skip(random).exec((err, book) => {
@@ -42,8 +26,6 @@ class BookController {
                         console.log(err);
                     }
                     else {
-                        //console.log(book.title);
-                        //console.log(book.authors);
                         res.json(book);
                     }
                 });
@@ -58,6 +40,26 @@ class BookController {
                 else {
                     var filepath = 'D:\\Aleksa\\3. godina\\2. semestar\\PIA\\Projekat\\backend\\book_images\\' + book.image;
                     res.sendFile(filepath);
+                }
+            });
+        };
+        this.searchBooks = (req, res) => {
+            let searchParam = req.body.searchParam;
+            console.log(searchParam);
+            var regex = new RegExp([searchParam].join(""), "i");
+            /*BookModel.find({ 'title': regex }, (err, books) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.json(books);
+                }
+            })*/
+            book_1.default.find({ $or: [{ title: regex }, { authors: regex }] }, (err, books) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json(books);
                 }
             });
         };

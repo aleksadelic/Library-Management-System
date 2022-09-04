@@ -1,4 +1,5 @@
 import * as express from 'express';
+import { Db } from 'mongodb';
 import BookModel from '../models/book';
 
 const fs = require('fs');
@@ -15,22 +16,6 @@ export class BookController {
     }
 
     getBookOfTheDay = (req: express.Request, res: express.Response) => {
-        /*BookModel.aggregate([{$sample: {size: 1}}], (err, book) => {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log(book.title);
-                console.log(book.authors);
-                res.json(book);
-            }
-        })*/
-        /*BookModel.aggregate([{$sample: {size: 1}}]).exec((err, book) => {
-            if (err) {
-                console.log(err);
-            } else {
-                res.json(book);
-            }
-        })*/
         BookModel.count().exec((err, count) => {
             var random = Math.floor(Math.random() * count);
 
@@ -38,8 +23,6 @@ export class BookController {
                 if (err) {
                     console.log(err);
                 } else {
-                    //console.log(book.title);
-                    //console.log(book.authors);
                     res.json(book);
                 }
             })
@@ -55,6 +38,19 @@ export class BookController {
 
                 var filepath = 'D:\\Aleksa\\3. godina\\2. semestar\\PIA\\Projekat\\backend\\book_images\\' + book.image;
                 res.sendFile(filepath);
+            }
+        })
+    }
+
+    searchBooks = (req: express.Request, res: express.Response) => {
+        let searchParam = req.body.searchParam;
+        console.log(searchParam);
+        var regex = new RegExp([searchParam].join(""), "i");
+        BookModel.find({ $or: [{title: regex}, {authors: regex}] }, (err, books) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.json(books);
             }
         })
     }

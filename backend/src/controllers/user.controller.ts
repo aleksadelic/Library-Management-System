@@ -1,5 +1,4 @@
 import e, * as express from 'express';
-import { FileHandle } from 'fs/promises';
 import UserModel from '../models/user';
 
 export class UserController {
@@ -15,8 +14,6 @@ export class UserController {
             type: 0,
             image: filename
         });
-        //console.log(filename)
-        //console.log(req.body.data);
         user.save((err, resp) => {
             if (err) {
                 console.log(err);

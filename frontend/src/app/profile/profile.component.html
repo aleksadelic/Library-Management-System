@@ -1,1 +1,27 @@
-<p>profile works!</p>
+<table>
+    <tr>
+        <td>Korisnicko ime: </td>
+        <td>{{user.username}}</td>
+    </tr>
+    <tr>
+        <td>Ime: </td>
+        <td>{{user.firstname}}</td>
+    </tr>
+    <tr>
+        <td>Prezime: </td>
+        <td>{{user.lastname}}</td>
+    </tr>
+    <tr>
+        <td>Adresa: </td>
+        <td>{{user.address}}</td>
+    </tr>
+    <tr>
+        <td>Tel: </td>
+        <td>{{user.tel}}</td>
+    </tr>
+    <tr>
+        <td>e-mail: </td>
+        <td>{{user.email}}</td>
+    </tr>
+</table>
+<button (click)="changePassword()">Promeni lozinku</button>

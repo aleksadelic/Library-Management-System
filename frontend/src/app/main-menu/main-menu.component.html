@@ -9,3 +9,11 @@
     <br>
     <button (click)="logout()">Odjavi se</button>
 </div>
+<h2>Pretraga:</h2>
+<form>
+    <input type="text" name="param" [(ngModel)]="searchParam">
+    <button (click)="search()">Pretrazi</button>
+</form>
+<div *ngFor="let bookImg of bookImages">
+    <app-bookdetails [myBook]="bookImg"></app-bookdetails>
+</div>

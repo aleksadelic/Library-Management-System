@@ -29,10 +29,6 @@ export class UserComponent implements OnInit {
     })
   }
 
-  changePassword() {
-    this.router.navigate(['changePassword']);
-  }
-
   logout() {
     localStorage.clear();
     this.router.navigate(['']);

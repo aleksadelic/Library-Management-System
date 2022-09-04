@@ -24,4 +24,11 @@ export class BookService {
     }
     return this.http.post(`${this.uri}/books/getBookImage`, data, { responseType: 'blob' });
   }
+
+  searchBooks(searchParam) {
+    const data = {
+      searchParam: searchParam
+    }
+    return this.http.post(`${this.uri}/books/searchBooks`, data);
+  }
 }

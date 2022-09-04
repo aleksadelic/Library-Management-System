@@ -19,8 +19,6 @@ class UserController {
                 type: 0,
                 image: filename
             });
-            //console.log(filename)
-            //console.log(req.body.data);
             user.save((err, resp) => {
                 if (err) {
                     console.log(err);

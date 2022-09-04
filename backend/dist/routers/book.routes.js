@@ -9,5 +9,6 @@ const bookRouter = express_1.default.Router();
 bookRouter.route('/getTop3Books').get((req, res) => new book_controller_1.BookController().getTop3Books(req, res));
 bookRouter.route('/getBookOfTheDay').get((req, res) => new book_controller_1.BookController().getBookOfTheDay(req, res));
 bookRouter.route('/getBookImage').post((req, res) => new book_controller_1.BookController().getBookImage(req, res));
+bookRouter.route('/searchBooks').post((req, res) => new book_controller_1.BookController().searchBooks(req, res));
 exports.default = bookRouter;
 //# sourceMappingURL=book.routes.js.map
