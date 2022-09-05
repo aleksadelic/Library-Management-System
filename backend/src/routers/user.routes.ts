@@ -19,4 +19,12 @@ userRouter.route('/getUserImage').post(
     (req, res) => new UserController().getUserImage(req, res)
 )
 
+userRouter.route('/getMyRentals').post(
+    (req, res) => new UserController().getMyRentals(req, res)
+)
+
+userRouter.route('/rentBook').post(
+    (req, res) => new UserController().rentBook(req, res)
+)
+
 export default userRouter;

@@ -8,6 +8,25 @@ const user_1 = __importDefault(require("../models/user"));
 class UserController {
     constructor() {
         this.register = (req, res, filename) => {
+            /*UserModel.findOne({'username': req.body.data[0]}, (err, user) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    if (user) {
+                        res.json({"message":"Korisnik sa zadatim korisnickim imenom vec postoji!"});
+                    }
+                }
+            })
+    
+            UserModel.findOne({'email': req.body.data[6]}, (err, user) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    if (user) {
+                        res.json({"message":"Korisnik sa zadatim e-mail vec postoji!"});
+                    }
+                }
+            })*/
             let user = new user_1.default({
                 username: req.body.data[0],
                 password: req.body.data[1],
@@ -81,6 +100,40 @@ class UserController {
                         user.image = 'default.png';
                     var filepath = 'D:\\Aleksa\\3. godina\\2. semestar\\PIA\\Projekat\\backend\\uploads\\' + user.image;
                     res.sendFile(filepath);
+                }
+            });
+        };
+        this.getMyRentals = (req, res) => {
+            let username = req.body.username;
+            user_1.default.findOne({ 'username': username }, (err, user) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json(user.rentals);
+                }
+            });
+        };
+        this.rentBook = (req, res) => {
+            let book = req.body.book;
+            let username = req.body.username;
+            user_1.default.findOne({ 'username': username }, (err, user) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    let rental = {
+                        book: book,
+                        daysLeft: 30
+                    };
+                    user_1.default.updateOne({ 'username': username }, { $push: { 'rentals': rental } }, (err, resp) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        else {
+                            res.json({ 'message': 'ok' });
+                        }
+                    });
                 }
             });
         };

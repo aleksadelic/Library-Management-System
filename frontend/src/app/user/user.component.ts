@@ -21,10 +21,19 @@ export class UserComponent implements OnInit {
 
   user: User;
   bookOfTheDay: Book;
+  bookRating: string = "Nema recenzija";
 
   getBookOfTheDay() {
     this.bookService.getBookOfTheDay().subscribe((book: Book) => {
       this.bookOfTheDay = book;
+      if (book.comments != null) {
+        let rating = 0;
+        for (var i = 0; i < book.comments.length; i++) {
+          rating += book.comments[i].rating;
+        }
+        rating /= book.comments.length;
+        this.bookRating = rating.toString();
+      }
       this.getBookImage();
     })
   }

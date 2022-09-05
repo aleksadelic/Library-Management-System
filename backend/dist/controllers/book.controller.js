@@ -47,13 +47,6 @@ class BookController {
             let searchParam = req.body.searchParam;
             console.log(searchParam);
             var regex = new RegExp([searchParam].join(""), "i");
-            /*BookModel.find({ 'title': regex }, (err, books) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    res.json(books);
-                }
-            })*/
             book_1.default.find({ $or: [{ title: regex }, { authors: regex }] }, (err, books) => {
                 if (err) {
                     console.log(err);

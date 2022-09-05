@@ -3,6 +3,27 @@ import UserModel from '../models/user';
 
 export class UserController {
     register = (req: express.Request, res: express.Response, filename: String) => {
+        
+        /*UserModel.findOne({'username': req.body.data[0]}, (err, user) => {
+            if (err) {
+                console.log(err);
+            } else {
+                if (user) {
+                    res.json({"message":"Korisnik sa zadatim korisnickim imenom vec postoji!"});
+                }
+            }
+        })
+
+        UserModel.findOne({'email': req.body.data[6]}, (err, user) => {
+            if (err) {
+                console.log(err);
+            } else {
+                if (user) {
+                    res.json({"message":"Korisnik sa zadatim e-mail vec postoji!"});
+                }
+            }
+        })*/
+        
         let user = new UserModel({
             username: req.body.data[0],
             password: req.body.data[1],
@@ -14,6 +35,7 @@ export class UserController {
             type: 0,
             image: filename
         });
+
         user.save((err, resp) => {
             if (err) {
                 console.log(err);
@@ -79,5 +101,38 @@ export class UserController {
             }
         })
     }
-    
+
+    getMyRentals = (req: express.Request, res: express.Response) => {
+        let username = req.body.username;
+        UserModel.findOne({'username': username}, (err, user) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.json(user.rentals);
+            }
+        })
+    }
+
+    rentBook = (req: express.Request, res: express.Response) => {
+        let book = req.body.book;
+        let username = req.body.username;
+        
+        UserModel.findOne({'username': username}, (err, user) => {
+            if (err) {
+                console.log(err);
+            } else {
+                let rental = {
+                    book: book,
+                    daysLeft: 30
+                }
+                UserModel.updateOne({'username': username}, {$push: {'rentals': rental}}, (err, resp) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        res.json({'message':'ok'});
+                    }
+                })
+            }
+        })
+    }
 }

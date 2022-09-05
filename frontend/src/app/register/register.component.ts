@@ -27,6 +27,7 @@ export class RegisterComponent implements OnInit {
   image: File;
 
   message: string;
+  errorRequired: string = "Obavezno polje!";
 
   register() {
     if (this.password1 != this.password2) {
@@ -37,8 +38,9 @@ export class RegisterComponent implements OnInit {
        if (respObj['message'] == 'ok') {
          this.message = 'User added';
        } else {
-         this.message = 'Error'
+         this.message = respObj['message'];
        }
+       console.log(respObj);
     });
   }
 

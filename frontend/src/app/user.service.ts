@@ -61,4 +61,11 @@ export class UserService {
     return this.http.post(`${this.uri}/users/getUserImage`, data, { responseType: 'blob' });
   }
 
+  getMyRentals(username) {
+    const data = {
+      username: username
+    }
+    return this.http.post(`${this.uri}/users/getMyRentals`, data);
+  }
+
 }

@@ -14,6 +14,12 @@ let Book = new Schema({
     },
     image: {
         type: String
+    },
+    available: {
+        type: Number
+    },
+    comments: {
+        type: Array
     }
 });
 

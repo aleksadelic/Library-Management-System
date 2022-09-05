@@ -1,0 +1,11 @@
+<img [src]="url" class="image">
+<h3>{{book.title}}</h3>
+{{book.authors}}
+<h3>Komentari</h3>
+<div *ngFor="let comm of book.comments">
+    <app-comment [comment]="comm"></app-comment>
+</div>
+<button (click)="rentBook()">Zaduzi knjigu</button>
+<div *ngIf="noComments">
+    Nema recenzija za ovu knjigu.
+</div>

@@ -1,8 +1,10 @@
 <a routerLink="/mainMenu">Glavni meni</a> <br>
+<a routerLink="/rentedBooks">Zaduzene knjige</a> <br>
 Knjiga dana:
 <br>
 <div *ngIf="bookOfTheDay != null">
-    {{bookOfTheDay.title}} - {{bookOfTheDay.authors}}
+    {{bookOfTheDay.title}} - {{bookOfTheDay.authors}} <br>
+    Ocena: {{bookRating}}
 </div>
 <img [src]="bookImageUrl" class="image"><br>
 <br>

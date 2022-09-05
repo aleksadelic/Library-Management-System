@@ -3,7 +3,7 @@
     <tr>
         <td>Username:</td>
         <td>
-            <input type="text" name="username" [(ngModel)]="username">
+            <input type="text" name="username" [(ngModel)]="username" >
         </td>
     </tr>
     <tr>
@@ -45,13 +45,14 @@
     <tr>
         <td>email:</td>
         <td>
-            <form enctype="multipart/form-data">
-                <input type="text" name="email" [(ngModel)]="email">
-            </form>
+            <input type="text" name="email" [(ngModel)]="email">
         </td>
     </tr>
     <tr>
-        <input type="file" (change)="uploadImage($event)">
+        <td>Slika(opciono):</td>
+        <td>
+            <input type="file" (change)="uploadImage($event)">
+        </td>
     </tr>
     <tr>
         <td colspan="2">

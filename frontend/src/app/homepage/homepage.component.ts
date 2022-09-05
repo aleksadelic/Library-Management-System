@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BookService } from '../book.service';
 import { Book } from '../models/book';
+import { BookImage } from '../models/bookImage';
 
 @Component({
   selector: 'app-homepage',
@@ -24,15 +25,19 @@ export class HomepageComponent implements OnInit {
     })
   }
 
-  bookUrls: any[] = [];
+  bookImages: BookImage[] = [];
   getBooksImages() {
     for (var i = 0; i < this.top3Books.length; i++) {
+      let book = this.top3Books[i];
       this.bookService.getBookImage(this.top3Books[i].title).subscribe((image: File) => {
         console.log(image);
         var reader = new FileReader();
         reader.addEventListener("load", () => {
-          this.bookUrls.push(reader.result);
+          var res = reader.result;
+          let bookImage = new BookImage(book, res);
+          this.bookImages.push(bookImage);
         }, false)
+        
         reader.readAsDataURL(image);
       })
     }

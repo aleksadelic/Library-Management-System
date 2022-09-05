@@ -9,12 +9,16 @@ import { ModeratorComponent } from './moderator/moderator.component';
 import { UserComponent } from './user/user.component';
 import { RegisterComponent } from './register/register.component';
 import { HomepageComponent } from './homepage/homepage.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { MainMenuComponent } from './main-menu/main-menu.component';
 import { ProfileComponent } from './profile/profile.component';
 import { BookdetailsComponent } from './bookdetails/bookdetails.component';
+import { BookComponent } from './book/book.component';
+import { CommentComponent } from './comment/comment.component';
+import { RentedBooksComponent } from './rented-books/rented-books.component';
+import { RentedBookCardComponent } from './rented-book-card/rented-book-card.component';
 
 @NgModule({
   declarations: [
@@ -28,13 +32,18 @@ import { BookdetailsComponent } from './bookdetails/bookdetails.component';
     ChangePasswordComponent,
     MainMenuComponent,
     ProfileComponent,
-    BookdetailsComponent
+    BookdetailsComponent,
+    BookComponent,
+    CommentComponent,
+    RentedBooksComponent,
+    RentedBookCardComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

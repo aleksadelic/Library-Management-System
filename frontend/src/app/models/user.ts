@@ -1,3 +1,5 @@
+import { Rental } from "./rental";
+
 export class User {
     username: string; // unique
     password: string;
@@ -7,5 +9,6 @@ export class User {
     tel: string;
     email: string; // unique
     type: number;
-    // image ????
+    image: any;
+    rentals: Rental[];
 }

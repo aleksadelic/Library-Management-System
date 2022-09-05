@@ -17,6 +17,12 @@ let Book = new Schema({
     },
     image: {
         type: String
+    },
+    available: {
+        type: Number
+    },
+    comments: {
+        type: Array
     }
 });
 exports.default = mongoose_1.default.model('BookModel', Book, 'books');

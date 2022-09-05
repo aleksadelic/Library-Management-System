@@ -7,7 +7,7 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const Schema = mongoose_1.default.Schema;
 let User = new Schema({
     username: {
-        type: String
+        type: String, unique: true
     },
     password: {
         type: String
@@ -25,13 +25,16 @@ let User = new Schema({
         type: String
     },
     email: {
-        type: String
+        type: String, unique: true
     },
     type: {
         type: Number
     },
     image: {
         type: String
+    },
+    rentals: {
+        type: Array
     }
 });
 exports.default = mongoose_1.default.model('UserModel', User, 'users');
