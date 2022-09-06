@@ -2,3 +2,6 @@
 <div *ngFor="let rentalImage of rentalsImages">
     <app-rented-book-card [rentalImage]="rentalImage"></app-rented-book-card>
 </div>
+<div *ngIf="noRentedBooks">
+    Nema zaduzenih knjiga.
+</div>

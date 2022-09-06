@@ -56,6 +56,17 @@ class BookController {
                 }
             });
         };
+        this.getBook = (req, res) => {
+            let title = req.body.title;
+            book_1.default.findOne({ 'title': title }, (err, book) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json(book);
+                }
+            });
+        };
     }
 }
 exports.BookController = BookController;

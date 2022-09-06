@@ -1,4 +1,4 @@
-import * as express from 'express';
+import e, * as express from 'express';
 import { Db } from 'mongodb';
 import BookModel from '../models/book';
 
@@ -35,7 +35,6 @@ export class BookController {
             if (err) {
                 console.log(err);
             } else {
-
                 var filepath = 'D:\\Aleksa\\3. godina\\2. semestar\\PIA\\Projekat\\backend\\book_images\\' + book.image;
                 res.sendFile(filepath);
             }
@@ -51,6 +50,17 @@ export class BookController {
                 console.log(err);
             } else {
                 res.json(books);
+            }
+        })
+    }
+
+    getBook = (req: express.Request, res: express.Response) => {
+        let title = req.body.title;
+        BookModel.findOne({'title': title}, (err, book) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.json(book);
             }
         })
     }

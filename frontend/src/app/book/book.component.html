@@ -1,11 +1,19 @@
 <img [src]="url" class="image">
 <h3>{{book.title}}</h3>
 {{book.authors}}
-<h3>Komentari</h3>
-<div *ngFor="let comm of book.comments">
-    <app-comment [comment]="comm"></app-comment>
+<br>
+Zaduzenje:
+<button *ngIf="isAvailable && rentingAvailable" (click)="rentBook()">Zaduzi knjigu</button>
+<div *ngIf="!isAvailable" class="error">Knjiga trenutno nije dostupna</div>
+<div *ngFor="let msg of messages" class="error">
+    {{msg}}
 </div>
-<button (click)="rentBook()">Zaduzi knjigu</button>
+<div [class.error]="rentMessage!='Knjiga uspesno zaduzena!'">{{rentMessage}}</div>
+Ocena: {{bookRating}}
+<h3>Komentari</h3>
 <div *ngIf="noComments">
     Nema recenzija za ovu knjigu.
+</div>
+<div *ngFor="let comm of book.comments">
+    <app-comment [comment]="comm"></app-comment>
 </div>

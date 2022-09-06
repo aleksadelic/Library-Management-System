@@ -3,4 +3,9 @@
     width: auto;
     float: left;
     padding-right: 10px;
-} 
+}
+
+.expired {
+    color: red;
+    font-weight: bold;
+}

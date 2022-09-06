@@ -24,6 +24,7 @@ export class RentedBooksComponent implements OnInit {
   user: User;
   rentalsImages: RentalImage[] = [];
   rentals: Rental[];
+  noRentedBooks : boolean = false;
 
   getMyRentals() {
     this.userService.getMyRentals(this.user.username).subscribe((rentals: Rental[]) => {
@@ -31,6 +32,8 @@ export class RentedBooksComponent implements OnInit {
       this.rentals = rentals;
       if (this.rentals != null)
         this.getBooksImages();
+      else
+        this.noRentedBooks = true;
     })
   }
 

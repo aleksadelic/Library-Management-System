@@ -1,6 +1,8 @@
 <img [src]="rentalImage.image" class="image">
 <div style="padding: 5px">
     <h2>{{rentalImage.rental.book.title}}</h2>
-    Rok: {{rentalImage.rental.daysLeft}} dana <br>
+    <div *ngIf="rentalImage.rental.daysLeft>=0">Rok: {{rentalImage.rental.daysLeft}} dana </div>
+    <div *ngIf="rentalImage.rental.daysLeft<0" class="expired">Rok istekao pre {{-rentalImage.rental.daysLeft}} dana!</div>
 </div>
+<button (click)="seeBook()">Vidi knjigu</button>
 <hr>

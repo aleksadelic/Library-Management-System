@@ -19,4 +19,8 @@ bookRouter.route('/searchBooks').post(
     (req, res) => new BookController().searchBooks(req, res)
 )
 
+bookRouter.route('/getBook').post(
+    (req, res) => new BookController().getBook(req, res)
+)
+
 export default bookRouter;

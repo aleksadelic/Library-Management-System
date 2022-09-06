@@ -10,5 +10,6 @@ bookRouter.route('/getTop3Books').get((req, res) => new book_controller_1.BookCo
 bookRouter.route('/getBookOfTheDay').get((req, res) => new book_controller_1.BookController().getBookOfTheDay(req, res));
 bookRouter.route('/getBookImage').post((req, res) => new book_controller_1.BookController().getBookImage(req, res));
 bookRouter.route('/searchBooks').post((req, res) => new book_controller_1.BookController().searchBooks(req, res));
+bookRouter.route('/getBook').post((req, res) => new book_controller_1.BookController().getBook(req, res));
 exports.default = bookRouter;
 //# sourceMappingURL=book.routes.js.map

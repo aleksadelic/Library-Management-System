@@ -5,4 +5,5 @@ export class Book {
     authors: string[];
     rentals: number;
     comments: Comment[];
+    available: number;
 }

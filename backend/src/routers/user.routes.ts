@@ -27,4 +27,8 @@ userRouter.route('/rentBook').post(
     (req, res) => new UserController().rentBook(req, res)
 )
 
+userRouter.route('/checkUserRentals').post(
+    (req, res) => new UserController().checkUserRentals(req, res)
+)
+
 export default userRouter;

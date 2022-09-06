@@ -40,4 +40,11 @@ export class BookService {
     return this.http.post(`${this.uri}/users/rentBook`, data);
   }
 
+  getBook(title) {
+    const data = {
+      title: title
+    }
+    return this.http.post(`${this.uri}/books/getBook`, data);
+  }
+
 }

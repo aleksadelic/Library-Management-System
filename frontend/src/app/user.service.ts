@@ -68,4 +68,12 @@ export class UserService {
     return this.http.post(`${this.uri}/users/getMyRentals`, data);
   }
 
+  checkUserRentals(username, title) {
+    const data = {
+      username: username,
+      title: title
+    }
+    return this.http.post(`${this.uri}/users/checkUserRentals`, data);
+  }
+
 }

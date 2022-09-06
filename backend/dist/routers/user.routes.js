@@ -14,5 +14,6 @@ userRouter.route('/changePassword').post((req, res) => new user_controller_1.Use
 userRouter.route('/getUserImage').post((req, res) => new user_controller_1.UserController().getUserImage(req, res));
 userRouter.route('/getMyRentals').post((req, res) => new user_controller_1.UserController().getMyRentals(req, res));
 userRouter.route('/rentBook').post((req, res) => new user_controller_1.UserController().rentBook(req, res));
+userRouter.route('/checkUserRentals').post((req, res) => new user_controller_1.UserController().checkUserRentals(req, res));
 exports.default = userRouter;
 //# sourceMappingURL=user.routes.js.map
