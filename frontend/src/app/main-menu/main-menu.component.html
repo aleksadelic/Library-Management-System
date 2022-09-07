@@ -16,9 +16,7 @@
 </form>
 <div *ngFor="let bookImg of bookImages">
     <div *ngIf="user!=null">
-        <a routerLink="/book" (click)="setMyBook(bookImg)">
-            <app-bookdetails [myBook]="bookImg"></app-bookdetails>
-        </a>
+        <app-bookdetails [myBook]="bookImg"></app-bookdetails>
     </div>
     <div *ngIf="user==null">
         <app-bookdetails [myBook]="bookImg"></app-bookdetails>

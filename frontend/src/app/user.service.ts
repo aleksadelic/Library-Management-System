@@ -75,5 +75,12 @@ export class UserService {
     }
     return this.http.post(`${this.uri}/users/checkUserRentals`, data);
   }
+  
+  getRentingHistory(username) {
+    const data = {
+      username: username
+    }
+    return this.http.post(`${this.uri}/users/getRentingHistory`, data);
+  }
 
 }

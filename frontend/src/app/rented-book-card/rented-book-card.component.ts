@@ -18,9 +18,7 @@ export class RentedBookCardComponent implements OnInit {
   @Input() rentalImage: RentalImage;
 
   seeBook() {
-    var bookImage = new BookImage(this.rentalImage.rental.book, this.rentalImage.image);
-    localStorage.setItem('myBook', JSON.stringify(bookImage));
-    this.router.navigate(['/book']);
+    this.router.navigate(['/book', {myBook: this.rentalImage.rental.book.title}]);
   }
 
 }

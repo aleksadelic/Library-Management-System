@@ -1,0 +1,30 @@
+<table>
+    <tr>
+        <th></th>
+        <th (click)="sortByTitle()">
+            Naziv<span *ngIf="titleSwitch==1">&#9660;</span><span *ngIf="titleSwitch==2">&#9650;</span>
+        </th>
+        <th (click)="sortByAuthor()">
+            Autori<span *ngIf="authorSwitch==1">&#9660;</span><span *ngIf="authorSwitch==2">&#9650;</span>
+        </th>
+        <th (click)="sortByRentalDate()">
+            Datum zaduzivanja<span *ngIf="rentalSwitch==1">&#9660;</span><span *ngIf="rentalSwitch==2">&#9650;</span>
+        </th>
+        <th (click)="sortByReturnDate()">
+            Datum vracanja<span *ngIf="returnSwitch==1">&#9660;</span><span *ngIf="returnSwitch==2">&#9650;</span>
+        </th>
+    </tr>
+    <tr *ngFor="let rental of rentalRecordsImages">
+        <td>
+            <img [src]="rental.image" class="image">
+        </td>
+        <td>{{rental.rentalRecord.title}}</td>
+        <td>{{rental.rentalRecord.authors}}</td>
+        <td>{{rental.rentalRecord.rentalDate}}</td>
+        <td>{{rental.rentalRecord.returnDate}}</td>
+        <td>
+            <button (click)="seeBook(rental)">Vidi knjigu</button>
+        </td>
+        <hr>
+    </tr>
+</table>

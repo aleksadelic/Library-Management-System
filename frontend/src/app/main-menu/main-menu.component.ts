@@ -70,8 +70,4 @@ export class MainMenuComponent implements OnInit {
     }
   }
 
-  setMyBook(bookImage: BookImage) {
-    localStorage.setItem('myBook', JSON.stringify(bookImage));
-  }
-
 }

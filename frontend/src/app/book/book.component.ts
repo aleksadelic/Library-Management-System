@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { BookService } from '../book.service';
 import { Book } from '../models/book';
 import { BookImage } from '../models/bookImage';
@@ -12,20 +13,16 @@ import { UserService } from '../user.service';
 })
 export class BookComponent implements OnInit {
 
-  constructor(private bookService: BookService, private userService: UserService) { }
+  constructor(private bookService: BookService, private userService: UserService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem('logged in'));
-    this.myBook = JSON.parse(localStorage.getItem('myBook'));
-    this.book = this.myBook.book;
-    localStorage.removeItem('myBook');
-    this.url = this.myBook.url;
+    this.title = this.route.snapshot.paramMap.get('myBook');
     this.getBook();
     this.checkUserRentals();
-    this.calculateRating();
   }
 
-  myBook: BookImage;
+  title: string;
   book: Book;
   url: any;
   noComments: boolean;
@@ -47,7 +44,8 @@ export class BookComponent implements OnInit {
   }
 
   checkUserRentals() {
-    this.userService.checkUserRentals(this.user.username, this.book.title).subscribe((resp: string[]) => {
+    this.userService.checkUserRentals(this.user.username, this.title).subscribe((resp: string[]) => {
+      console.log(resp);
       if (resp.length == 0) {
         this.rentingAvailable = true;
       } else {
@@ -58,11 +56,23 @@ export class BookComponent implements OnInit {
   }
 
   getBook() {
-    this.bookService.getBook(this.book.title).subscribe((book: Book) => {
+    this.bookService.getBook(this.title).subscribe((book: Book) => {
       this.book = book;
-      this.myBook.book = book;
       this.isAvailable = book.available > 0;
       this.noComments = book.comments == null || book.comments.length == 0;
+      this.getBookImage();
+      this.calculateRating();
+    })
+  }
+
+  getBookImage() {
+    this.bookService.getBookImage(this.book.title).subscribe((image: File) => {
+      console.log(image);
+      var reader = new FileReader();
+      reader.addEventListener("load", () => {
+        this.url = reader.result;
+      }, false)
+      reader.readAsDataURL(image);
     })
   }
 

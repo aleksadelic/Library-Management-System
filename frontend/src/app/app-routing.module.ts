@@ -9,6 +9,7 @@ import { MainMenuComponent } from './main-menu/main-menu.component';
 import { ProfileComponent } from './profile/profile.component';
 import { RegisterComponent } from './register/register.component';
 import { RentedBooksComponent } from './rented-books/rented-books.component';
+import { RentingHistoryComponent } from './renting-history/renting-history.component';
 import { UserComponent } from './user/user.component';
 
 const routes: Routes = [
@@ -21,7 +22,8 @@ const routes: Routes = [
   {path: "mainMenu", component: MainMenuComponent},
   {path: "profile", component: ProfileComponent},
   {path: "book", component: BookComponent},
-  {path: "rentedBooks", component: RentedBooksComponent}
+  {path: "rentedBooks", component: RentedBooksComponent},
+  {path: "rentingHistory", component: RentingHistoryComponent}
 ];
 
 @NgModule({

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { BookImage } from '../models/bookImage';
 
 @Component({
@@ -8,12 +9,16 @@ import { BookImage } from '../models/bookImage';
 })
 export class BookdetailsComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
     //console.log(this.myBook);
   }
 
   @Input() myBook: BookImage;
+
+  seeBook() {
+    this.router.navigate(['/book', {myBook: this.myBook.book.title}]);
+  }
 
 }

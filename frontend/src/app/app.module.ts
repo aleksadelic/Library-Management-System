@@ -19,6 +19,7 @@ import { BookComponent } from './book/book.component';
 import { CommentComponent } from './comment/comment.component';
 import { RentedBooksComponent } from './rented-books/rented-books.component';
 import { RentedBookCardComponent } from './rented-book-card/rented-book-card.component';
+import { RentingHistoryComponent } from './renting-history/renting-history.component';
 
 @NgModule({
   declarations: [
@@ -36,14 +37,15 @@ import { RentedBookCardComponent } from './rented-book-card/rented-book-card.com
     BookComponent,
     CommentComponent,
     RentedBooksComponent,
-    RentedBookCardComponent
+    RentedBookCardComponent,
+    RentingHistoryComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

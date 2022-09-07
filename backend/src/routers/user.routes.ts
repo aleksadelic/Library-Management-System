@@ -31,4 +31,8 @@ userRouter.route('/checkUserRentals').post(
     (req, res) => new UserController().checkUserRentals(req, res)
 )
 
+userRouter.route('/getRentingHistory').post(
+    (req, res) => new UserController().getRentingHistory(req, res)
+)
+
 export default userRouter;

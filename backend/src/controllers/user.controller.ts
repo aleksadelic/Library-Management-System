@@ -1,6 +1,7 @@
 import e, * as express from 'express';
 import UserModel from '../models/user';
 import BookModel from '../models/book';
+import RentingHistoryModel from '../models/rentingHistory';
 
 export class UserController {
     register = (req: express.Request, res: express.Response, filename: String) => {
@@ -164,20 +165,14 @@ export class UserController {
                     return;
                 }
                 if (user.rentals.length >= 3) {
-                    //res.json({'message':'3 books rented'});
-                    //return;
                     messages.push('Maksimalan broj knjiga zaduzen!');
                 }
                 for (var i = 0; i < user.rentals.length; i++) {
                     if (user.rentals[i].daysLeft < 0) {
-                        //res.json({'message':'deadline expired'});
-                        //return;
                         messages.push('Postoje zaduzenja za koja je istekao rok!');
                     }
                     console.log(title + ' = ' + user.rentals[i].book.title)
                     if (user.rentals[i].book.title === title) {
-                        //res.json({'message':'book already rented'});
-                        //return;
                         messages.push('Knjiga je vec zaduzena!');
                     }
                 }
@@ -185,4 +180,18 @@ export class UserController {
             }
         })
     }
+
+    getRentingHistory = (req: express.Request, res: express.Response) => {
+        let username = req.body.username;
+
+        RentingHistoryModel.findOne({'username': username}, (err, rentingHistory) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log(rentingHistory);
+                res.json(rentingHistory.rentalRecords);
+            }
+        })
+    }
+
 }

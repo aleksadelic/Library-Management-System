@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const user_1 = __importDefault(require("../models/user"));
 const book_1 = __importDefault(require("../models/book"));
+const rentingHistory_1 = __importDefault(require("../models/rentingHistory"));
 class UserController {
     constructor() {
         this.register = (req, res, filename) => {
@@ -169,24 +170,30 @@ class UserController {
                         return;
                     }
                     if (user.rentals.length >= 3) {
-                        //res.json({'message':'3 books rented'});
-                        //return;
                         messages.push('Maksimalan broj knjiga zaduzen!');
                     }
                     for (var i = 0; i < user.rentals.length; i++) {
                         if (user.rentals[i].daysLeft < 0) {
-                            //res.json({'message':'deadline expired'});
-                            //return;
                             messages.push('Postoje zaduzenja za koja je istekao rok!');
                         }
                         console.log(title + ' = ' + user.rentals[i].book.title);
                         if (user.rentals[i].book.title === title) {
-                            //res.json({'message':'book already rented'});
-                            //return;
                             messages.push('Knjiga je vec zaduzena!');
                         }
                     }
                     res.json(messages);
+                }
+            });
+        };
+        this.getRentingHistory = (req, res) => {
+            let username = req.body.username;
+            rentingHistory_1.default.findOne({ 'username': username }, (err, rentingHistory) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    console.log(rentingHistory);
+                    res.json(rentingHistory.rentalRecords);
                 }
             });
         };
