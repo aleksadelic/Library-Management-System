@@ -23,6 +23,18 @@ let Book = new Schema({
     },
     comments: {
         type: Array
+    },
+    genre: {
+        type: Array
+    },
+    publisher: {
+        type: String
+    },
+    publishYear: {
+        type: Number
+    },
+    language: {
+        type: String
     }
 });
 exports.default = mongoose_1.default.model('BookModel', Book, 'books');

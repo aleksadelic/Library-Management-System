@@ -107,7 +107,7 @@ class UserController {
                     console.log(user);
                     if (user.image == null)
                         user.image = 'default.png';
-                    var filepath = 'D:\\Aleksa\\3. godina\\2. semestar\\PIA\\Projekat\\backend\\uploads\\' + user.image;
+                    var filepath = 'D:\\Aleksa\\3. godina\\2. semestar\\PIA\\Projekat\\backend\\user_images\\' + user.image;
                     res.sendFile(filepath);
                 }
             });

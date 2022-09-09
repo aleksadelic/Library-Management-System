@@ -1,0 +1,57 @@
+<h2>Dodaj knjigu u sistem</h2>
+<table>
+    <tr>
+        <td>Naslov:</td>
+        <td>
+            <input type="text" name="title" [(ngModel)]="title">
+        </td>
+    </tr>
+    <tr>
+        <td>Autori:</td>
+        <td>
+            <input type="text" name="authors" [(ngModel)]="authors">
+        </td>
+    </tr>
+    <tr>
+        <td>Zanr:</td>
+        <td>
+            <input type="text" name="genre" [(ngModel)]="genre">
+        </td>
+    </tr>
+    <tr>
+        <td>Izdavac:</td>
+        <td>
+            <input type="text" name="publisher" [(ngModel)]="publisher">
+        </td>
+    </tr>
+    <tr>
+        <td>Godina izdavanja:</td>
+        <td>
+            <input type="text" name="publishYear" [(ngModel)]="publishYear">
+        </td>
+    </tr>
+    <tr>
+        <td>Jezik:</td>
+        <td>
+            <input type="text" name="language" [(ngModel)]="language">
+        </td>
+    </tr>
+    <tr>
+        <td>Broj knjiga:</td>
+        <td>
+            <input type="text" name="available" [(ngModel)]="available">
+        </td>
+    </tr>
+    <tr>
+        <td>Slika(opciono):</td>
+        <td>
+            <input type="file" (change)="uploadImage($event)">
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <button (click)="addBook()">Dodaj knjigu</button>
+        </td>
+    </tr>
+</table>
+{{message}}

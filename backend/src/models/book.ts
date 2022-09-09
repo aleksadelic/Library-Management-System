@@ -20,6 +20,18 @@ let Book = new Schema({
     },
     comments: {
         type: Array
+    },
+    genre: {
+        type: Array
+    },
+    publisher: {
+        type: String
+    },
+    publishYear: {
+        type: Number
+    },
+    language: {
+        type: String
     }
 });
 

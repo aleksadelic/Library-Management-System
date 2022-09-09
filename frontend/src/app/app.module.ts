@@ -20,6 +20,7 @@ import { CommentComponent } from './comment/comment.component';
 import { RentedBooksComponent } from './rented-books/rented-books.component';
 import { RentedBookCardComponent } from './rented-book-card/rented-book-card.component';
 import { RentingHistoryComponent } from './renting-history/renting-history.component';
+import { AddBookComponent } from './add-book/add-book.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { RentingHistoryComponent } from './renting-history/renting-history.compo
     CommentComponent,
     RentedBooksComponent,
     RentedBookCardComponent,
-    RentingHistoryComponent
+    RentingHistoryComponent,
+    AddBookComponent
   ],
   imports: [
     BrowserModule,

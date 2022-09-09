@@ -1,6 +1,7 @@
 <a routerLink="/mainMenu">Glavni meni</a> <br>
 <a routerLink="/rentedBooks">Zaduzene knjige</a> <br>
 <a routerLink="/rentingHistory">Istorija zaduzenja</a> <br>
+<a *ngIf="user.type==1" routerLink="/addBook">Dodaj knjigu</a> <br> <br>
 Knjiga dana:
 <br>
 <div *ngIf="bookOfTheDay != null">

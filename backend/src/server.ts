@@ -5,6 +5,7 @@ import multer from 'multer';
 import bookRouter from './routers/book.routes';
 import userRouter from './routers/user.routes';
 import { UserController } from './controllers/user.controller';
+import { BookController } from './controllers/book.controller';
 
 const app = express();
 app.use(cors());
@@ -18,9 +19,9 @@ connection.once('open', () => {
 
 var fileName = '';
 const multer = require("multer");
-export var storage = multer.diskStorage({
+export var userStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, './uploads');
+      cb(null, './user_images');
     },
     filename: (req, file, cb) => {
       //console.log(file);
@@ -37,9 +38,31 @@ export var storage = multer.diskStorage({
     }
 });
 
-const upload = multer({ storage: storage });
-app.post('/users/register', upload.single('file'), (req, res) => new UserController().register(req, res, fileName));
+export var bookStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './book_images');
+  },
+  filename: (req, file, cb) => {
+    //console.log(file);
+    var filetype = '';
+    if(file.mimetype === 'image/png') {
+      filetype = 'png';
+    }
+    if(file.mimetype === 'image/jpeg') {
+      filetype = 'jpg';
+    }
+    var date = Date.now();
+    cb(null, 'image-' + date + '.' + filetype);
+    fileName = 'image-' + date + '.' + filetype;
+  }
+});
 
+
+
+const uploadUserImage = multer({ storage: userStorage });
+const uploadBookImage = multer({ storage: bookStorage });
+app.post('/users/register', uploadUserImage.single('file'), (req, res) => new UserController().register(req, res, fileName));
+app.post('/books/addBook', uploadBookImage.single('file'), (req, res) => new BookController().addBook(req, res, fileName));
 const router = express.Router();
 router.use('/books', bookRouter);
 router.use('/users', userRouter);

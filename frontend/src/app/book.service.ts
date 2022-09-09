@@ -47,4 +47,19 @@ export class BookService {
     return this.http.post(`${this.uri}/books/getBook`, data);
   }
 
+  addBook(title, authors, genre, publisher, publishYear, language, available, image) {
+
+    const formData = new FormData();
+    formData.append('data', title);
+    formData.append('data', authors);
+    formData.append('data', genre);
+    formData.append('data', publisher);
+    formData.append('data', publishYear);
+    formData.append('data', language);
+    formData.append('data', available);
+    formData.append('file', image);
+
+    return this.http.post(`${this.uri}/books/addBook`, formData);
+  }
+
 }

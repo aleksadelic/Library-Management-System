@@ -6,4 +6,9 @@ export class Book {
     rentals: number;
     comments: Comment[];
     available: number;
+    genre: string[];
+    publisher: string;
+    publishYear: number;
+    lanuage: string;
+    image: any;
 }

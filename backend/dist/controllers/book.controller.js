@@ -67,6 +67,27 @@ class BookController {
                 }
             });
         };
+        this.addBook = (req, res, filename) => {
+            let book = new book_1.default({
+                title: req.body.data[0],
+                authors: req.body.data[1],
+                genre: req.body.data[2],
+                publisher: req.body.data[3],
+                publishYear: req.body.data[4],
+                language: req.body.data[5],
+                available: req.body.data[6],
+                image: filename,
+                rentals: 0
+            });
+            book.save((err, resp) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json({ 'message': 'ok' });
+                }
+            });
+        };
     }
 }
 exports.BookController = BookController;
