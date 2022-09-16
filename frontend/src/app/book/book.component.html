@@ -1,6 +1,69 @@
+<div *ngIf="user.type==1">
+    <input type="checkbox" name="edit" [(ngModel)]="edit" (click)="prepareForUpdate()"> Uredi knjigu
+</div>
+<div *ngIf="edit">
+    <table>
+        <tr>
+            <td>Naslov</td>
+            <td>
+                <input type="text" placeholder="{{book.title}}" name="title" [(ngModel)]="newTitle">
+            </td>
+        </tr>
+        <tr>
+            <td>Autori</td>
+            <td>
+                <input type="text" placeholder="{{book.authors}}" name="title" [(ngModel)]="newAuthors">
+            </td>
+        </tr>
+        <tr>
+            <td>Zanr</td>
+            <td>
+                <input type="text" placeholder="{{book.genre}}" name="title" [(ngModel)]="newGenre">
+            </td>
+        </tr>
+        <tr>
+            <td>Izdavac</td>
+            <td>
+                <input type="text" placeholder="{{book.publisher}}" name="title" [(ngModel)]="newPublisher">
+            </td>
+        </tr>
+        <tr>
+            <td>Godina izdavanja</td>
+            <td>
+                <input type="text" placeholder="{{book.publishYear}}" name="title" [(ngModel)]="newPublishYear">
+            </td>
+        </tr>
+        <tr>
+            <td>Jezik</td>
+            <td>
+                <input type="text" placeholder="{{book.language}}" name="title" [(ngModel)]="newLanguage">
+            </td>
+        </tr>
+        <tr>
+            <td>Broj knjiga:</td>
+            <td>
+                <input type="text" placeholder="{{book.available}}" name="available" [(ngModel)]="newAvailable">
+            </td>
+        </tr>
+        <tr>
+            <td>Slika(opciono):</td>
+            <td>
+                <input type="file" (change)="uploadImage($event)">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button (click)="updateBook()">Azuriraj knjigu</button>
+            </td>
+        </tr>
+    </table>
+    {{updateMessage}}
+</div>
 <img [src]="url" class="image">
-<h3>{{book.title}}</h3>
-{{book.authors}}
+<h3 *ngIf="!edit && book!=null">{{book.title}}</h3>
+<div *ngIf="!edit && book!=null">
+    {{book.authors}}
+</div>
 <br>
 Zaduzenje:
 <button *ngIf="isAvailable && rentingAvailable" (click)="rentBook()">Zaduzi knjigu</button>
@@ -14,6 +77,8 @@ Ocena: {{bookRating}}
 <div *ngIf="noComments">
     Nema recenzija za ovu knjigu.
 </div>
-<div *ngFor="let comm of book.comments">
-    <app-comment [comment]="comm"></app-comment>
+<div *ngIf="book!=null">
+    <div *ngFor="let comm of book.comments">
+        <app-comment [comment]="comm"></app-comment>
+    </div>
 </div>

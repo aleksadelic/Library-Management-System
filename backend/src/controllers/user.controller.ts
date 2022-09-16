@@ -188,8 +188,10 @@ export class UserController {
             if (err) {
                 console.log(err);
             } else {
-                console.log(rentingHistory);
-                res.json(rentingHistory.rentalRecords);
+                if (rentingHistory != null){
+                    console.log(rentingHistory);
+                    res.json(rentingHistory.rentalRecords);
+                }
             }
         })
     }

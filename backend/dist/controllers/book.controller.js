@@ -38,7 +38,13 @@ class BookController {
                     console.log(err);
                 }
                 else {
-                    var filepath = 'D:\\Aleksa\\3. godina\\2. semestar\\PIA\\Projekat\\backend\\book_images\\' + book.image;
+                    var filepath;
+                    if (book.image == "") {
+                        filepath = 'D:\\Aleksa\\3. godina\\2. semestar\\PIA\\Projekat\\backend\\book_images\\default.jpg';
+                    }
+                    else {
+                        filepath = 'D:\\Aleksa\\3. godina\\2. semestar\\PIA\\Projekat\\backend\\book_images\\' + book.image;
+                    }
                     res.sendFile(filepath);
                 }
             });
@@ -80,6 +86,46 @@ class BookController {
                 rentals: 0
             });
             book.save((err, resp) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json({ 'message': 'ok' });
+                }
+            });
+        };
+        this.updateBookAndImage = (req, res, filename) => {
+            let oldTitle = req.body.data[0];
+            let title = req.body.data[1];
+            let authors = req.body.data[2];
+            let genre = req.body.data[3];
+            let publisher = req.body.data[4];
+            let publishYear = req.body.data[5];
+            let language = req.body.data[6];
+            let available = req.body.data[7];
+            let image = filename;
+            book_1.default.updateOne({ 'title': oldTitle }, { $set: { 'title': title, 'authors': authors, 'genre': genre,
+                    'publisher': publisher, 'publishYear': publishYear, 'language': language, 'available': available,
+                    'image': image } }, (err, resp) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json({ 'message': 'ok' });
+                }
+            });
+        };
+        this.updateBookAndNotImage = (req, res) => {
+            let oldTitle = req.body.oldTitle;
+            let title = req.body.title;
+            let authors = req.body.authors;
+            let genre = req.body.genre;
+            let publisher = req.body.publisher;
+            let publishYear = req.body.publishYear;
+            let language = req.body.language;
+            let available = req.body.available;
+            book_1.default.updateOne({ 'title': oldTitle }, { $set: { 'title': title, 'authors': authors, 'genre': genre,
+                    'publisher': publisher, 'publishYear': publishYear, 'language': language, 'available': available } }, (err, resp) => {
                 if (err) {
                     console.log(err);
                 }

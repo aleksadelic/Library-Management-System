@@ -9,6 +9,6 @@ export class Book {
     genre: string[];
     publisher: string;
     publishYear: number;
-    lanuage: string;
+    language: string;
     image: any;
 }

@@ -23,4 +23,8 @@ bookRouter.route('/getBook').post(
     (req, res) => new BookController().getBook(req, res)
 )
 
+bookRouter.route('/updateBookAndNotImage').post(
+    (req, res) => new BookController().updateBookAndNotImage(req, res)
+)
+
 export default bookRouter;

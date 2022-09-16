@@ -62,4 +62,35 @@ export class BookService {
     return this.http.post(`${this.uri}/books/addBook`, formData);
   }
 
+  updateBookAndImage(oldTitle, title, authors, genre, publisher, publishYear, language, available, image) {
+    const formData = new FormData();
+    formData.append('data', oldTitle);
+    formData.append('data', title);
+    formData.append('data', authors);
+    formData.append('data', genre);
+    formData.append('data', publisher);
+    formData.append('data', publishYear);
+    formData.append('data', language);
+    formData.append('data', available);
+    formData.append('file', image);
+
+    return this.http.post(`${this.uri}/books/updateBookAndImage`, formData);
+  }
+
+  updateBookAndNotImage(oldTitle, title, authors, genre, publisher, publishYear, language, available) {
+    const data = {
+      oldTitle: oldTitle,
+      title: title,
+      authors: authors,
+      genre: genre,
+      publisher: publisher,
+      publishYear: publishYear,
+      language: language,
+      available: available
+    }
+
+    return this.http.post(`${this.uri}/books/updateBookAndNotImage`, data);
+
+  }
+
 }

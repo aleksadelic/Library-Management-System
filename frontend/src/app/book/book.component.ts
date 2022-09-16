@@ -87,4 +87,53 @@ export class BookComponent implements OnInit {
     }
   }
 
+  edit: boolean = false;
+  newTitle: string;
+  newAuthors: string[];
+  newGenre: string[];
+  newPublisher: string;
+  newPublishYear: number;
+  newLanguage: string;
+  newAvailable: number;
+  newImage: File;
+
+  updateMessage: string;
+
+  prepareForUpdate() {
+    this.newTitle = this.book.title;
+    this.newAuthors = this.book.authors;
+    this.newGenre = this.book.genre;
+    this.newPublisher = this.book.publisher;
+    this.newPublishYear = this.book.publishYear;
+    this.newLanguage = this.book.language;
+    this.newAvailable = this.book.available;
+    this.newImage = this.book.image;
+  }
+
+  updateBook() {
+    if (this.book.image == this.newImage) {
+      this.bookService.updateBookAndNotImage(this.title, this.newTitle, this.newAuthors, this.newGenre, this.newPublisher, this.newPublishYear, 
+        this.newLanguage, this.newAvailable).subscribe(resp => {
+          if (resp['message'] != 'ok') {
+            this.updateMessage = 'Neuspesno azuriranje knjige!';
+          } else {
+            this.updateMessage = 'Knjiga azurirana!';
+          }
+      })
+    } else {
+      this.bookService.updateBookAndImage(this.title, this.newTitle, this.newAuthors, this.newGenre, this.newPublisher, this.newPublishYear, 
+        this.newLanguage, this.newAvailable, this.newImage).subscribe(resp => {
+          if (resp['message'] != 'ok') {
+            this.updateMessage = 'Neuspesno azuriranje knjige!';
+          } else {
+            this.updateMessage = 'Knjiga azurirana!';
+          }
+      })
+    }
+  }
+
+  uploadImage(event) {
+    const file = event.target.files[0];
+    this.newImage = file;
+  }
 }
