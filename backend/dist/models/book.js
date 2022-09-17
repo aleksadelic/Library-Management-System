@@ -15,6 +15,9 @@ let Book = new Schema({
     rentals: {
         type: Number
     },
+    totalRentals: {
+        type: Number
+    },
     image: {
         type: String
     },

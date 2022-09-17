@@ -1,4 +1,4 @@
-<div *ngIf="user.type==1">
+<div *ngIf="user.type==1 || user.type==2">
     <input type="checkbox" name="edit" [(ngModel)]="edit" (click)="prepareForUpdate()"> Uredi knjigu
 </div>
 <div *ngIf="edit">

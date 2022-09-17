@@ -62,6 +62,19 @@ export class UserController {
         })
     }
 
+    adminLogin = (req: express.Request, res: express.Response) => {
+        let username = req.body.username;
+        let password = req.body.password;
+
+        UserModel.findOne({'username': username, 'password': password, 'type': 2}, (err, user) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.json(user);
+            }
+        })
+    }
+
     changePassword = (req: express.Request, res: express.Response) => {
         let username = req.body.username;
         let oldPassword = req.body.oldPassword;
@@ -98,7 +111,7 @@ export class UserController {
                 console.log(err);
             } else {
                 console.log(user);
-                if (user.image == null)
+                if (user.image == null || user.image == "")
                     user.image = 'default.png';
                 var filepath = 'D:\\Aleksa\\3. godina\\2. semestar\\PIA\\Projekat\\backend\\user_images\\' + user.image;
                 res.sendFile(filepath);
@@ -138,7 +151,7 @@ export class UserController {
                         console.log(err);
                     }
                 })
-                BookModel.updateOne({'title': book.title}, {$inc: {'available': -1, 'rentals': 1}}, (err, resp) => {
+                BookModel.updateOne({'title': book.title}, {$inc: {'available': -1, 'rentals': 1, 'totalRentals': 1}}, (err, resp) => {
                     if (err) {
                         console.log(err);
                     } else {
@@ -191,6 +204,37 @@ export class UserController {
                 if (rentingHistory != null){
                     console.log(rentingHistory);
                     res.json(rentingHistory.rentalRecords);
+                }
+            }
+        })
+    }
+
+    getAllUsers = (req: express.Request, res: express.Response) => {
+        UserModel.find({$or: [{'type': 0}, {'type': 1}]}, (err, users) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.json(users);
+            }
+        })
+    }
+
+    deleteUser = (req: express.Request, res: express.Response) => {
+        let username = req.body.username;
+        UserModel.find({'username': username}, (err, user) => {
+            if (err) {
+                console.log(err);
+            } else {
+                if (user.rentals == null || user.rentals.length == 0) {
+                    UserModel.deleteOne({'username': username}, (err, resp) => {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            res.json({'message':'ok'});
+                        }
+                    })
+                } else {
+                    res.json({'message':'Korisnik ima zaduzene knjige!'});
                 }
             }
         })

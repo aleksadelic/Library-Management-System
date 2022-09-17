@@ -19,6 +19,15 @@ export class UserService {
     return this.http.post(`${this.uri}/users/login`, data);
   }
 
+  adminLogin(usernameForm, passwordForm) {
+    const data = {
+      username: usernameForm,
+      password: passwordForm
+    }
+
+    return this.http.post(`${this.uri}/users/adminLogin`, data);
+  }
+
   register(usernameForm, passwordForm, firstnameForm, lastnameForm, addressForm, telForm, emailForm, imageForm) {
     const data = {
       username: usernameForm,
@@ -81,6 +90,17 @@ export class UserService {
       username: username
     }
     return this.http.post(`${this.uri}/users/getRentingHistory`, data);
+  }
+
+  getAllUsers() {
+    return this.http.get(`${this.uri}/users/getAllUsers`);
+  }
+
+  deleteUser(username) {
+    const data = {
+      username: username
+    }
+    return this.http.post(`${this.uri}/users/deleteUser`, data);
   }
 
 }

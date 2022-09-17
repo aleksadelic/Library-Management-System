@@ -93,4 +93,15 @@ export class BookService {
 
   }
 
+  getAllBooks() {
+    return this.http.get(`${this.uri}/books/getAllBooks`);
+  }
+
+  deleteBook(title) {
+    const data = {
+      title: title
+    }
+    return this.http.post(`${this.uri}/books/deleteBook`, data);
+  }
+
 }

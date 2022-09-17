@@ -1,0 +1,7 @@
+<h2>Korisnici</h2>
+<div>
+    <button (click)="addUser()">Dodaj korisnika</button><br><br>
+</div>
+<div *ngFor="let user of userImages">
+    <app-userdetails [userImage]="user"></app-userdetails>
+</div>

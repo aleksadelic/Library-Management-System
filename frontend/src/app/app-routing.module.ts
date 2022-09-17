@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AddBookComponent } from './add-book/add-book.component';
+import { AdminBooksComponent } from './admin-books/admin-books.component';
+import { AdminLoginComponent } from './admin-login/admin-login.component';
+import { AdminUsersComponent } from './admin-users/admin-users.component';
 import { AdminComponent } from './admin/admin.component';
 import { BookComponent } from './book/book.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
@@ -18,6 +21,7 @@ const routes: Routes = [
   {path: "login", component: LoginComponent},
   {path: "register", component: RegisterComponent},
   {path: "user", component: UserComponent},
+  {path: "adminLogin", component: AdminLoginComponent},
   {path: "admin", component: AdminComponent},
   {path: "changePassword", component: ChangePasswordComponent},
   {path: "mainMenu", component: MainMenuComponent},
@@ -25,7 +29,9 @@ const routes: Routes = [
   {path: "book", component: BookComponent},
   {path: "rentedBooks", component: RentedBooksComponent},
   {path: "rentingHistory", component: RentingHistoryComponent},
-  {path: "addBook", component: AddBookComponent}
+  {path: "addBook", component: AddBookComponent},
+  {path: "adminUsers", component: AdminUsersComponent},
+  {path: "adminBooks", component: AdminBooksComponent}
 ];
 
 @NgModule({

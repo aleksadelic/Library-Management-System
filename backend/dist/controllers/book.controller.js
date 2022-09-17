@@ -16,7 +16,7 @@ class BookController {
                 else {
                     res.json(books);
                 }
-            }).sort({ "rentals": -1 }).limit(3);
+            }).sort({ "totalRentals": -1 }).limit(3);
         };
         this.getBookOfTheDay = (req, res) => {
             book_1.default.count().exec((err, count) => {
@@ -131,6 +131,39 @@ class BookController {
                 }
                 else {
                     res.json({ 'message': 'ok' });
+                }
+            });
+        };
+        this.getAllBooks = (req, res) => {
+            book_1.default.find({}, (err, books) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json(books);
+                }
+            });
+        };
+        this.deleteBook = (req, res) => {
+            let title = req.body.title;
+            book_1.default.findOne({ 'title': title }, (err, book) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    if (book.rentals == 0) {
+                        book_1.default.deleteOne({ 'title': title }, (err, resp) => {
+                            if (err) {
+                                console.log(err);
+                            }
+                            else {
+                                res.json({ 'message': 'ok' });
+                            }
+                        });
+                    }
+                    else {
+                        res.json({ 'message': 'Postoje zaduzenja knjige!' });
+                    }
                 }
             });
         };

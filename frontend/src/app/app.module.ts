@@ -21,6 +21,10 @@ import { RentedBooksComponent } from './rented-books/rented-books.component';
 import { RentedBookCardComponent } from './rented-book-card/rented-book-card.component';
 import { RentingHistoryComponent } from './renting-history/renting-history.component';
 import { AddBookComponent } from './add-book/add-book.component';
+import { AdminLoginComponent } from './admin-login/admin-login.component';
+import { AdminUsersComponent } from './admin-users/admin-users.component';
+import { UserdetailsComponent } from './userdetails/userdetails.component';
+import { AdminBooksComponent } from './admin-books/admin-books.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +44,11 @@ import { AddBookComponent } from './add-book/add-book.component';
     RentedBooksComponent,
     RentedBookCardComponent,
     RentingHistoryComponent,
-    AddBookComponent
+    AddBookComponent,
+    AdminLoginComponent,
+    AdminUsersComponent,
+    UserdetailsComponent,
+    AdminBooksComponent
   ],
   imports: [
     BrowserModule,

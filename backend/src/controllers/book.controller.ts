@@ -12,7 +12,7 @@ export class BookController {
             } else {
                 res.json(books);
             }
-        }).sort({"rentals": -1}).limit(3);
+        }).sort({"totalRentals": -1}).limit(3);
     }
 
     getBookOfTheDay = (req: express.Request, res: express.Response) => {
@@ -124,13 +124,45 @@ export class BookController {
         let language = req.body.language;
         let available = req.body.available;
 
-    BookModel.updateOne({'title': oldTitle}, {$set: {'title': title, 'authors': authors, 'genre': genre, 
-        'publisher': publisher, 'publishYear': publishYear, 'language': language, 'available': available}}, (err, resp) => {
-        if (err) {
-            console.log(err);
-        } else {
-            res.json({'message':'ok'});
-        }
-    })
-}
+        BookModel.updateOne({'title': oldTitle}, {$set: {'title': title, 'authors': authors, 'genre': genre, 
+            'publisher': publisher, 'publishYear': publishYear, 'language': language, 'available': available}}, (err, resp) => {
+            if (err) {
+                console.log(err);
+            } else {
+              res.json({'message':'ok'});
+            }
+        })
+    }
+
+    getAllBooks = (req: express.Request, res: express.Response) => {
+        BookModel.find({}, (err, books) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.json(books);
+            }
+        })
+    }
+
+    deleteBook = (req: express.Request, res: express.Response) => {
+        let title = req.body.title;
+        BookModel.findOne({'title': title}, (err, book) => {
+            if (err) {
+                console.log(err);
+            } else {
+                if (book.rentals == 0) {
+                    BookModel.deleteOne({'title': title}, (err, resp) => {
+                      if (err) {
+                        console.log(err);
+                      } else {
+                        res.json({'message':'ok'});
+                      }
+                    })
+                } else {
+                    res.json({'message':'Postoje zaduzenja knjige!'});
+                }
+            }
+        })
+    }
+
 }

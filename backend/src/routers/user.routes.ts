@@ -11,6 +11,10 @@ userRouter.route('/login').post(
     (req, res) => new UserController().login(req, res)
 )
 
+userRouter.route('/adminLogin').post(
+    (req, res) => new UserController().adminLogin(req, res)
+)
+
 userRouter.route('/changePassword').post(
     (req, res) => new UserController().changePassword(req, res)
 )
@@ -33,6 +37,14 @@ userRouter.route('/checkUserRentals').post(
 
 userRouter.route('/getRentingHistory').post(
     (req, res) => new UserController().getRentingHistory(req, res)
+)
+
+userRouter.route('/getAllUsers').get(
+    (req, res) => new UserController().getAllUsers(req, res)
+)
+
+userRouter.route('/deleteUser').post(
+    (req, res) => new UserController().deleteUser(req, res)
 )
 
 export default userRouter;

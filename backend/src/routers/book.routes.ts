@@ -27,4 +27,12 @@ bookRouter.route('/updateBookAndNotImage').post(
     (req, res) => new BookController().updateBookAndNotImage(req, res)
 )
 
+bookRouter.route('/getAllBooks').get(
+    (req, res) => new BookController().getAllBooks(req, res)
+)
+
+bookRouter.route('/deleteBook').post(
+    (req, res) => new BookController().deleteBook(req, res)
+)
+
 export default bookRouter;

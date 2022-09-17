@@ -68,6 +68,18 @@ class UserController {
                 }
             });
         };
+        this.adminLogin = (req, res) => {
+            let username = req.body.username;
+            let password = req.body.password;
+            user_1.default.findOne({ 'username': username, 'password': password, 'type': 2 }, (err, user) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json(user);
+                }
+            });
+        };
         this.changePassword = (req, res) => {
             let username = req.body.username;
             let oldPassword = req.body.oldPassword;
@@ -105,7 +117,7 @@ class UserController {
                 }
                 else {
                     console.log(user);
-                    if (user.image == null)
+                    if (user.image == null || user.image == "")
                         user.image = 'default.png';
                     var filepath = 'D:\\Aleksa\\3. godina\\2. semestar\\PIA\\Projekat\\backend\\user_images\\' + user.image;
                     res.sendFile(filepath);
@@ -144,7 +156,7 @@ class UserController {
                             console.log(err);
                         }
                     });
-                    book_1.default.updateOne({ 'title': book.title }, { $inc: { 'available': -1, 'rentals': 1 } }, (err, resp) => {
+                    book_1.default.updateOne({ 'title': book.title }, { $inc: { 'available': -1, 'rentals': 1, 'totalRentals': 1 } }, (err, resp) => {
                         if (err) {
                             console.log(err);
                         }
@@ -195,6 +207,39 @@ class UserController {
                     if (rentingHistory != null) {
                         console.log(rentingHistory);
                         res.json(rentingHistory.rentalRecords);
+                    }
+                }
+            });
+        };
+        this.getAllUsers = (req, res) => {
+            user_1.default.find({ $or: [{ 'type': 0 }, { 'type': 1 }] }, (err, users) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json(users);
+                }
+            });
+        };
+        this.deleteUser = (req, res) => {
+            let username = req.body.username;
+            user_1.default.find({ 'username': username }, (err, user) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    if (user.rentals == null || user.rentals.length == 0) {
+                        user_1.default.deleteOne({ 'username': username }, (err, resp) => {
+                            if (err) {
+                                console.log(err);
+                            }
+                            else {
+                                res.json({ 'message': 'ok' });
+                            }
+                        });
+                    }
+                    else {
+                        res.json({ 'message': 'Korisnik ima zaduzene knjige!' });
                     }
                 }
             });

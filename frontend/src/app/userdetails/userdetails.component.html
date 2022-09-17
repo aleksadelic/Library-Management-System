@@ -1,0 +1,14 @@
+<img [src]="image" class="image">
+<div>
+    <b>{{user.username}}</b> <span *ngIf="user.type==1" style="color: blue;"> Moderator</span> <br>
+    {{user.firstname}} {{user.lastname}} <br>
+    {{user.address}} <br>
+    {{user.email}} <br>
+    {{user.tel}} <br>
+</div>
+<div style="right: 5px;">
+    <button>Azuriraj korisnika</button>
+    <button (click)="deleteUser()">Obrisi korisnika</button>
+</div>
+{{message}}
+<hr>

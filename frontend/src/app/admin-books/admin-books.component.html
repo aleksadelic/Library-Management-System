@@ -1,0 +1,5 @@
+<h2>Knjige</h2>
+<a routerLink="/addBook">Dodaj knjigu</a> <br> <br>
+<div *ngFor="let book of bookImages">
+    <app-bookdetails [myBook]="book"></app-bookdetails>
+</div>
