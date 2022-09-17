@@ -27,6 +27,8 @@ import { UserdetailsComponent } from './userdetails/userdetails.component';
 import { AdminBooksComponent } from './admin-books/admin-books.component';
 import { AddUserComponent } from './add-user/add-user.component';
 import { UpdateUserComponent } from './update-user/update-user.component';
+import { RegRequestsComponent } from './reg-requests/reg-requests.component';
+import { RequestDetailsComponent } from './request-details/request-details.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +54,9 @@ import { UpdateUserComponent } from './update-user/update-user.component';
     UserdetailsComponent,
     AdminBooksComponent,
     AddUserComponent,
-    UpdateUserComponent
+    UpdateUserComponent,
+    RegRequestsComponent,
+    RequestDetailsComponent
   ],
   imports: [
     BrowserModule,

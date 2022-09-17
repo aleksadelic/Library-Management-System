@@ -23,6 +23,10 @@ userRouter.route('/getUserImage').post(
     (req, res) => new UserController().getUserImage(req, res)
 )
 
+userRouter.route('/getRequestImage').post(
+    (req, res) => new UserController().getRequestImage(req, res)
+)
+
 userRouter.route('/getMyRentals').post(
     (req, res) => new UserController().getMyRentals(req, res)
 )
@@ -49,6 +53,18 @@ userRouter.route('/deleteUser').post(
 
 userRouter.route('/updateUserAndNotImage').post(
     (req, res) => new UserController().updateUserAndNotImage(req, res)
+)
+
+userRouter.route('/getAllRegistrationRequests').get(
+    (req, res) => new UserController().getAllRegistrationRequests(req, res)
+)
+
+userRouter.route('/acceptRequest').post(
+    (req, res) => new UserController().acceptRequest(req, res)
+)
+
+userRouter.route('/rejectRequest').post(
+    (req, res) => new UserController().rejectRequest(req, res)
 )
 
 export default userRouter;

@@ -12,6 +12,7 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { LoginComponent } from './login/login.component';
 import { MainMenuComponent } from './main-menu/main-menu.component';
 import { ProfileComponent } from './profile/profile.component';
+import { RegRequestsComponent } from './reg-requests/reg-requests.component';
 import { RegisterComponent } from './register/register.component';
 import { RentedBooksComponent } from './rented-books/rented-books.component';
 import { RentingHistoryComponent } from './renting-history/renting-history.component';
@@ -35,7 +36,8 @@ const routes: Routes = [
   {path: "adminUsers", component: AdminUsersComponent},
   {path: "adminBooks", component: AdminBooksComponent},
   {path: "addUser", component: AddUserComponent},
-  {path: "updateUser", component: UpdateUserComponent}
+  {path: "updateUser", component: UpdateUserComponent},
+  {path: "regRequests", component: RegRequestsComponent}
 ];
 
 @NgModule({

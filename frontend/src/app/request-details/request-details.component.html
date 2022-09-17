@@ -1,0 +1,14 @@
+<img [src]="image" class="image">
+<div>
+    <b>{{request.username}}</b> <br>
+    {{request.firstname}} {{request.lastname}} <br>
+    {{request.address}} <br>
+    {{request.email}} <br>
+    {{request.tel}} <br>
+</div>
+<div style="right: 5px;">
+    <button (click)="acceptRequest()" style="color: green;">Prihvati zahtev</button>
+    <button (click)="rejectRequest()" style="color: red;">Odbij zahtev</button>
+</div>
+{{message}}
+<hr>

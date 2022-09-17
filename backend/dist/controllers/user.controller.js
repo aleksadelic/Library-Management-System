@@ -7,9 +7,114 @@ exports.UserController = void 0;
 const user_1 = __importDefault(require("../models/user"));
 const book_1 = __importDefault(require("../models/book"));
 const rentingHistory_1 = __importDefault(require("../models/rentingHistory"));
+const registrationRequest_1 = __importDefault(require("../models/registrationRequest"));
 class UserController {
     constructor() {
         this.register = (req, res, filename) => {
+            let username = req.body.data[0];
+            let email = req.body.data[6];
+            user_1.default.findOne({ 'username': username }, (err, user) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    if (user) {
+                        res.json({ "message": "Korisnik sa zadatim korisnickim imenom vec postoji!" });
+                    }
+                    else {
+                        user_1.default.findOne({ 'email': email }, (err, user) => {
+                            if (err) {
+                                console.log(err);
+                            }
+                            else {
+                                if (user) {
+                                    res.json({ "message": "Korisnik sa zadatim e-mail vec postoji!" });
+                                }
+                                else {
+                                    let request = new registrationRequest_1.default({
+                                        username: req.body.data[0],
+                                        password: req.body.data[1],
+                                        firstname: req.body.data[2],
+                                        lastname: req.body.data[3],
+                                        address: req.body.data[4],
+                                        tel: req.body.data[5],
+                                        email: req.body.data[6],
+                                        type: 0,
+                                        image: filename
+                                    });
+                                    request.save((err, resp) => {
+                                        if (err) {
+                                            console.log(err);
+                                        }
+                                        else {
+                                            res.json({ "message": "ok" });
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        };
+        this.login = (req, res) => {
+            let username = req.body.username;
+            let password = req.body.password;
+            user_1.default.findOne({ 'username': username, 'password': password }, (err, user) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json(user);
+                }
+            });
+        };
+        this.adminLogin = (req, res) => {
+            let username = req.body.username;
+            let password = req.body.password;
+            user_1.default.findOne({ 'username': username, 'password': password, 'type': 2 }, (err, user) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json(user);
+                }
+            });
+        };
+        this.getAllUsers = (req, res) => {
+            user_1.default.find({ $or: [{ 'type': 0 }, { 'type': 1 }] }, (err, users) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json(users);
+                }
+            });
+        };
+        this.deleteUser = (req, res) => {
+            let username = req.body.username;
+            user_1.default.find({ 'username': username }, (err, user) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    if (user.rentals == null || user.rentals.length == 0) {
+                        user_1.default.deleteOne({ 'username': username }, (err, resp) => {
+                            if (err) {
+                                console.log(err);
+                            }
+                            else {
+                                res.json({ 'message': 'ok' });
+                            }
+                        });
+                    }
+                    else {
+                        res.json({ 'message': 'Korisnik ima zaduzene knjige!' });
+                    }
+                }
+            });
+        };
+        this.addUser = (req, res, filename) => {
             let username = req.body.data[0];
             let email = req.body.data[6];
             user_1.default.findOne({ 'username': username }, (err, user) => {
@@ -56,27 +161,13 @@ class UserController {
                 }
             });
         };
-        this.login = (req, res) => {
-            let username = req.body.username;
-            let password = req.body.password;
-            user_1.default.findOne({ 'username': username, 'password': password }, (err, user) => {
+        this.getAllRegistrationRequests = (req, res) => {
+            registrationRequest_1.default.find({}, (err, requests) => {
                 if (err) {
                     console.log(err);
                 }
                 else {
-                    res.json(user);
-                }
-            });
-        };
-        this.adminLogin = (req, res) => {
-            let username = req.body.username;
-            let password = req.body.password;
-            user_1.default.findOne({ 'username': username, 'password': password, 'type': 2 }, (err, user) => {
-                if (err) {
-                    console.log(err);
-                }
-                else {
-                    res.json(user);
+                    res.json(requests);
                 }
             });
         };
@@ -120,6 +211,20 @@ class UserController {
                     if (user.image == null || user.image == "")
                         user.image = 'default.png';
                     var filepath = 'D:\\Aleksa\\3. godina\\2. semestar\\PIA\\Projekat\\backend\\user_images\\' + user.image;
+                    res.sendFile(filepath);
+                }
+            });
+        };
+        this.getRequestImage = (req, res) => {
+            let username = req.body.username;
+            registrationRequest_1.default.findOne({ 'username': username }, (err, request) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    if (request.image == null || request.image == "")
+                        request.image = 'default.png';
+                    var filepath = 'D:\\Aleksa\\3. godina\\2. semestar\\PIA\\Projekat\\backend\\user_images\\' + request.image;
                     res.sendFile(filepath);
                 }
             });
@@ -211,86 +316,6 @@ class UserController {
                 }
             });
         };
-        this.getAllUsers = (req, res) => {
-            user_1.default.find({ $or: [{ 'type': 0 }, { 'type': 1 }] }, (err, users) => {
-                if (err) {
-                    console.log(err);
-                }
-                else {
-                    res.json(users);
-                }
-            });
-        };
-        this.deleteUser = (req, res) => {
-            let username = req.body.username;
-            user_1.default.find({ 'username': username }, (err, user) => {
-                if (err) {
-                    console.log(err);
-                }
-                else {
-                    if (user.rentals == null || user.rentals.length == 0) {
-                        user_1.default.deleteOne({ 'username': username }, (err, resp) => {
-                            if (err) {
-                                console.log(err);
-                            }
-                            else {
-                                res.json({ 'message': 'ok' });
-                            }
-                        });
-                    }
-                    else {
-                        res.json({ 'message': 'Korisnik ima zaduzene knjige!' });
-                    }
-                }
-            });
-        };
-        this.addUser = (req, res, filename) => {
-            let username = req.body.data[0];
-            let email = req.body.data[6];
-            user_1.default.findOne({ 'username': username }, (err, user) => {
-                if (err) {
-                    console.log(err);
-                }
-                else {
-                    if (user) {
-                        res.json({ "message": "Korisnik sa zadatim korisnickim imenom vec postoji!" });
-                    }
-                    else {
-                        user_1.default.findOne({ 'email': email }, (err, user) => {
-                            if (err) {
-                                console.log(err);
-                            }
-                            else {
-                                if (user) {
-                                    res.json({ "message": "Korisnik sa zadatim e-mail vec postoji!" });
-                                }
-                                else {
-                                    let user = new user_1.default({
-                                        username: req.body.data[0],
-                                        password: req.body.data[1],
-                                        firstname: req.body.data[2],
-                                        lastname: req.body.data[3],
-                                        address: req.body.data[4],
-                                        tel: req.body.data[5],
-                                        email: req.body.data[6],
-                                        type: 0,
-                                        image: filename
-                                    });
-                                    user.save((err, resp) => {
-                                        if (err) {
-                                            console.log(err);
-                                        }
-                                        else {
-                                            res.json({ "message": "ok" });
-                                        }
-                                    });
-                                }
-                            }
-                        });
-                    }
-                }
-            });
-        };
         this.updateUserAndImage = (req, res, filename) => {
             let oldUsername = req.body.data[0];
             let username = req.body.data[1];
@@ -327,6 +352,54 @@ class UserController {
                 }
                 else {
                     res.json({ 'message': 'ok' });
+                }
+            });
+        };
+        this.acceptRequest = (req, res) => {
+            let username = req.body.username;
+            registrationRequest_1.default.findOne({ 'username': username }, (err, request) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    let user = new user_1.default({
+                        username: request.username,
+                        password: request.password,
+                        firstname: request.firstname,
+                        lastname: request.lastname,
+                        address: request.address,
+                        tel: request.tel,
+                        email: request.email,
+                        type: request.type,
+                        image: request.image,
+                        rentals: request.rentals
+                    });
+                    user.save((err, resp) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        else {
+                            registrationRequest_1.default.deleteOne({ 'username': username }, (err, resp) => {
+                                if (err) {
+                                    console.log(err);
+                                }
+                                else {
+                                    res.json({ "message": "ok" });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        };
+        this.rejectRequest = (req, res) => {
+            let username = req.body.username;
+            registrationRequest_1.default.deleteOne({ 'username': username }, (err, resp) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json({ "message": "ok" });
                 }
             });
         };

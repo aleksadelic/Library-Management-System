@@ -3,55 +3,57 @@
     <tr>
         <td>Korisnicko ime:</td>
         <td>
-            <input type="text" name="username" [(ngModel)]="username" >
+            <input type="text" name="username" [(ngModel)]="username">
+            <span style="color:red;"> {{errorUsername}}</span>
         </td>
     </tr>
     <tr>
         <td>Lozinka:</td>
         <td>
             <input type="password" name="password1" [(ngModel)]="password1">
+            <span style="color:red;"> {{errorPassword1}}</span>
         </td>
     </tr>
     <tr>
         <td>Ponovi lozinku:</td>
         <td>
             <input type="password" name="password2" [(ngModel)]="password2">
+            <span style="color:red;"> {{errorPassword2}}</span>
         </td>
     </tr>
     <tr>
         <td>Ime:</td>
         <td>
             <input type="text" name="firstname" [(ngModel)]="firstname">
+            <span style="color:red;"> {{errorFirstname}}</span>
         </td>
     </tr>
     <tr>
         <td>Prezime:</td>
         <td>
             <input type="text" name="lastname" [(ngModel)]="lastname">
+            <span style="color:red;"> {{errorLastname}}</span>
         </td>
     </tr>
     <tr>
         <td>Adresa:</td>
         <td>
             <input type="text" name="address" [(ngModel)]="address">
+            <span style="color:red;"> {{errorAddress}}</span>
         </td>
     </tr>
     <tr>
         <td>Telefon:</td>
         <td>
             <input type="text" name="tel" [(ngModel)]="tel">
+            <span style="color:red;"> {{errorTel}}</span>
         </td>
     </tr>
     <tr>
         <td>e-mail:</td>
         <td>
             <input type="text" name="email" [(ngModel)]="email">
-        </td>
-    </tr>
-    <tr>
-        <td>Slika(opciono):</td>
-        <td>
-            <input type="file" (change)="uploadImage($event)">
+            <span style="color:red;"> {{errorEmail}}</span>
         </td>
     </tr>
     <tr>

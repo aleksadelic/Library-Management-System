@@ -7,6 +7,6 @@
     <br>
 </div>
 <button (click)="seeBook()">Vidi knjigu</button>
-<button (click)="deleteBook()">Izbrisi knjigu</button>
+<button *ngIf="user!=null && user.type==2" (click)="deleteBook()">Izbrisi knjigu</button>
 {{message}}
 <hr/>

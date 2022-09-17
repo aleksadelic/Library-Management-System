@@ -2,9 +2,112 @@ import e, * as express from 'express';
 import UserModel from '../models/user';
 import BookModel from '../models/book';
 import RentingHistoryModel from '../models/rentingHistory';
+import RegistrationRequestModel from '../models/registrationRequest';
 
 export class UserController {
     register = (req: express.Request, res: express.Response, filename: String) => {
+        let username = req.body.data[0];
+        let email = req.body.data[6];
+
+        UserModel.findOne({'username': username}, (err, user) => {
+            if (err) {
+                console.log(err);
+            } else {
+                if (user) {
+                    res.json({"message":"Korisnik sa zadatim korisnickim imenom vec postoji!"});
+                } else {
+                    UserModel.findOne({'email': email}, (err, user) => {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            if (user) {
+                                res.json({"message":"Korisnik sa zadatim e-mail vec postoji!"});
+                            } else {
+                                let request = new RegistrationRequestModel({
+                                    username: req.body.data[0],
+                                    password: req.body.data[1],
+                                    firstname: req.body.data[2],
+                                    lastname: req.body.data[3],
+                                    address: req.body.data[4],
+                                    tel: req.body.data[5],
+                                    email: req.body.data[6],
+                                    type: 0,
+                                    image: filename
+                                });
+                        
+                                request.save((err, resp) => {
+                                    if (err) {
+                                        console.log(err);
+                                    } else {
+                                        res.json({"message":"ok"});
+                                    }
+                                })
+                            }
+                        }
+                    })
+                }
+            }
+        })
+    }
+
+    login = (req: express.Request, res: express.Response) => {
+        let username = req.body.username;
+        let password = req.body.password;
+
+        UserModel.findOne({'username': username, 'password': password}, (err, user) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.json(user);
+            }
+        })
+    }
+
+    adminLogin = (req: express.Request, res: express.Response) => {
+        let username = req.body.username;
+        let password = req.body.password;
+
+        UserModel.findOne({'username': username, 'password': password, 'type': 2}, (err, user) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.json(user);
+            }
+        })
+    }
+
+    getAllUsers = (req: express.Request, res: express.Response) => {
+        UserModel.find({$or: [{'type': 0}, {'type': 1}]}, (err, users) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.json(users);
+            }
+        })
+    }
+
+    deleteUser = (req: express.Request, res: express.Response) => {
+        let username = req.body.username;
+        UserModel.find({'username': username}, (err, user) => {
+            if (err) {
+                console.log(err);
+            } else {
+                if (user.rentals == null || user.rentals.length == 0) {
+                    UserModel.deleteOne({'username': username}, (err, resp) => {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            res.json({'message':'ok'});
+                        }
+                    })
+                } else {
+                    res.json({'message':'Korisnik ima zaduzene knjige!'});
+                }
+            }
+        })
+    }
+
+    addUser = (req: express.Request, res: express.Response, filename: String) => {
         let username = req.body.data[0];
         let email = req.body.data[6];
 
@@ -49,28 +152,12 @@ export class UserController {
         })
     }
 
-    login = (req: express.Request, res: express.Response) => {
-        let username = req.body.username;
-        let password = req.body.password;
-
-        UserModel.findOne({'username': username, 'password': password}, (err, user) => {
+    getAllRegistrationRequests = (req: express.Request, res: express.Response) => {
+        RegistrationRequestModel.find({}, (err, requests) => {
             if (err) {
                 console.log(err);
             } else {
-                res.json(user);
-            }
-        })
-    }
-
-    adminLogin = (req: express.Request, res: express.Response) => {
-        let username = req.body.username;
-        let password = req.body.password;
-
-        UserModel.findOne({'username': username, 'password': password, 'type': 2}, (err, user) => {
-            if (err) {
-                console.log(err);
-            } else {
-                res.json(user);
+                res.json(requests);
             }
         })
     }
@@ -114,6 +201,20 @@ export class UserController {
                 if (user.image == null || user.image == "")
                     user.image = 'default.png';
                 var filepath = 'D:\\Aleksa\\3. godina\\2. semestar\\PIA\\Projekat\\backend\\user_images\\' + user.image;
+                res.sendFile(filepath);
+            }
+        })
+    }
+
+    getRequestImage = (req: express.Request, res: express.Response) => {
+        let username = req.body.username;
+        RegistrationRequestModel.findOne({'username': username}, (err, request) => {
+            if (err) {
+                console.log(err);
+            } else {
+                if (request.image == null || request.image == "")
+                    request.image = 'default.png';
+                var filepath = 'D:\\Aleksa\\3. godina\\2. semestar\\PIA\\Projekat\\backend\\user_images\\' + request.image;
                 res.sendFile(filepath);
             }
         })
@@ -209,82 +310,6 @@ export class UserController {
         })
     }
 
-    getAllUsers = (req: express.Request, res: express.Response) => {
-        UserModel.find({$or: [{'type': 0}, {'type': 1}]}, (err, users) => {
-            if (err) {
-                console.log(err);
-            } else {
-                res.json(users);
-            }
-        })
-    }
-
-    deleteUser = (req: express.Request, res: express.Response) => {
-        let username = req.body.username;
-        UserModel.find({'username': username}, (err, user) => {
-            if (err) {
-                console.log(err);
-            } else {
-                if (user.rentals == null || user.rentals.length == 0) {
-                    UserModel.deleteOne({'username': username}, (err, resp) => {
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            res.json({'message':'ok'});
-                        }
-                    })
-                } else {
-                    res.json({'message':'Korisnik ima zaduzene knjige!'});
-                }
-            }
-        })
-    }
-
-    addUser = (req: express.Request, res: express.Response, filename: String) => {
-        let username = req.body.data[0];
-        let email = req.body.data[6];
-
-        UserModel.findOne({'username': username}, (err, user) => {
-            if (err) {
-                console.log(err);
-            } else {
-                if (user) {
-                    res.json({"message":"Korisnik sa zadatim korisnickim imenom vec postoji!"});
-                } else {
-                    UserModel.findOne({'email': email}, (err, user) => {
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            if (user) {
-                                res.json({"message":"Korisnik sa zadatim e-mail vec postoji!"});
-                            } else {
-                                let user = new UserModel({
-                                    username: req.body.data[0],
-                                    password: req.body.data[1],
-                                    firstname: req.body.data[2],
-                                    lastname: req.body.data[3],
-                                    address: req.body.data[4],
-                                    tel: req.body.data[5],
-                                    email: req.body.data[6],
-                                    type: 0,
-                                    image: filename
-                                });
-                        
-                                user.save((err, resp) => {
-                                    if (err) {
-                                        console.log(err);
-                                    } else {
-                                        res.json({"message":"ok"});
-                                    }
-                                })
-                            }
-                        }
-                    })
-                }
-            }
-        })
-    }
-
     updateUserAndImage = (req: express.Request, res: express.Response, filename: String) => {
         let oldUsername = req.body.data[0];
         let username = req.body.data[1];
@@ -322,6 +347,54 @@ export class UserController {
                 console.log(err);
             } else {
                 res.json({'message':'ok'});
+            }
+        })
+    }
+
+    acceptRequest = (req: express.Request, res: express.Response) => {
+        let username = req.body.username;
+
+        RegistrationRequestModel.findOne({'username': username}, (err, request) => {
+            if (err) {
+                console.log(err);
+            } else {
+                let user = new UserModel({
+                    username: request.username,
+                    password: request.password,
+                    firstname: request.firstname,
+                    lastname: request.lastname,
+                    address: request.address,
+                    tel: request.tel,
+                    email: request.email,
+                    type: request.type,
+                    image: request.image,
+                    rentals: request.rentals
+                });
+
+                user.save((err, resp) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        RegistrationRequestModel.deleteOne({'username': username}, (err, resp) => {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                res.json({"message":"ok"});
+                            }
+                        })
+                    }
+                });
+            }
+        })
+    }
+
+    rejectRequest = (req: express.Request, res: express.Response) => {
+        let username = req.body.username;
+        RegistrationRequestModel.deleteOne({'username': username}, (err, resp) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.json({"message":"ok"});
             }
         })
     }

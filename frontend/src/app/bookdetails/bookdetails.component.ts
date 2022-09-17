@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BookService } from '../book.service';
 import { BookImage } from '../models/bookImage';
+import { User } from '../models/user';
 
 @Component({
   selector: 'app-bookdetails',
@@ -13,7 +14,7 @@ export class BookdetailsComponent implements OnInit {
   constructor(private router: Router, private bookService: BookService) { }
 
   ngOnInit(): void {
-    //console.log(this.myBook);
+    this.user = JSON.parse(localStorage.getItem('logged in'));
   }
 
   @Input() myBook: BookImage;
@@ -23,6 +24,7 @@ export class BookdetailsComponent implements OnInit {
   }
 
   message: string;
+  user: User;
 
   deleteBook() {
     this.bookService.deleteBook(this.myBook.book.title).subscribe(resp => {

@@ -59,6 +59,13 @@ export class UserService {
     return this.http.post(`${this.uri}/users/getUserImage`, data, { responseType: 'blob' });
   }
 
+  getRequestImage(username) {
+    const data = {
+      username: username
+    }
+    return this.http.post(`${this.uri}/users/getRequestImage`, data, { responseType: 'blob' });
+  }
+
   getMyRentals(username) {
     const data = {
       username: username
@@ -147,6 +154,24 @@ export class UserService {
     }
 
     return this.http.post(`${this.uri}/users/updateUserAndNotImage`, data);
+  }
+
+  getAllRegistrationRequests() {
+    return this.http.get(`${this.uri}/users/getAllRegistrationRequests`);
+  }
+
+  acceptRequst(username) {
+    const data = {
+      username: username
+    }
+    return this.http.post(`${this.uri}/users/acceptRequest`, data);
+  }
+
+  rejectRequest(username) {
+    const data = {
+      username: username
+    }
+    return this.http.post(`${this.uri}/users/rejectRequest`, data);
   }
 
 }
