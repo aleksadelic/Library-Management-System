@@ -93,15 +93,15 @@ export class BookController {
     }
 
     updateBookAndImage = (req: express.Request, res: express.Response, filename: String) => {
-            let oldTitle = req.body.data[0];
-            let title = req.body.data[1];
-            let authors = req.body.data[2];
-            let genre = req.body.data[3];
-            let publisher = req.body.data[4];
-            let publishYear = req.body.data[5];
-            let language = req.body.data[6];
-            let available = req.body.data[7];
-            let image = filename;
+        let oldTitle = req.body.data[0];
+        let title = req.body.data[1];
+        let authors = req.body.data[2];
+        let genre = req.body.data[3];
+        let publisher = req.body.data[4];
+        let publishYear = req.body.data[5];
+        let language = req.body.data[6];
+        let available = req.body.data[7];
+        let image = filename;
 
         BookModel.updateOne({'title': oldTitle}, {$set: {'title': title, 'authors': authors, 'genre': genre, 
             'publisher': publisher, 'publishYear': publishYear, 'language': language, 'available': available, 

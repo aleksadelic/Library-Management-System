@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { User } from '../models/user';
 import { UserImage } from '../models/userImage';
 import { UserService } from '../user.service';
@@ -10,7 +11,7 @@ import { UserService } from '../user.service';
 })
 export class UserdetailsComponent implements OnInit {
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private router: Router) { }
 
   ngOnInit(): void {
     this.user = this.userImage.user;
@@ -21,6 +22,10 @@ export class UserdetailsComponent implements OnInit {
   user: User;
   image;
   message: String;
+
+  updateUser() {
+    this.router.navigate(['updateUser', {'userToUpdate': JSON.stringify(this.user)}])
+  }
 
   deleteUser() {
     this.userService.deleteUser(this.user.username).subscribe(resp => {

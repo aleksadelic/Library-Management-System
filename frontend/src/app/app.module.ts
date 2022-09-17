@@ -25,6 +25,8 @@ import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { AdminUsersComponent } from './admin-users/admin-users.component';
 import { UserdetailsComponent } from './userdetails/userdetails.component';
 import { AdminBooksComponent } from './admin-books/admin-books.component';
+import { AddUserComponent } from './add-user/add-user.component';
+import { UpdateUserComponent } from './update-user/update-user.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +50,9 @@ import { AdminBooksComponent } from './admin-books/admin-books.component';
     AdminLoginComponent,
     AdminUsersComponent,
     UserdetailsComponent,
-    AdminBooksComponent
+    AdminBooksComponent,
+    AddUserComponent,
+    UpdateUserComponent
   ],
   imports: [
     BrowserModule,

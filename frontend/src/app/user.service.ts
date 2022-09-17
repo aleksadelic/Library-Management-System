@@ -29,17 +29,6 @@ export class UserService {
   }
 
   register(usernameForm, passwordForm, firstnameForm, lastnameForm, addressForm, telForm, emailForm, imageForm) {
-    const data = {
-      username: usernameForm,
-      password: passwordForm, 
-      firstname: firstnameForm,
-      lastname: lastnameForm,
-      address: addressForm,
-      tel: telForm,
-      email: emailForm,
-      image: imageForm
-    }
-
     const formData = new FormData();
   
     formData.append('data', usernameForm);
@@ -101,6 +90,63 @@ export class UserService {
       username: username
     }
     return this.http.post(`${this.uri}/users/deleteUser`, data);
+  }
+
+  addUser(usernameForm, passwordForm, firstnameForm, lastnameForm, addressForm, telForm, emailForm, imageForm) {
+    const data = {
+      username: usernameForm,
+      password: passwordForm, 
+      firstname: firstnameForm,
+      lastname: lastnameForm,
+      address: addressForm,
+      tel: telForm,
+      email: emailForm,
+      image: imageForm
+    }
+
+    const formData = new FormData();
+  
+    formData.append('data', usernameForm);
+    formData.append('data', passwordForm);
+    formData.append('data', firstnameForm);
+    formData.append('data', lastnameForm);
+    formData.append('data', addressForm);
+    formData.append('data', telForm);
+    formData.append('data', emailForm);
+    formData.append('file', imageForm);
+
+    return this.http.post(`${this.uri}/users/addUser`, formData);
+  }
+
+  updateUserAndImage  (oldUsername, usernameForm, passwordForm, firstnameForm, lastnameForm, addressForm, telForm, emailForm, imageForm) {
+    const formData = new FormData();
+    
+    formData.append('data', oldUsername);
+    formData.append('data', usernameForm);
+    formData.append('data', passwordForm);
+    formData.append('data', firstnameForm);
+    formData.append('data', lastnameForm);
+    formData.append('data', addressForm);
+    formData.append('data', telForm);
+    formData.append('data', emailForm);
+    formData.append('file', imageForm);
+
+    return this.http.post(`${this.uri}/users/updateUserAndImage`, formData);
+  }
+
+  updateUserAndNotImage(oldUsername, usernameForm, passwordForm, firstnameForm, lastnameForm, addressForm, telForm, emailForm) {
+    const data = {
+      oldUsername: oldUsername,
+      username: usernameForm,
+      password: passwordForm, 
+      firstname: firstnameForm,
+      lastname: lastnameForm,
+      address: addressForm,
+      tel: telForm,
+      email: emailForm
+    }
+
+    return this.http.post(`${this.uri}/users/updateUserAndNotImage`, data);
   }
 
 }

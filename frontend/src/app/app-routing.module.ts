@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AddBookComponent } from './add-book/add-book.component';
+import { AddUserComponent } from './add-user/add-user.component';
 import { AdminBooksComponent } from './admin-books/admin-books.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { AdminUsersComponent } from './admin-users/admin-users.component';
@@ -14,6 +15,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { RegisterComponent } from './register/register.component';
 import { RentedBooksComponent } from './rented-books/rented-books.component';
 import { RentingHistoryComponent } from './renting-history/renting-history.component';
+import { UpdateUserComponent } from './update-user/update-user.component';
 import { UserComponent } from './user/user.component';
 
 const routes: Routes = [
@@ -31,7 +33,9 @@ const routes: Routes = [
   {path: "rentingHistory", component: RentingHistoryComponent},
   {path: "addBook", component: AddBookComponent},
   {path: "adminUsers", component: AdminUsersComponent},
-  {path: "adminBooks", component: AdminBooksComponent}
+  {path: "adminBooks", component: AdminBooksComponent},
+  {path: "addUser", component: AddUserComponent},
+  {path: "updateUser", component: UpdateUserComponent}
 ];
 
 @NgModule({

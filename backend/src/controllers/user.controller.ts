@@ -240,4 +240,90 @@ export class UserController {
         })
     }
 
+    addUser = (req: express.Request, res: express.Response, filename: String) => {
+        let username = req.body.data[0];
+        let email = req.body.data[6];
+
+        UserModel.findOne({'username': username}, (err, user) => {
+            if (err) {
+                console.log(err);
+            } else {
+                if (user) {
+                    res.json({"message":"Korisnik sa zadatim korisnickim imenom vec postoji!"});
+                } else {
+                    UserModel.findOne({'email': email}, (err, user) => {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            if (user) {
+                                res.json({"message":"Korisnik sa zadatim e-mail vec postoji!"});
+                            } else {
+                                let user = new UserModel({
+                                    username: req.body.data[0],
+                                    password: req.body.data[1],
+                                    firstname: req.body.data[2],
+                                    lastname: req.body.data[3],
+                                    address: req.body.data[4],
+                                    tel: req.body.data[5],
+                                    email: req.body.data[6],
+                                    type: 0,
+                                    image: filename
+                                });
+                        
+                                user.save((err, resp) => {
+                                    if (err) {
+                                        console.log(err);
+                                    } else {
+                                        res.json({"message":"ok"});
+                                    }
+                                })
+                            }
+                        }
+                    })
+                }
+            }
+        })
+    }
+
+    updateUserAndImage = (req: express.Request, res: express.Response, filename: String) => {
+        let oldUsername = req.body.data[0];
+        let username = req.body.data[1];
+        let password = req.body.data[2];
+        let firstname = req.body.data[3];
+        let lastname = req.body.data[4];
+        let address = req.body.data[5];
+        let tel = req.body.data[6];
+        let email = req.body.data[7];
+        let image = filename;
+
+        UserModel.updateOne({'username': oldUsername}, {$set: {'username': username, 'password': password, 'firstname': firstname, 
+            'lastname': lastname, 'address': address, 'tel': tel, 'email': email, 'image': image}}, (err, resp) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.json({'message':'ok'});
+            }
+        })
+    }
+
+    updateUserAndNotImage = (req: express.Request, res: express.Response) => {
+        let oldUsername = req.body.oldUsername;
+        let username = req.body.username;
+        let password = req.body.password;
+        let firstname = req.body.firstname;
+        let lastname = req.body.lastname;
+        let address = req.body.address;
+        let tel = req.body.tel;
+        let email = req.body.email;
+
+        UserModel.updateOne({'username': oldUsername}, {$set: {'username': username, 'password': password, 'firstname': firstname, 
+            'lastname': lastname, 'address': address, 'tel': tel, 'email': email}}, (err, resp) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.json({'message':'ok'});
+            }
+        })
+    }
+
 }

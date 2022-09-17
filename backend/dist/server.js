@@ -60,8 +60,10 @@ exports.bookStorage = multer.diskStorage({
 const uploadUserImage = multer({ storage: exports.userStorage });
 const uploadBookImage = multer({ storage: exports.bookStorage });
 app.post('/users/register', uploadUserImage.single('file'), (req, res) => new user_controller_1.UserController().register(req, res, fileName));
+app.post('/users/addUser', uploadUserImage.single('file'), (req, res) => new user_controller_1.UserController().addUser(req, res, fileName));
 app.post('/books/addBook', uploadBookImage.single('file'), (req, res) => new book_controller_1.BookController().addBook(req, res, fileName));
 app.post('/books/updateBookAndImage', uploadBookImage.single('file'), (req, res) => new book_controller_1.BookController().updateBookAndImage(req, res, fileName));
+app.post('/users/updateUserAndImage', uploadUserImage.single('file'), (req, res) => new user_controller_1.UserController().updateUserAndImage(req, res, fileName));
 const router = express_1.default.Router();
 router.use('/books', book_routes_1.default);
 router.use('/users', user_routes_1.default);

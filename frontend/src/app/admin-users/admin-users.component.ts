@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { User } from '../models/user';
 import { UserImage } from '../models/userImage';
 import { UserService } from '../user.service';
@@ -10,7 +11,7 @@ import { UserService } from '../user.service';
 })
 export class AdminUsersComponent implements OnInit {
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private router: Router) { }
 
   ngOnInit(): void {
     this.getAllUsers();
@@ -42,8 +43,8 @@ export class AdminUsersComponent implements OnInit {
     }
   }
 
-  addUser() {
-
+  addUser() { 
+    this.router.navigate(['addUser']);
   }
   
 }
