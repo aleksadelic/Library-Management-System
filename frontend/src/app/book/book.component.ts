@@ -17,12 +17,12 @@ export class BookComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem('logged in'));
-    this.title = this.route.snapshot.paramMap.get('myBook');
+    this.id = JSON.parse(this.route.snapshot.paramMap.get('myBookId'));
     this.getBook();
     this.checkUserRentals();
   }
 
-  title: string;
+  id: number;
   book: Book;
   url: any;
   noComments: boolean;
@@ -44,7 +44,7 @@ export class BookComponent implements OnInit {
   }
 
   checkUserRentals() {
-    this.userService.checkUserRentals(this.user.username, this.title).subscribe((resp: string[]) => {
+    this.userService.checkUserRentals(this.user.username, this.id).subscribe((resp: string[]) => {
       console.log(resp);
       if (resp.length == 0) {
         this.rentingAvailable = true;
@@ -56,7 +56,7 @@ export class BookComponent implements OnInit {
   }
 
   getBook() {
-    this.bookService.getBook(this.title).subscribe((book: Book) => {
+    this.bookService.getBook(this.id).subscribe((book: Book) => {
       this.book = book;
       this.isAvailable = book.available > 0;
       this.noComments = book.comments == null || book.comments.length == 0;
@@ -66,7 +66,7 @@ export class BookComponent implements OnInit {
   }
 
   getBookImage() {
-    this.bookService.getBookImage(this.book.title).subscribe((image: File) => {
+    this.bookService.getBookImage(this.book.id).subscribe((image: File) => {
       console.log(image);
       var reader = new FileReader();
       reader.addEventListener("load", () => {
@@ -112,7 +112,7 @@ export class BookComponent implements OnInit {
 
   updateBook() {
     if (this.book.image == this.newImage) {
-      this.bookService.updateBookAndNotImage(this.title, this.newTitle, this.newAuthors, this.newGenre, this.newPublisher, this.newPublishYear, 
+      this.bookService.updateBookAndNotImage(this.book.title, this.newTitle, this.newAuthors, this.newGenre, this.newPublisher, this.newPublishYear, 
         this.newLanguage, this.newAvailable).subscribe(resp => {
           if (resp['message'] != 'ok') {
             this.updateMessage = 'Neuspesno azuriranje knjige!';
@@ -121,7 +121,7 @@ export class BookComponent implements OnInit {
           }
       })
     } else {
-      this.bookService.updateBookAndImage(this.title, this.newTitle, this.newAuthors, this.newGenre, this.newPublisher, this.newPublishYear, 
+      this.bookService.updateBookAndImage(this.book.title, this.newTitle, this.newAuthors, this.newGenre, this.newPublisher, this.newPublishYear, 
         this.newLanguage, this.newAvailable, this.newImage).subscribe(resp => {
           if (resp['message'] != 'ok') {
             this.updateMessage = 'Neuspesno azuriranje knjige!';

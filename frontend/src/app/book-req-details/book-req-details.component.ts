@@ -19,7 +19,7 @@ export class BookReqDetailsComponent implements OnInit {
   message: string;
 
   acceptRequest() {
-    this.bookService.acceptBookRequest(this.requestImage.request.title).subscribe(resp => {
+    this.bookService.acceptBookRequest(this.requestImage.request.id).subscribe(resp => {
       if (resp['message'] != 'ok') {
         console.log('Greska!');
       } else {
@@ -29,7 +29,7 @@ export class BookReqDetailsComponent implements OnInit {
   }
 
   rejectRequest() {
-    this.bookService.rejectBookRequest(this.requestImage.request.title).subscribe(resp => {
+    this.bookService.rejectBookRequest(this.requestImage.request.id).subscribe(resp => {
       if (resp['message'] != 'ok') {
         console.log('Greska!');
       } else {

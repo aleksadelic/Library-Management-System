@@ -1,4 +1,5 @@
 export class BookRequest {
+    id: number;
     title: string;
     authors: string[];
     genre: string[];

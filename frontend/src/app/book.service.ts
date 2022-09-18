@@ -18,9 +18,9 @@ export class BookService {
     return this.http.get(`${this.uri}/books/getBookOfTheDay`);
   }
 
-  getBookImage(title) {
+  getBookImage(id: number) {
     const data = {
-      title: title
+      id: id
     }
     return this.http.post(`${this.uri}/books/getBookImage`, data, { responseType: 'blob' });
   }
@@ -40,9 +40,9 @@ export class BookService {
     return this.http.post(`${this.uri}/users/rentBook`, data);
   }
 
-  getBook(title) {
+  getBook(id: number) {
     const data = {
-      title: title
+      id: id
     }
     return this.http.post(`${this.uri}/books/getBook`, data);
   }
@@ -62,9 +62,9 @@ export class BookService {
     return this.http.post(`${this.uri}/books/addBook`, formData);
   }
 
-  updateBookAndImage(oldTitle, title, authors, genre, publisher, publishYear, language, available, image) {
+  updateBookAndImage(id, title, authors, genre, publisher, publishYear, language, available, image) {
     const formData = new FormData();
-    formData.append('data', oldTitle);
+    formData.append('data', id);
     formData.append('data', title);
     formData.append('data', authors);
     formData.append('data', genre);
@@ -77,9 +77,9 @@ export class BookService {
     return this.http.post(`${this.uri}/books/updateBookAndImage`, formData);
   }
 
-  updateBookAndNotImage(oldTitle, title, authors, genre, publisher, publishYear, language, available) {
+  updateBookAndNotImage(id, title, authors, genre, publisher, publishYear, language, available) {
     const data = {
-      oldTitle: oldTitle,
+      id: id,
       title: title,
       authors: authors,
       genre: genre,
@@ -97,9 +97,9 @@ export class BookService {
     return this.http.get(`${this.uri}/books/getAllBooks`);
   }
 
-  deleteBook(title) {
+  deleteBook(id: number) {
     const data = {
-      title: title
+      id: id
     }
     return this.http.post(`${this.uri}/books/deleteBook`, data);
   }
@@ -122,23 +122,23 @@ export class BookService {
     return this.http.get(`${this.uri}/books/getAllBookRequests`);
   }
 
-  getRequestImage(title) {
+  getRequestImage(id: number) {
     const data = {
-      title: title
+      id: id
     }
     return this.http.post(`${this.uri}/books/getRequestImage`, data, { responseType: 'blob' });
   }
 
-  acceptBookRequest(title) {
+  acceptBookRequest(id: number) {
     const data = {
-      title: title
+      id: id
     }
     return this.http.post(`${this.uri}/books/acceptBookRequest`, data);
   }
 
-  rejectBookRequest(title) {
+  rejectBookRequest(id: number) {
     const data = {
-      title: title
+      id: id
     }
     return this.http.post(`${this.uri}/books/rejectBookRequest`, data);
   }

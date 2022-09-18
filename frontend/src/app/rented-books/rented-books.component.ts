@@ -42,7 +42,7 @@ export class RentedBooksComponent implements OnInit {
       let rental = this.rentals[i];
       console.log(rental);
       let book = rental.book;
-      this.bookService.getBookImage(book.title).subscribe((image: Blob) => {
+      this.bookService.getBookImage(book.id).subscribe((image: Blob) => {
         console.log(image);
         var reader = new FileReader();
         reader.addEventListener("load", () => {

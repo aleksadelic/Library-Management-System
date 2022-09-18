@@ -45,7 +45,7 @@ export class UserComponent implements OnInit {
 
   bookImageUrl;
   getBookImage() {
-    this.bookService.getBookImage(this.bookOfTheDay.title).subscribe((image: File) => {
+    this.bookService.getBookImage(this.bookOfTheDay.id).subscribe((image: File) => {
       console.log(image);
       var reader = new FileReader();
       reader.addEventListener("load", () => {

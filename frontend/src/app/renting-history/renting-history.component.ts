@@ -43,7 +43,7 @@ export class RentingHistoryComponent implements OnInit {
     for (var i = 0; i < this.rentalRecords.length; i++) {
       let rentalRecord = this.rentalRecords[i];
       console.log(rentalRecord);
-      this.bookService.getBookImage(rentalRecord.title).subscribe((image: Blob) => {
+      this.bookService.getBookImage(rentalRecord.id).subscribe((image: Blob) => {
         console.log(image);
         var reader = new FileReader();
         reader.addEventListener("load", () => {
@@ -57,8 +57,8 @@ export class RentingHistoryComponent implements OnInit {
   }
 
   seeBook(rental) {
-    var title = rental.rentalRecord.title;
-    this.router.navigate(['/book', {myBook: title}]);
+    var id = rental.rentalRecord.id;
+    this.router.navigate(['/book', {myBookId: JSON.stringify(id)}]);
   }
 
   titleSwitch: number = 0;

@@ -20,14 +20,14 @@ export class BookdetailsComponent implements OnInit {
   @Input() myBook: BookImage;
 
   seeBook() {
-    this.router.navigate(['/book', {myBook: this.myBook.book.title}]);
+    this.router.navigate(['/book', {myBookId: JSON.stringify(this.myBook.book.id)}]);
   }
 
   message: string;
   user: User;
 
   deleteBook() {
-    this.bookService.deleteBook(this.myBook.book.title).subscribe(resp => {
+    this.bookService.deleteBook(this.myBook.book.id).subscribe(resp => {
       if (resp['message'] == 'ok') {
         this.message = 'Knjiga izbrisana';
         location.reload();

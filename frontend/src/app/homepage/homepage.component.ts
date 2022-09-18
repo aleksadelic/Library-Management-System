@@ -29,7 +29,7 @@ export class HomepageComponent implements OnInit {
   getBooksImages() {
     for (var i = 0; i < this.top3Books.length; i++) {
       let book = this.top3Books[i];
-      this.bookService.getBookImage(this.top3Books[i].title).subscribe((image: File) => {
+      this.bookService.getBookImage(this.top3Books[i].id).subscribe((image: File) => {
         console.log(image);
         var reader = new FileReader();
         reader.addEventListener("load", () => {

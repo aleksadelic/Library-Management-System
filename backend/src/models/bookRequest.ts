@@ -3,6 +3,9 @@ import mongoose, { mongo } from "mongoose";
 const Schema = mongoose.Schema;
 
 let BookRequest = new Schema({
+    id: {
+        type: Number
+    },
     title: {
         type: String
     }, 

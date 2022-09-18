@@ -29,7 +29,7 @@ export class BookRequestsComponent implements OnInit {
   getRequestImages() {
     for (var i = 0; i < this.requests.length; i++) {
       let request = this.requests[i];
-      this.bookService.getRequestImage(request.title).subscribe((image: File) => {
+      this.bookService.getRequestImage(request.id).subscribe((image: File) => {
         var reader = new FileReader();
         reader.addEventListener("load", () => {
           var res = reader.result;

@@ -2,10 +2,12 @@ import e, * as express from 'express';
 import { Db } from 'mongodb';
 import BookRequestModel from '../models/bookRequest';
 import BookModel from '../models/book';
+import BookCounterModel from '../models/bookCounter';
 
 const fs = require('fs');
 
 export class BookController {
+
     getTop3Books = (req: express.Request, res: express.Response) => {
         BookModel.find({}, (err, books) => {
             if (err) {
@@ -31,13 +33,13 @@ export class BookController {
     }
 
     getBookImage = (req: express.Request, res: express.Response) => {
-        let title = req.body.title;
-        BookModel.findOne({'title': title}, (err, book) => {
+        let id = req.body.id;
+        BookModel.findOne({'id': id}, (err, book) => {
             if (err) {
                 console.log(err);
             } else {
                 var filepath;
-                if (book.image == "") {
+                if (book.image == null || book.image == "") {
                     filepath = 'D:\\Aleksa\\3. godina\\2. semestar\\PIA\\Projekat\\backend\\book_images\\default.jpg';
                 } else {
                     filepath = 'D:\\Aleksa\\3. godina\\2. semestar\\PIA\\Projekat\\backend\\book_images\\' + book.image;
@@ -61,8 +63,8 @@ export class BookController {
     }
 
     getBook = (req: express.Request, res: express.Response) => {
-        let title = req.body.title;
-        BookModel.findOne({'title': title}, (err, book) => {
+        let id = req.body.id;
+        BookModel.findOne({'id': id}, (err, book) => {
             if (err) {
                 console.log(err);
             } else {
@@ -72,29 +74,37 @@ export class BookController {
     }
 
     addBook = (req: express.Request, res: express.Response, filename: String) => {
-        let book = new BookModel({
-            title: req.body.data[0],
-            authors: req.body.data[1],
-            genre: req.body.data[2],
-            publisher: req.body.data[3],
-            publishYear: req.body.data[4],
-            language: req.body.data[5],
-            available: req.body.data[6],
-            image: filename,
-            rentals: 0
-        })
-
-        book.save((err, resp) => {
+        BookCounterModel.findOneAndUpdate({'name': 'nextBookId'}, {$inc: {'nextId': 1}}, (err, resp) => {
             if (err) {
                 console.log(err);
             } else {
-                res.json({'message':'ok'});
+                var nextId = resp.nextId;
+                let book = new BookModel({
+                    id: nextId,
+                    title: req.body.data[0],
+                    authors: req.body.data[1],
+                    genre: req.body.data[2],
+                    publisher: req.body.data[3],
+                    publishYear: req.body.data[4],
+                    language: req.body.data[5],
+                    available: req.body.data[6],
+                    image: filename,
+                    rentals: 0
+                })
+        
+                book.save((err, resp) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        res.json({'message':'ok'});
+                    }
+                })
             }
         })
     }
 
     updateBookAndImage = (req: express.Request, res: express.Response, filename: String) => {
-        let oldTitle = req.body.data[0];
+        let id = req.body.data[0];
         let title = req.body.data[1];
         let authors = req.body.data[2];
         let genre = req.body.data[3];
@@ -104,7 +114,7 @@ export class BookController {
         let available = req.body.data[7];
         let image = filename;
 
-        BookModel.updateOne({'title': oldTitle}, {$set: {'title': title, 'authors': authors, 'genre': genre, 
+        BookModel.updateOne({'id': id}, {$set: {'title': title, 'authors': authors, 'genre': genre, 
             'publisher': publisher, 'publishYear': publishYear, 'language': language, 'available': available, 
             'image': image}}, (err, resp) => {
             if (err) {
@@ -116,7 +126,7 @@ export class BookController {
     }
 
     updateBookAndNotImage = (req: express.Request, res: express.Response) => {
-        let oldTitle = req.body.oldTitle;
+        let id = req.body.id;
         let title = req.body.title;
         let authors = req.body.authors;
         let genre = req.body.genre;
@@ -125,7 +135,7 @@ export class BookController {
         let language = req.body.language;
         let available = req.body.available;
 
-        BookModel.updateOne({'title': oldTitle}, {$set: {'title': title, 'authors': authors, 'genre': genre, 
+        BookModel.updateOne({'id': id}, {$set: {'title': title, 'authors': authors, 'genre': genre, 
             'publisher': publisher, 'publishYear': publishYear, 'language': language, 'available': available}}, (err, resp) => {
             if (err) {
                 console.log(err);
@@ -146,13 +156,13 @@ export class BookController {
     }
 
     deleteBook = (req: express.Request, res: express.Response) => {
-        let title = req.body.title;
-        BookModel.findOne({'title': title}, (err, book) => {
+        let id = req.body.id;
+        BookModel.findOne({'id': id}, (err, book) => {
             if (err) {
                 console.log(err);
             } else {
                 if (book.rentals == 0) {
-                    BookModel.deleteOne({'title': title}, (err, resp) => {
+                    BookModel.deleteOne({'id': id}, (err, resp) => {
                       if (err) {
                         console.log(err);
                       } else {
@@ -167,51 +177,67 @@ export class BookController {
     }
 
     addBookRequest = (req: express.Request, res: express.Response, filename: String) => {
-        let bookRequest = new BookRequestModel({
-            title: req.body.data[0],
-            authors: req.body.data[1],
-            genre: req.body.data[2],
-            publisher: req.body.data[3],
-            publishYear: req.body.data[4],
-            language: req.body.data[5],
-            image: filename,
-        })
-
-        bookRequest.save((err, resp) => {
+        BookCounterModel.findOneAndUpdate({'name': 'nextReqId'}, {$inc: {'nextId': 1}}, (err, resp) => {
             if (err) {
                 console.log(err);
             } else {
-                res.json({'message':'ok'});
+                var nextId = resp.nextId;
+                let bookRequest = new BookRequestModel({
+                    id: nextId,
+                    title: req.body.data[0],
+                    authors: req.body.data[1],
+                    genre: req.body.data[2],
+                    publisher: req.body.data[3],
+                    publishYear: req.body.data[4],
+                    language: req.body.data[5],
+                    image: filename,
+                })
+        
+                bookRequest.save((err, resp) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        res.json({'message':'ok'});
+                    }
+                })
             }
         })
     }
 
     acceptBookRequest = (req: express.Request, res: express.Response) => {
-        let title = req.body.title;
+        let id = req.body.id;
 
-        BookRequestModel.findOne({'title': title}, (err, request) => {
+        BookRequestModel.findOne({'id': id}, (err, request) => {
             if (err) {
                 console.log(err);
             } else {
-                let book = new BookModel({
-                    title: request.title,
-                    authors: request.authors,
-                    genre: request.genre,
-                    publisher: request.publisher,
-                    publishYear: request.publishYear,
-                    language: request.language,
-                    image: request.image
-                });
-
-                book.save((err, resp) => {
+                BookCounterModel.findOneAndUpdate({'name': 'nextBookId'}, {$inc: {'nextId': 1}}, (err, resp) => {
                     if (err) {
                         console.log(err);
                     } else {
-                        BookRequestModel.deleteOne({'title': title}, (err, resp) => {
+                        var nextId = resp.nextId;
+                        let book = new BookModel({
+                            id: nextId,
+                            title: request.title,
+                            authors: request.authors,
+                            genre: request.genre,
+                            publisher: request.publisher,
+                            publishYear: request.publishYear,
+                            language: request.language,
+                            image: request.image
+                        });
+        
+                        book.save((err, resp) => {
                             if (err) {
                                 console.log(err);
                             } else {
-                                res.json({'message':'ok'});
+                                BookRequestModel.deleteOne({'id': id}, (err, resp) => {
+                                    if (err) {
+                                        console.log(err);
+                                    } else {
+                                        res.json({'message':'ok'});
+                                    }
+                                })
                             }
                         })
                     }
@@ -221,8 +247,8 @@ export class BookController {
     }
 
     rejectBookRequest = (req: express.Request, res: express.Response) => {
-        let title = req.body.title;
-        BookRequestModel.deleteOne({'title': title}, (err, resp) => {
+        let id = req.body.id;
+        BookRequestModel.deleteOne({'id': id}, (err, resp) => {
             if (err) {
                 console.log(err);
             } else {
@@ -242,8 +268,8 @@ export class BookController {
     }
 
     getRequestImage = (req: express.Request, res: express.Response) => {
-        let title = req.body.title;
-        BookRequestModel.findOne({'title': title}, (err, request) => {
+        let id = req.body.id;
+        BookRequestModel.findOne({'id': id}, (err, request) => {
             if (err) {
                 console.log(err);
             } else {

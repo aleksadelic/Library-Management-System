@@ -31,7 +31,7 @@ export class AdminBooksComponent implements OnInit {
     for (var i = 0; i < this.books.length; i++) {
       let book = this.books[i];
       console.log(book);
-      this.bookService.getBookImage(this.books[i].title).subscribe((image: Blob) => {
+      this.bookService.getBookImage(this.books[i].id).subscribe((image: Blob) => {
         console.log(image);
         var reader = new FileReader();
         reader.addEventListener("load", () => {

@@ -18,7 +18,7 @@ export class RentedBookCardComponent implements OnInit {
   @Input() rentalImage: RentalImage;
 
   seeBook() {
-    this.router.navigate(['/book', {myBook: this.rentalImage.rental.book.title}]);
+    this.router.navigate(['/book', {myBookId: JSON.stringify(this.rentalImage.rental.book.id)}]);
   }
 
 }

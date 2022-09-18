@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.BookController = void 0;
 const bookRequest_1 = __importDefault(require("../models/bookRequest"));
 const book_1 = __importDefault(require("../models/book"));
+const bookCounter_1 = __importDefault(require("../models/bookCounter"));
 const fs = require('fs');
 class BookController {
     constructor() {
@@ -33,14 +34,14 @@ class BookController {
             });
         };
         this.getBookImage = (req, res) => {
-            let title = req.body.title;
-            book_1.default.findOne({ 'title': title }, (err, book) => {
+            let id = req.body.id;
+            book_1.default.findOne({ 'id': id }, (err, book) => {
                 if (err) {
                     console.log(err);
                 }
                 else {
                     var filepath;
-                    if (book.image == "") {
+                    if (book.image == null || book.image == "") {
                         filepath = 'D:\\Aleksa\\3. godina\\2. semestar\\PIA\\Projekat\\backend\\book_images\\default.jpg';
                     }
                     else {
@@ -64,8 +65,8 @@ class BookController {
             });
         };
         this.getBook = (req, res) => {
-            let title = req.body.title;
-            book_1.default.findOne({ 'title': title }, (err, book) => {
+            let id = req.body.id;
+            book_1.default.findOne({ 'id': id }, (err, book) => {
                 if (err) {
                     console.log(err);
                 }
@@ -75,28 +76,37 @@ class BookController {
             });
         };
         this.addBook = (req, res, filename) => {
-            let book = new book_1.default({
-                title: req.body.data[0],
-                authors: req.body.data[1],
-                genre: req.body.data[2],
-                publisher: req.body.data[3],
-                publishYear: req.body.data[4],
-                language: req.body.data[5],
-                available: req.body.data[6],
-                image: filename,
-                rentals: 0
-            });
-            book.save((err, resp) => {
+            bookCounter_1.default.findOneAndUpdate({ 'name': 'nextBookId' }, { $inc: { 'nextId': 1 } }, (err, resp) => {
                 if (err) {
                     console.log(err);
                 }
                 else {
-                    res.json({ 'message': 'ok' });
+                    var nextId = resp.nextId;
+                    let book = new book_1.default({
+                        id: nextId,
+                        title: req.body.data[0],
+                        authors: req.body.data[1],
+                        genre: req.body.data[2],
+                        publisher: req.body.data[3],
+                        publishYear: req.body.data[4],
+                        language: req.body.data[5],
+                        available: req.body.data[6],
+                        image: filename,
+                        rentals: 0
+                    });
+                    book.save((err, resp) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        else {
+                            res.json({ 'message': 'ok' });
+                        }
+                    });
                 }
             });
         };
         this.updateBookAndImage = (req, res, filename) => {
-            let oldTitle = req.body.data[0];
+            let id = req.body.data[0];
             let title = req.body.data[1];
             let authors = req.body.data[2];
             let genre = req.body.data[3];
@@ -105,7 +115,7 @@ class BookController {
             let language = req.body.data[6];
             let available = req.body.data[7];
             let image = filename;
-            book_1.default.updateOne({ 'title': oldTitle }, { $set: { 'title': title, 'authors': authors, 'genre': genre,
+            book_1.default.updateOne({ 'id': id }, { $set: { 'title': title, 'authors': authors, 'genre': genre,
                     'publisher': publisher, 'publishYear': publishYear, 'language': language, 'available': available,
                     'image': image } }, (err, resp) => {
                 if (err) {
@@ -117,7 +127,7 @@ class BookController {
             });
         };
         this.updateBookAndNotImage = (req, res) => {
-            let oldTitle = req.body.oldTitle;
+            let id = req.body.id;
             let title = req.body.title;
             let authors = req.body.authors;
             let genre = req.body.genre;
@@ -125,7 +135,7 @@ class BookController {
             let publishYear = req.body.publishYear;
             let language = req.body.language;
             let available = req.body.available;
-            book_1.default.updateOne({ 'title': oldTitle }, { $set: { 'title': title, 'authors': authors, 'genre': genre,
+            book_1.default.updateOne({ 'id': id }, { $set: { 'title': title, 'authors': authors, 'genre': genre,
                     'publisher': publisher, 'publishYear': publishYear, 'language': language, 'available': available } }, (err, resp) => {
                 if (err) {
                     console.log(err);
@@ -146,14 +156,14 @@ class BookController {
             });
         };
         this.deleteBook = (req, res) => {
-            let title = req.body.title;
-            book_1.default.findOne({ 'title': title }, (err, book) => {
+            let id = req.body.id;
+            book_1.default.findOne({ 'id': id }, (err, book) => {
                 if (err) {
                     console.log(err);
                 }
                 else {
                     if (book.rentals == 0) {
-                        book_1.default.deleteOne({ 'title': title }, (err, resp) => {
+                        book_1.default.deleteOne({ 'id': id }, (err, resp) => {
                             if (err) {
                                 console.log(err);
                             }
@@ -169,51 +179,69 @@ class BookController {
             });
         };
         this.addBookRequest = (req, res, filename) => {
-            let bookRequest = new bookRequest_1.default({
-                title: req.body.data[0],
-                authors: req.body.data[1],
-                genre: req.body.data[2],
-                publisher: req.body.data[3],
-                publishYear: req.body.data[4],
-                language: req.body.data[5],
-                image: filename,
-            });
-            bookRequest.save((err, resp) => {
+            bookCounter_1.default.findOneAndUpdate({ 'name': 'nextReqId' }, { $inc: { 'nextId': 1 } }, (err, resp) => {
                 if (err) {
                     console.log(err);
                 }
                 else {
-                    res.json({ 'message': 'ok' });
-                }
-            });
-        };
-        this.acceptBookRequest = (req, res) => {
-            let title = req.body.title;
-            bookRequest_1.default.findOne({ 'title': title }, (err, request) => {
-                if (err) {
-                    console.log(err);
-                }
-                else {
-                    let book = new book_1.default({
-                        title: request.title,
-                        authors: request.authors,
-                        genre: request.genre,
-                        publisher: request.publisher,
-                        publishYear: request.publishYear,
-                        language: request.language,
-                        image: request.image
+                    var nextId = resp.nextId;
+                    let bookRequest = new bookRequest_1.default({
+                        id: nextId,
+                        title: req.body.data[0],
+                        authors: req.body.data[1],
+                        genre: req.body.data[2],
+                        publisher: req.body.data[3],
+                        publishYear: req.body.data[4],
+                        language: req.body.data[5],
+                        image: filename,
                     });
-                    book.save((err, resp) => {
+                    bookRequest.save((err, resp) => {
                         if (err) {
                             console.log(err);
                         }
                         else {
-                            bookRequest_1.default.deleteOne({ 'title': title }, (err, resp) => {
+                            res.json({ 'message': 'ok' });
+                        }
+                    });
+                }
+            });
+        };
+        this.acceptBookRequest = (req, res) => {
+            let id = req.body.id;
+            bookRequest_1.default.findOne({ 'id': id }, (err, request) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    bookCounter_1.default.findOneAndUpdate({ 'name': 'nextBookId' }, { $inc: { 'nextId': 1 } }, (err, resp) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        else {
+                            var nextId = resp.nextId;
+                            let book = new book_1.default({
+                                id: nextId,
+                                title: request.title,
+                                authors: request.authors,
+                                genre: request.genre,
+                                publisher: request.publisher,
+                                publishYear: request.publishYear,
+                                language: request.language,
+                                image: request.image
+                            });
+                            book.save((err, resp) => {
                                 if (err) {
                                     console.log(err);
                                 }
                                 else {
-                                    res.json({ 'message': 'ok' });
+                                    bookRequest_1.default.deleteOne({ 'id': id }, (err, resp) => {
+                                        if (err) {
+                                            console.log(err);
+                                        }
+                                        else {
+                                            res.json({ 'message': 'ok' });
+                                        }
+                                    });
                                 }
                             });
                         }
@@ -222,8 +250,8 @@ class BookController {
             });
         };
         this.rejectBookRequest = (req, res) => {
-            let title = req.body.title;
-            bookRequest_1.default.deleteOne({ 'title': title }, (err, resp) => {
+            let id = req.body.id;
+            bookRequest_1.default.deleteOne({ 'id': id }, (err, resp) => {
                 if (err) {
                     console.log(err);
                 }
@@ -243,8 +271,8 @@ class BookController {
             });
         };
         this.getRequestImage = (req, res) => {
-            let title = req.body.title;
-            bookRequest_1.default.findOne({ 'title': title }, (err, request) => {
+            let id = req.body.id;
+            bookRequest_1.default.findOne({ 'id': id }, (err, request) => {
                 if (err) {
                     console.log(err);
                 }
