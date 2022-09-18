@@ -5,6 +5,7 @@ import BookModel from '../models/book';
 import BookCounterModel from '../models/bookCounter';
 import UserModel from '../models/user';
 import RentingHistoryModel from '../models/rentingHistory';
+import NotificationModel from '../models/notification';
 import book from '../models/book';
 
 const fs = require('fs');
@@ -187,12 +188,13 @@ export class BookController {
                 var nextId = resp.nextId;
                 let bookRequest = new BookRequestModel({
                     id: nextId,
-                    title: req.body.data[0],
-                    authors: req.body.data[1],
-                    genre: req.body.data[2],
-                    publisher: req.body.data[3],
-                    publishYear: req.body.data[4],
-                    language: req.body.data[5],
+                    username: req.body.data[0],
+                    title: req.body.data[1],
+                    authors: req.body.data[2],
+                    genre: req.body.data[3],
+                    publisher: req.body.data[4],
+                    publishYear: req.body.data[5],
+                    language: req.body.data[6],
                     image: filename,
                 })
         
@@ -238,7 +240,27 @@ export class BookController {
                                     if (err) {
                                         console.log(err);
                                     } else {
-                                        res.json({'message':'ok'});
+                                        NotificationModel.findOne({'username': request.username}, (err, notif) => {
+                                            if (err) console.log(err);
+                                            else {
+                                                let newNotif = 'Knjiga koju je korisnik predlozio je dodata - ' + request.title;
+                                                if (notif) {
+                                                    NotificationModel.updateOne({'username': request.username}, {$push: {'notifications': newNotif}}, (err, resp) => {
+                                                        if (err) console.log(err);
+                                                        else res.json({'message':'ok'});
+                                                    })
+                                                } else {
+                                                    let newNotifModel = new NotificationModel({
+                                                        username: request.username,
+                                                        notifications: [newNotif]
+                                                    });
+                                                    newNotifModel.save((err, resp) => {
+                                                        if (err) console.log(err);
+                                                        else res.json({'message':'ok'});
+                                                    })
+                                                }
+                                            }
+                                        })
                                     }
                                 })
                             }
@@ -260,7 +282,7 @@ export class BookController {
         })
     }
 
-    gettAllBookRequests = (req: express.Request, res: express.Response) => {
+    getAllBookRequests = (req: express.Request, res: express.Response) => {
         BookRequestModel.find({}, (err, requests) => {
             if (err) {
                 console.log(err);
@@ -277,7 +299,7 @@ export class BookController {
                 console.log(err);
             } else {
                 if (request.image == null || request.image == "")
-                    request.image = 'default.png';
+                    request.image = 'default.jpg';
                 var filepath = 'D:\\Aleksa\\3. godina\\2. semestar\\PIA\\Projekat\\backend\\book_images\\' + request.image;
                 res.sendFile(filepath);
             }

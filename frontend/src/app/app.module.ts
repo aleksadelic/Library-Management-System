@@ -32,6 +32,9 @@ import { RequestDetailsComponent } from './request-details/request-details.compo
 import { BookRequestComponent } from './book-request/book-request.component';
 import { BookRequestsComponent } from './book-requests/book-requests.component';
 import { BookReqDetailsComponent } from './book-req-details/book-req-details.component';
+import { UpdateProfileComponent } from './update-profile/update-profile.component';
+import { ReadLastYearChartComponent } from './read-last-year-chart/read-last-year-chart.component';
+import { ReadByGenreChartComponent } from './read-by-genre-chart/read-by-genre-chart.component';
 
 @NgModule({
   declarations: [
@@ -62,14 +65,17 @@ import { BookReqDetailsComponent } from './book-req-details/book-req-details.com
     RequestDetailsComponent,
     BookRequestComponent,
     BookRequestsComponent,
-    BookReqDetailsComponent
+    BookReqDetailsComponent,
+    UpdateProfileComponent,
+    ReadLastYearChartComponent,
+    ReadByGenreChartComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

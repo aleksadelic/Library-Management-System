@@ -7,6 +7,7 @@ exports.UserController = void 0;
 const user_1 = __importDefault(require("../models/user"));
 const rentingHistory_1 = __importDefault(require("../models/rentingHistory"));
 const registrationRequest_1 = __importDefault(require("../models/registrationRequest"));
+const notification_1 = __importDefault(require("../models/notification"));
 class UserController {
     constructor() {
         this.register = (req, res, filename) => {
@@ -448,7 +449,34 @@ class UserController {
                     if (user.blocked) {
                         messages.push('Korisnik je blokiran!!!');
                     }
-                    res.json(messages);
+                    notification_1.default.findOne({ 'username': username }, (err, notif) => {
+                        if (err)
+                            console.log(err);
+                        else {
+                            if (notif && notif.notifications) {
+                                messages = messages.concat(notif.notifications);
+                            }
+                            res.json(messages);
+                        }
+                    });
+                }
+            });
+        };
+        this.getNumberOfReadBooksInLastYear = (req, res) => {
+            let username = req.body.username;
+            rentingHistory_1.default.findOne({ 'username': username }, (err, record) => {
+                if (err)
+                    console.log(err);
+                else {
+                }
+            });
+        };
+        this.getNumberOfReadBooksByGenre = (req, res) => {
+            let username = req.body.username;
+            rentingHistory_1.default.findOne({ 'username': username }, (err, record) => {
+                if (err)
+                    console.log(err);
+                else {
                 }
             });
         };

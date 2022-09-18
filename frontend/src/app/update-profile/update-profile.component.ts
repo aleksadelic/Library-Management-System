@@ -1,0 +1,76 @@
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { User } from '../models/user';
+import { UserService } from '../user.service';
+
+@Component({
+  selector: 'app-update-profile',
+  templateUrl: './update-profile.component.html',
+  styleUrls: ['./update-profile.component.css']
+})
+export class UpdateProfileComponent implements OnInit {
+
+  constructor(private userService: UserService, private route: ActivatedRoute) { }
+
+  ngOnInit(): void {
+    this.user = JSON.parse(this.route.snapshot.paramMap.get('userToUpdate'));
+    this.username = this.user.username;
+    this.firstname = this.user.firstname;
+    this.lastname = this.user.lastname;
+    this.address = this.user.address;
+    this.tel = this.user.tel;
+    this.email = this.user.email;
+    this.type = this.user.type;
+    this.image = this.user.image;
+  }
+
+  user: User;
+
+  username: string;
+  firstname: string;
+  lastname: string;
+  address: string;
+  tel: string;
+  email: string;
+  type: number;
+  image: File;
+
+  message: string;
+
+  updateUser() {
+    if (this.image != null && this.image != this.user.image) {
+      this.userService.updateUserAndImage(this.user.username, this.username, this.user.password, this.firstname, this.lastname, this.address, this.tel, this.email, this.image).subscribe(respObj => {
+        if (respObj['message'] == 'ok') {
+          this.message = 'Korisnik uspesno azuriran!';
+          localStorage.removeItem('logged in');
+          let newUser = new User(this.username, this.user.password, this.firstname, this.lastname, this.address, 
+            this.tel, this.email, this.user.type, this.image, this.user.rentals, this.user.blocked, this.user.deadline);
+          localStorage.setItem('logged in', JSON.stringify(newUser));
+        } else {
+          this.message = respObj['message'];
+        }
+        console.log(respObj);
+     });
+    } else {
+      this.userService.updateUserAndNotImage(this.user.username, this.username, this.user.password, this.firstname, this.lastname, this.address, this.tel, this.email).subscribe(respObj => {
+        if (respObj['message'] == 'ok') {
+          this.message = 'Korisnik uspesno azuriran!';
+          localStorage.removeItem('logged in');
+          let newUser = new User(this.username, this.user.password, this.firstname, this.lastname, this.address, 
+            this.tel, this.email, this.user.type, this.image, this.user.rentals, this.user.blocked, this.user.deadline);
+          localStorage.setItem('logged in', JSON.stringify(newUser));
+        } else {
+          this.message = respObj['message'];
+        }
+        console.log(respObj);
+     });
+    }
+    
+  }
+
+  uploadImage(event) {
+    const file = event.target.files[0];
+    this.image = file;
+  }
+
+}

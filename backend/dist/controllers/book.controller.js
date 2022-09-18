@@ -9,6 +9,7 @@ const book_1 = __importDefault(require("../models/book"));
 const bookCounter_1 = __importDefault(require("../models/bookCounter"));
 const user_1 = __importDefault(require("../models/user"));
 const rentingHistory_1 = __importDefault(require("../models/rentingHistory"));
+const notification_1 = __importDefault(require("../models/notification"));
 const fs = require('fs');
 class BookController {
     constructor() {
@@ -189,12 +190,13 @@ class BookController {
                     var nextId = resp.nextId;
                     let bookRequest = new bookRequest_1.default({
                         id: nextId,
-                        title: req.body.data[0],
-                        authors: req.body.data[1],
-                        genre: req.body.data[2],
-                        publisher: req.body.data[3],
-                        publishYear: req.body.data[4],
-                        language: req.body.data[5],
+                        username: req.body.data[0],
+                        title: req.body.data[1],
+                        authors: req.body.data[2],
+                        genre: req.body.data[3],
+                        publisher: req.body.data[4],
+                        publishYear: req.body.data[5],
+                        language: req.body.data[6],
                         image: filename,
                     });
                     bookRequest.save((err, resp) => {
@@ -241,7 +243,33 @@ class BookController {
                                             console.log(err);
                                         }
                                         else {
-                                            res.json({ 'message': 'ok' });
+                                            notification_1.default.findOne({ 'username': request.username }, (err, notif) => {
+                                                if (err)
+                                                    console.log(err);
+                                                else {
+                                                    let newNotif = 'Knjiga koju je korisnik predlozio je dodata - ' + request.title;
+                                                    if (notif) {
+                                                        notification_1.default.updateOne({ 'username': request.username }, { $push: { 'notifications': newNotif } }, (err, resp) => {
+                                                            if (err)
+                                                                console.log(err);
+                                                            else
+                                                                res.json({ 'message': 'ok' });
+                                                        });
+                                                    }
+                                                    else {
+                                                        let newNotifModel = new notification_1.default({
+                                                            username: request.username,
+                                                            notifications: [newNotif]
+                                                        });
+                                                        newNotifModel.save((err, resp) => {
+                                                            if (err)
+                                                                console.log(err);
+                                                            else
+                                                                res.json({ 'message': 'ok' });
+                                                        });
+                                                    }
+                                                }
+                                            });
                                         }
                                     });
                                 }
@@ -262,7 +290,7 @@ class BookController {
                 }
             });
         };
-        this.gettAllBookRequests = (req, res) => {
+        this.getAllBookRequests = (req, res) => {
             bookRequest_1.default.find({}, (err, requests) => {
                 if (err) {
                     console.log(err);
@@ -280,7 +308,7 @@ class BookController {
                 }
                 else {
                     if (request.image == null || request.image == "")
-                        request.image = 'default.png';
+                        request.image = 'default.jpg';
                     var filepath = 'D:\\Aleksa\\3. godina\\2. semestar\\PIA\\Projekat\\backend\\book_images\\' + request.image;
                     res.sendFile(filepath);
                 }

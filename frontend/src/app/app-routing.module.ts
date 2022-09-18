@@ -18,6 +18,7 @@ import { RegRequestsComponent } from './reg-requests/reg-requests.component';
 import { RegisterComponent } from './register/register.component';
 import { RentedBooksComponent } from './rented-books/rented-books.component';
 import { RentingHistoryComponent } from './renting-history/renting-history.component';
+import { UpdateProfileComponent } from './update-profile/update-profile.component';
 import { UpdateUserComponent } from './update-user/update-user.component';
 import { UserComponent } from './user/user.component';
 
@@ -41,7 +42,8 @@ const routes: Routes = [
   {path: "updateUser", component: UpdateUserComponent},
   {path: "regRequests", component: RegRequestsComponent},
   {path: "bookRequest", component: BookRequestComponent},
-  {path: "bookRequests", component: BookRequestsComponent}
+  {path: "bookRequests", component: BookRequestsComponent},
+  {path: "updateProfile", component: UpdateProfileComponent}
 ];
 
 @NgModule({

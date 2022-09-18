@@ -217,4 +217,18 @@ export class UserService {
     }
     return this.http.post(`${this.uri}/users/getUserNotifications`, data);
   }
+
+  getNumberOfReadBooksInLastYear(username) {
+    const data = {
+      username: username
+    }
+    return this.http.post(`${this.uri}/users/getNumberOfReadBooksInLastYear`, data);
+  }
+
+  getNumberOfReadBooksByGenre(username) {
+    const data = {
+      username: username
+    }
+    return this.http.post(`${this.uri}/users/getNumberOfReadBooksByGenre`, data);
+  }
 }

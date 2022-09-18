@@ -87,4 +87,12 @@ userRouter.route('/getUserNotifications').post(
     (req, res) => new UserController().getUsersNotifications(req, res)
 )
 
+userRouter.route('/getNumberOfReadBooksInLastYear').post(
+    (req, res) => new UserController().getNumberOfReadBooksByGenre(req, res)
+)
+
+userRouter.route('/getNumberOfReadBooksByGenre').post(
+    (req, res) => new UserController().getNumberOfReadBooksByGenre(req, res)
+)
+
 export default userRouter;

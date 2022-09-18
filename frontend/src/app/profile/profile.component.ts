@@ -22,7 +22,7 @@ export class ProfileComponent implements OnInit {
   user: User;
 
   updateProfile() {
-
+    this.router.navigate(['updateProfile', {'userToUpdate': JSON.stringify(this.user)}])
   }
 
 }

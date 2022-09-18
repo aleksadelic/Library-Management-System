@@ -104,9 +104,10 @@ export class BookService {
     return this.http.post(`${this.uri}/books/deleteBook`, data);
   }
 
-  addBookRequest(title, authors, genre, publisher, publishYear, language, image) {
+  addBookRequest(username, title, authors, genre, publisher, publishYear, language, image) {
 
     const formData = new FormData();
+    formData.append('data', username);
     formData.append('data', title);
     formData.append('data', authors);
     formData.append('data', genre);

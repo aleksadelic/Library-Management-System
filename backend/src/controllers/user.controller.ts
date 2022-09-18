@@ -3,6 +3,8 @@ import UserModel from '../models/user';
 import BookModel from '../models/book';
 import RentingHistoryModel from '../models/rentingHistory';
 import RegistrationRequestModel from '../models/registrationRequest';
+import NotificationModel from '../models/notification';
+import notification from '../models/notification';
 
 export class UserController {
     register = (req: express.Request, res: express.Response, filename: String) => {
@@ -444,7 +446,35 @@ export class UserController {
                 if (user.blocked) {
                     messages.push('Korisnik je blokiran!!!');
                 }
-                res.json(messages);
+                NotificationModel.findOne({'username': username}, (err, notif) => {
+                    if (err) console.log(err);
+                    else {
+                        if (notif && notif.notifications) {
+                            messages = messages.concat(notif.notifications);
+                        }
+                        res.json(messages);
+                    }
+                })
+            }
+        })
+    }
+
+    getNumberOfReadBooksInLastYear = (req: express.Request, res: express.Response) => {
+        let username = req.body.username;
+        RentingHistoryModel.findOne({'username': username}, (err, record) => {
+            if (err) console.log(err);
+            else {
+
+            }
+        })
+    }
+
+    getNumberOfReadBooksByGenre = (req: express.Request, res: express.Response) => {
+        let username = req.body.username;
+        RentingHistoryModel.findOne({'username': username}, (err, record) => {
+            if (err) console.log(err);
+            else {
+                
             }
         })
     }

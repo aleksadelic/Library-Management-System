@@ -44,7 +44,7 @@ bookRouter.route('/rejectBookRequest').post(
 )
 
 bookRouter.route('/getAllBookRequests').get(
-    (req, res) => new BookController().gettAllBookRequests(req, res)
+    (req, res) => new BookController().getAllBookRequests(req, res)
 )
 
 bookRouter.route('/getRequestImage').post(
