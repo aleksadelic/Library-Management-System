@@ -29,6 +29,9 @@ import { AddUserComponent } from './add-user/add-user.component';
 import { UpdateUserComponent } from './update-user/update-user.component';
 import { RegRequestsComponent } from './reg-requests/reg-requests.component';
 import { RequestDetailsComponent } from './request-details/request-details.component';
+import { BookRequestComponent } from './book-request/book-request.component';
+import { BookRequestsComponent } from './book-requests/book-requests.component';
+import { BookReqDetailsComponent } from './book-req-details/book-req-details.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +59,10 @@ import { RequestDetailsComponent } from './request-details/request-details.compo
     AddUserComponent,
     UpdateUserComponent,
     RegRequestsComponent,
-    RequestDetailsComponent
+    RequestDetailsComponent,
+    BookRequestComponent,
+    BookRequestsComponent,
+    BookReqDetailsComponent
   ],
   imports: [
     BrowserModule,

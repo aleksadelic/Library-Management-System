@@ -1,5 +1,6 @@
 import e, * as express from 'express';
 import { Db } from 'mongodb';
+import BookRequestModel from '../models/bookRequest';
 import BookModel from '../models/book';
 
 const fs = require('fs');
@@ -161,6 +162,95 @@ export class BookController {
                 } else {
                     res.json({'message':'Postoje zaduzenja knjige!'});
                 }
+            }
+        })
+    }
+
+    addBookRequest = (req: express.Request, res: express.Response, filename: String) => {
+        let bookRequest = new BookRequestModel({
+            title: req.body.data[0],
+            authors: req.body.data[1],
+            genre: req.body.data[2],
+            publisher: req.body.data[3],
+            publishYear: req.body.data[4],
+            language: req.body.data[5],
+            image: filename,
+        })
+
+        bookRequest.save((err, resp) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.json({'message':'ok'});
+            }
+        })
+    }
+
+    acceptBookRequest = (req: express.Request, res: express.Response) => {
+        let title = req.body.title;
+
+        BookRequestModel.findOne({'title': title}, (err, request) => {
+            if (err) {
+                console.log(err);
+            } else {
+                let book = new BookModel({
+                    title: request.title,
+                    authors: request.authors,
+                    genre: request.genre,
+                    publisher: request.publisher,
+                    publishYear: request.publishYear,
+                    language: request.language,
+                    image: request.image
+                });
+
+                book.save((err, resp) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        BookRequestModel.deleteOne({'title': title}, (err, resp) => {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                res.json({'message':'ok'});
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    }
+
+    rejectBookRequest = (req: express.Request, res: express.Response) => {
+        let title = req.body.title;
+        BookRequestModel.deleteOne({'title': title}, (err, resp) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.json({'message':'ok'});
+            }
+        })
+    }
+
+    gettAllBookRequests = (req: express.Request, res: express.Response) => {
+        BookRequestModel.find({}, (err, requests) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.json(requests);
+            }
+        })
+    }
+
+    getRequestImage = (req: express.Request, res: express.Response) => {
+        let title = req.body.title;
+        BookRequestModel.findOne({'title': title}, (err, request) => {
+            if (err) {
+                console.log(err);
+            } else {
+                if (request.image == null || request.image == "")
+                    request.image = 'default.png';
+                var filepath = 'D:\\Aleksa\\3. godina\\2. semestar\\PIA\\Projekat\\backend\\book_images\\' + request.image;
+                res.sendFile(filepath);
             }
         })
     }

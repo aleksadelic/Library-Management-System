@@ -35,4 +35,20 @@ bookRouter.route('/deleteBook').post(
     (req, res) => new BookController().deleteBook(req, res)
 )
 
+bookRouter.route('/acceptBookRequest').post(
+    (req, res) => new BookController().acceptBookRequest(req, res)
+)
+
+bookRouter.route('/rejectBookRequest').post(
+    (req, res) => new BookController().rejectBookRequest(req, res)
+)
+
+bookRouter.route('/getAllBookRequests').get(
+    (req, res) => new BookController().gettAllBookRequests(req, res)
+)
+
+bookRouter.route('/getRequestImage').post(
+    (req, res) => new BookController().getRequestImage(req, res)
+)
+
 export default bookRouter;

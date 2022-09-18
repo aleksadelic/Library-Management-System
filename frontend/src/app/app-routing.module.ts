@@ -6,6 +6,8 @@ import { AdminBooksComponent } from './admin-books/admin-books.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { AdminUsersComponent } from './admin-users/admin-users.component';
 import { AdminComponent } from './admin/admin.component';
+import { BookRequestComponent } from './book-request/book-request.component';
+import { BookRequestsComponent } from './book-requests/book-requests.component';
 import { BookComponent } from './book/book.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { HomepageComponent } from './homepage/homepage.component';
@@ -37,7 +39,9 @@ const routes: Routes = [
   {path: "adminBooks", component: AdminBooksComponent},
   {path: "addUser", component: AddUserComponent},
   {path: "updateUser", component: UpdateUserComponent},
-  {path: "regRequests", component: RegRequestsComponent}
+  {path: "regRequests", component: RegRequestsComponent},
+  {path: "bookRequest", component: BookRequestComponent},
+  {path: "bookRequests", component: BookRequestsComponent}
 ];
 
 @NgModule({

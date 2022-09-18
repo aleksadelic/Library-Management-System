@@ -63,9 +63,11 @@ const uploadUserImage = multer({ storage: userStorage });
 const uploadBookImage = multer({ storage: bookStorage });
 app.post('/users/register', uploadUserImage.single('file'), (req, res) => new UserController().register(req, res, fileName));
 app.post('/users/addUser', uploadUserImage.single('file'), (req, res) => new UserController().addUser(req, res, fileName));
+app.post('/users/updateUserAndImage', uploadUserImage.single('file'), (req, res) => new UserController().updateUserAndImage(req, res, fileName));
 app.post('/books/addBook', uploadBookImage.single('file'), (req, res) => new BookController().addBook(req, res, fileName));
 app.post('/books/updateBookAndImage', uploadBookImage.single('file'), (req, res) => new BookController().updateBookAndImage(req, res, fileName));
-app.post('/users/updateUserAndImage', uploadUserImage.single('file'), (req, res) => new UserController().updateUserAndImage(req, res, fileName));
+app.post('/books/addBookRequest', uploadBookImage.single('file'), (req, res) => new BookController().addBookRequest(req, res, fileName));
+
 const router = express.Router();
 router.use('/books', bookRouter);
 router.use('/users', userRouter);

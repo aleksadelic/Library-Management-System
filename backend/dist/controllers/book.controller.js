@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BookController = void 0;
+const bookRequest_1 = __importDefault(require("../models/bookRequest"));
 const book_1 = __importDefault(require("../models/book"));
 const fs = require('fs');
 class BookController {
@@ -164,6 +165,94 @@ class BookController {
                     else {
                         res.json({ 'message': 'Postoje zaduzenja knjige!' });
                     }
+                }
+            });
+        };
+        this.addBookRequest = (req, res, filename) => {
+            let bookRequest = new bookRequest_1.default({
+                title: req.body.data[0],
+                authors: req.body.data[1],
+                genre: req.body.data[2],
+                publisher: req.body.data[3],
+                publishYear: req.body.data[4],
+                language: req.body.data[5],
+                image: filename,
+            });
+            bookRequest.save((err, resp) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json({ 'message': 'ok' });
+                }
+            });
+        };
+        this.acceptBookRequest = (req, res) => {
+            let title = req.body.title;
+            bookRequest_1.default.findOne({ 'title': title }, (err, request) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    let book = new book_1.default({
+                        title: request.title,
+                        authors: request.authors,
+                        genre: request.genre,
+                        publisher: request.publisher,
+                        publishYear: request.publishYear,
+                        language: request.language,
+                        image: request.image
+                    });
+                    book.save((err, resp) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        else {
+                            bookRequest_1.default.deleteOne({ 'title': title }, (err, resp) => {
+                                if (err) {
+                                    console.log(err);
+                                }
+                                else {
+                                    res.json({ 'message': 'ok' });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        };
+        this.rejectBookRequest = (req, res) => {
+            let title = req.body.title;
+            bookRequest_1.default.deleteOne({ 'title': title }, (err, resp) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json({ 'message': 'ok' });
+                }
+            });
+        };
+        this.gettAllBookRequests = (req, res) => {
+            bookRequest_1.default.find({}, (err, requests) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json(requests);
+                }
+            });
+        };
+        this.getRequestImage = (req, res) => {
+            let title = req.body.title;
+            bookRequest_1.default.findOne({ 'title': title }, (err, request) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    if (request.image == null || request.image == "")
+                        request.image = 'default.png';
+                    var filepath = 'D:\\Aleksa\\3. godina\\2. semestar\\PIA\\Projekat\\backend\\book_images\\' + request.image;
+                    res.sendFile(filepath);
                 }
             });
         };

@@ -1,0 +1,15 @@
+<img [src]="requestImage.image" class="image">
+<div style="padding: 5px;">
+    <h3>{{requestImage.request.title}}</h3>
+    {{requestImage.request.authors}}<br>
+    {{requestImage.request.genre}}<br>
+    {{requestImage.request.publisher}}<br>
+    {{requestImage.request.publishYear}}<br>
+    {{requestImage.request.language}}
+</div>
+<div style="right: 5px;">
+    <button (click)="acceptRequest()" style="color: green;">Prihvati zahtev</button>
+    <button (click)="rejectRequest()" style="color: red;">Odbij zahtev</button>
+</div>
+{{message}}
+<hr/>

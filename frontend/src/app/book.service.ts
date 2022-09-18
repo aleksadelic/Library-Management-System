@@ -104,4 +104,43 @@ export class BookService {
     return this.http.post(`${this.uri}/books/deleteBook`, data);
   }
 
+  addBookRequest(title, authors, genre, publisher, publishYear, language, image) {
+
+    const formData = new FormData();
+    formData.append('data', title);
+    formData.append('data', authors);
+    formData.append('data', genre);
+    formData.append('data', publisher);
+    formData.append('data', publishYear);
+    formData.append('data', language);
+    formData.append('file', image);
+
+    return this.http.post(`${this.uri}/books/addBookRequest`, formData);
+  }
+
+  getAllBookRequests() {
+    return this.http.get(`${this.uri}/books/getAllBookRequests`);
+  }
+
+  getRequestImage(title) {
+    const data = {
+      title: title
+    }
+    return this.http.post(`${this.uri}/books/getRequestImage`, data, { responseType: 'blob' });
+  }
+
+  acceptBookRequest(title) {
+    const data = {
+      title: title
+    }
+    return this.http.post(`${this.uri}/books/acceptBookRequest`, data);
+  }
+
+  rejectBookRequest(title) {
+    const data = {
+      title: title
+    }
+    return this.http.post(`${this.uri}/books/rejectBookRequest`, data);
+  }
+
 }

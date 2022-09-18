@@ -1,7 +1,9 @@
 <a routerLink="/mainMenu">Glavni meni</a> <br>
 <a routerLink="/rentedBooks">Zaduzene knjige</a> <br>
 <a routerLink="/rentingHistory">Istorija zaduzenja</a> <br>
-<a *ngIf="user.type==1" routerLink="/addBook">Dodaj knjigu</a> <br> <br>
+<a *ngIf="user.type==0" routerLink="/bookRequest">Dodaj knjigu</a> <br>
+<a *ngIf="user.type==1" routerLink="/addBook">Dodaj knjigu</a> <br>
+<a *ngIf="user.type==1" routerLink="/bookRequests">Zahtevi za dodavanje knjiga</a> <br> <br>
 Knjiga dana:
 <br>
 <div *ngIf="bookOfTheDay != null">
