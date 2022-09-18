@@ -8,6 +8,7 @@ const user_1 = __importDefault(require("../models/user"));
 const rentingHistory_1 = __importDefault(require("../models/rentingHistory"));
 const registrationRequest_1 = __importDefault(require("../models/registrationRequest"));
 const notification_1 = __importDefault(require("../models/notification"));
+const deadline_1 = __importDefault(require("../models/deadline"));
 class UserController {
     constructor() {
         this.register = (req, res, filename) => {
@@ -417,14 +418,24 @@ class UserController {
             });
         };
         this.updateDeadline = (req, res) => {
-            let username = req.body.username;
             let deadline = req.body.deadline;
-            user_1.default.updateOne({ 'username': username }, { $set: { 'deadline': deadline } }, (err, resp) => {
+            let extension = req.body.extension;
+            deadline_1.default.updateOne({ 'name': 'deadline' }, { $set: { 'deadline': deadline, 'extension': extension } }, (err, resp) => {
                 if (err) {
                     console.log(err);
                 }
                 else {
                     res.json({ 'message': 'ok' });
+                }
+            });
+        };
+        this.getDeadline = (req, res) => {
+            deadline_1.default.findOne({ 'name': 'deadline' }, (err, deadline) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json(deadline);
                 }
             });
         };

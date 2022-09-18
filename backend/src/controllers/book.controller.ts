@@ -78,6 +78,8 @@ export class BookController {
     }
 
     addBook = (req: express.Request, res: express.Response, filename: String) => {
+        let authors: string[] = req.body.data[1].split(',');
+        let genre: string[] = req.body.data[2].split(',', 3);
         BookCounterModel.findOneAndUpdate({'name': 'nextBookId'}, {$inc: {'nextId': 1}}, (err, resp) => {
             if (err) {
                 console.log(err);
@@ -86,8 +88,8 @@ export class BookController {
                 let book = new BookModel({
                     id: nextId,
                     title: req.body.data[0],
-                    authors: req.body.data[1],
-                    genre: req.body.data[2],
+                    authors: authors,
+                    genre: genre,
                     publisher: req.body.data[3],
                     publishYear: req.body.data[4],
                     language: req.body.data[5],
@@ -95,7 +97,7 @@ export class BookController {
                     image: filename,
                     rentals: 0
                 })
-        
+                
                 book.save((err, resp) => {
                     if (err) {
                         console.log(err);
@@ -181,6 +183,8 @@ export class BookController {
     }
 
     addBookRequest = (req: express.Request, res: express.Response, filename: String) => {
+        let authors: string[] = req.body.data[2].split(',');
+        let genre: string[] = req.body.data[3].split(',', 3);
         BookCounterModel.findOneAndUpdate({'name': 'nextReqId'}, {$inc: {'nextId': 1}}, (err, resp) => {
             if (err) {
                 console.log(err);
@@ -190,8 +194,8 @@ export class BookController {
                     id: nextId,
                     username: req.body.data[0],
                     title: req.body.data[1],
-                    authors: req.body.data[2],
-                    genre: req.body.data[3],
+                    authors: authors,
+                    genre: genre,
                     publisher: req.body.data[4],
                     publishYear: req.body.data[5],
                     language: req.body.data[6],
@@ -355,9 +359,11 @@ export class BookController {
                     }
                 }
 
-                console.log("VRACAM " + rental.book.title);
+                var rentals = user.rentals.filter((value, index, arr) => {
+                    return value.book.id != id;
+                })
 
-                UserModel.updateOne({'username': username}, {$pull: {'rentals': {'book': {'id': id}}}}, (err, resp) => {
+                UserModel.updateOne({'username': username}, {$set: {'rentals': rentals}}, (err, resp) => {
                     if (err) {
                         console.log(err);
                     } else {

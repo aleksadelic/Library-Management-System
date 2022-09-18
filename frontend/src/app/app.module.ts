@@ -35,6 +35,7 @@ import { BookReqDetailsComponent } from './book-req-details/book-req-details.com
 import { UpdateProfileComponent } from './update-profile/update-profile.component';
 import { ReadLastYearChartComponent } from './read-last-year-chart/read-last-year-chart.component';
 import { ReadByGenreChartComponent } from './read-by-genre-chart/read-by-genre-chart.component';
+import { AdminSettingsComponent } from './admin-settings/admin-settings.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { ReadByGenreChartComponent } from './read-by-genre-chart/read-by-genre-c
     BookReqDetailsComponent,
     UpdateProfileComponent,
     ReadLastYearChartComponent,
-    ReadByGenreChartComponent
+    ReadByGenreChartComponent,
+    AdminSettingsComponent
   ],
   imports: [
     BrowserModule,

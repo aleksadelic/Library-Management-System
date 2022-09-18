@@ -79,6 +79,8 @@ class BookController {
             });
         };
         this.addBook = (req, res, filename) => {
+            let authors = req.body.data[1].split(',');
+            let genre = req.body.data[2].split(',', 3);
             bookCounter_1.default.findOneAndUpdate({ 'name': 'nextBookId' }, { $inc: { 'nextId': 1 } }, (err, resp) => {
                 if (err) {
                     console.log(err);
@@ -88,8 +90,8 @@ class BookController {
                     let book = new book_1.default({
                         id: nextId,
                         title: req.body.data[0],
-                        authors: req.body.data[1],
-                        genre: req.body.data[2],
+                        authors: authors,
+                        genre: genre,
                         publisher: req.body.data[3],
                         publishYear: req.body.data[4],
                         language: req.body.data[5],
@@ -182,6 +184,8 @@ class BookController {
             });
         };
         this.addBookRequest = (req, res, filename) => {
+            let authors = req.body.data[2].split(',');
+            let genre = req.body.data[3].split(',', 3);
             bookCounter_1.default.findOneAndUpdate({ 'name': 'nextReqId' }, { $inc: { 'nextId': 1 } }, (err, resp) => {
                 if (err) {
                     console.log(err);
@@ -192,8 +196,8 @@ class BookController {
                         id: nextId,
                         username: req.body.data[0],
                         title: req.body.data[1],
-                        authors: req.body.data[2],
-                        genre: req.body.data[3],
+                        authors: authors,
+                        genre: genre,
                         publisher: req.body.data[4],
                         publishYear: req.body.data[5],
                         language: req.body.data[6],
@@ -362,8 +366,10 @@ class BookController {
                             break;
                         }
                     }
-                    console.log("VRACAM " + rental.book.title);
-                    user_1.default.updateOne({ 'username': username }, { $pull: { 'rentals': { 'book': { 'id': id } } } }, (err, resp) => {
+                    var rentals = user.rentals.filter((value, index, arr) => {
+                        return value.book.id != id;
+                    });
+                    user_1.default.updateOne({ 'username': username }, { $set: { 'rentals': rentals } }, (err, resp) => {
                         if (err) {
                             console.log(err);
                         }

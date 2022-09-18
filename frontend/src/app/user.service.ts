@@ -202,13 +202,17 @@ export class UserService {
     return this.http.post(`${this.uri}/users/unblockUser`, data);
   }
 
-  updateDeadline(username, deadline) {
+  updateDeadline(deadline, extension) {
     const data = {
-      username: username,
-      deadline: deadline
+      deadline: deadline,
+      extension: extension
     }
 
     return this.http.post(`${this.uri}/users/updateDeadline`, data);
+  }
+
+  getDeadline() {
+    return this.http.get(`${this.uri}/users/getDeadline`);
   }
 
   getUserNotifications(username) {

@@ -4,7 +4,7 @@ import BookModel from '../models/book';
 import RentingHistoryModel from '../models/rentingHistory';
 import RegistrationRequestModel from '../models/registrationRequest';
 import NotificationModel from '../models/notification';
-import notification from '../models/notification';
+import DeadlineModel from '../models/deadline';
 
 export class UserController {
     register = (req: express.Request, res: express.Response, filename: String) => {
@@ -415,13 +415,23 @@ export class UserController {
     }
 
     updateDeadline = (req: express.Request, res: express.Response) => {
-        let username = req.body.username;
         let deadline = req.body.deadline;
-        UserModel.updateOne({'username': username}, {$set: {'deadline': deadline}}, (err, resp) => {
+        let extension = req.body.extension;
+        DeadlineModel.updateOne({'name': 'deadline'}, {$set: {'deadline': deadline, 'extension': extension}}, (err, resp) => {
             if (err) {
                 console.log(err);
             } else {
                 res.json({'message':'ok'});
+            }
+        })
+    }
+
+    getDeadline = (req: express.Request, res: express.Response) => {
+        DeadlineModel.findOne({'name': 'deadline'}, (err, deadline) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.json(deadline);
             }
         })
     }

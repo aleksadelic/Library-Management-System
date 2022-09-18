@@ -1,0 +1,10 @@
+<input type="checkbox" name="edit" [(ngModel)]="edit"> Azuriraj rok<br>
+<div *ngIf="edit">
+    Rok za vracanje knjige: <input type="number" name="deadline" [(ngModel)]="deadline"><br>
+    Produzenje roka: <input type="number" name="extension" [(ngModel)]="extension"><br>
+    <button (click)="updateDeadline()">Azuriraj rok</button>
+</div>
+<div *ngIf="!edit">
+    Rok za vracanje knjige: {{deadline}}<br>
+    Produzenje roka: {{extension}}<br>
+</div>

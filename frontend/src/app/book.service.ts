@@ -48,7 +48,7 @@ export class BookService {
   }
 
   addBook(title, authors, genre, publisher, publishYear, language, available, image) {
-
+    
     const formData = new FormData();
     formData.append('data', title);
     formData.append('data', authors);

@@ -28,6 +28,7 @@ userRouter.route('/demoteUser').post((req, res) => new user_controller_1.UserCon
 userRouter.route('/blockUser').post((req, res) => new user_controller_1.UserController().blockUser(req, res));
 userRouter.route('/unblockUser').post((req, res) => new user_controller_1.UserController().unblockUser(req, res));
 userRouter.route('/updateDeadline').post((req, res) => new user_controller_1.UserController().updateDeadline(req, res));
+userRouter.route('/getDeadline').get((req, res) => new user_controller_1.UserController().getDeadline(req, res));
 userRouter.route('/getUserNotifications').post((req, res) => new user_controller_1.UserController().getUsersNotifications(req, res));
 userRouter.route('/getNumberOfReadBooksInLastYear').post((req, res) => new user_controller_1.UserController().getNumberOfReadBooksByGenre(req, res));
 userRouter.route('/getNumberOfReadBooksByGenre').post((req, res) => new user_controller_1.UserController().getNumberOfReadBooksByGenre(req, res));

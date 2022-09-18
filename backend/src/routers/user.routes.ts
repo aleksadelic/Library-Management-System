@@ -83,6 +83,10 @@ userRouter.route('/updateDeadline').post(
     (req, res) => new UserController().updateDeadline(req, res)
 )
 
+userRouter.route('/getDeadline').get(
+    (req, res) => new UserController().getDeadline(req, res)
+)
+
 userRouter.route('/getUserNotifications').post(
     (req, res) => new UserController().getUsersNotifications(req, res)
 )
