@@ -13,6 +13,14 @@
     <button (click)="demoteUser()">Spusti privilegije</button>
     <button (click)="blockUser()">Blokiraj korisnika</button>
     <button (click)="unblockUser()">Deblokiraj korisnika</button>
+    <input type="checkbox" name="edit" [(ngModel)]="edit"> Azuriraj rok
+    <div *ngIf="edit">
+        <input type="number" name="deadline" [(ngModel)]="deadline">
+        <button (click)="updateDeadline()">Azuriraj rok</button>
+    </div>
+    <div *ngIf="!edit">
+        Rok: {{deadline}}
+    </div>
 </div>
 {{message}}
 <hr>

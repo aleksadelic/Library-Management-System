@@ -12,4 +12,8 @@ Knjiga dana:
 </div>
 <img [src]="bookImageUrl" class="image"><br>
 <br>
+<h3>Obavestenja</h3>
+<div style="color: red;" *ngFor="let not of notifications">
+    {{not}}
+</div>
 <button (click)="logout()">Odjavi se</button>

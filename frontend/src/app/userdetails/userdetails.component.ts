@@ -16,12 +16,15 @@ export class UserdetailsComponent implements OnInit {
   ngOnInit(): void {
     this.user = this.userImage.user;
     this.image = this.userImage.image;
+    this.deadline = this.user.deadline;
   }
 
   @Input() userImage: UserImage;
   user: User;
   image;
   message: String;
+  deadline: number;
+  edit: boolean = false;
 
   updateUser() {
     this.router.navigate(['updateUser', {'userToUpdate': JSON.stringify(this.user)}])
@@ -81,6 +84,16 @@ export class UserdetailsComponent implements OnInit {
       }
     })
   }
-  
+
+  updateDeadline() {
+    this.userService.updateDeadline(this.user.username, this.deadline).subscribe(resp => {
+      if (resp['message'] == 'ok') {
+        this.message = 'Korisnik odblokiran';
+        location.reload();
+      } else {
+        this.message = resp['message'];
+      }
+    })
+  }
 
 }

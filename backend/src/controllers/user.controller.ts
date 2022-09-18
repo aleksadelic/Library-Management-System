@@ -134,7 +134,8 @@ export class UserController {
                                     tel: req.body.data[5],
                                     email: req.body.data[6],
                                     type: 0,
-                                    image: filename
+                                    image: filename,
+                                    deadline: 14
                                 });
                         
                                 user.save((err, resp) => {
@@ -231,42 +232,9 @@ export class UserController {
         })
     }
 
-    rentBook = (req: express.Request, res: express.Response) => {
-        let book = req.body.book;
-        let username = req.body.username;
-        
-        UserModel.findOne({'username': username}, (err, user) => {
-            if (err) {
-                console.log(err);
-            } else {
-                if (user == null) {
-                    res.json({'message':'error'});
-                    return;
-                }
-                let rental = {
-                    book: book,
-                    daysLeft: 30
-                }
-                UserModel.updateOne({'username': username}, {$push: {'rentals': rental}}, (err, resp) => {
-                    if (err) {
-                        console.log(err);
-                    }
-                })
-                BookModel.updateOne({'title': book.title}, {$inc: {'available': -1, 'rentals': 1, 'totalRentals': 1}}, (err, resp) => {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        res.json({'message':'ok'});
-                    }
-                })
-            }
-        })
-    }
-
     checkUserRentals = (req: express.Request, res: express.Response) => {
         let username = req.body.username;
-        let title = req.body.title;
-        console.log(title);
+        let id = req.body.id;
 
         let messages: string[] = [];
 
@@ -285,8 +253,8 @@ export class UserController {
                     if (user.rentals[i].daysLeft < 0) {
                         messages.push('Postoje zaduzenja za koja je istekao rok!');
                     }
-                    console.log(title + ' = ' + user.rentals[i].book.title)
-                    if (user.rentals[i].book.title === title) {
+                    console.log(id + ' = ' + user.rentals[i].book.id)
+                    if (user.rentals[i].book.id == id) {
                         messages.push('Knjiga je vec zaduzena!');
                     }
                 }
@@ -368,7 +336,8 @@ export class UserController {
                     email: request.email,
                     type: request.type,
                     image: request.image,
-                    rentals: request.rentals
+                    rentals: request.rentals,
+                    deadline: 14
                 });
 
                 user.save((err, resp) => {
@@ -439,6 +408,43 @@ export class UserController {
                 console.log(err);
             } else {
                 res.json({'message':'ok'});
+            }
+        })
+    }
+
+    updateDeadline = (req: express.Request, res: express.Response) => {
+        let username = req.body.username;
+        let deadline = req.body.deadline;
+        UserModel.updateOne({'username': username}, {$set: {'deadline': deadline}}, (err, resp) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.json({'message':'ok'});
+            }
+        })
+    }
+
+    getUsersNotifications = (req: express.Request, res: express.Response) => {
+        let username = req.body.username;
+        var messages: string[] = [];
+
+        UserModel.findOne({'username': username}, (err, user) => {
+            if (err) console.log(err);
+            else {
+                for (let i = 0; i < user.rentals.length; i++) {
+                    if (user.rentals[i].daysLeft <= 2 && user.rentals[i].daysLeft >= 0) {
+                        messages.push('Istice rok za vracanje knjige ' + user.rentals[i].book.title);
+                    } else if (user.rentals[i].daysLeft < 0) {
+                        messages.push('Istekao rok za vracanje knjige ' + user.rentals[i].book.title);
+                    }
+                }
+                if (user.rentals.length == 3) {
+                    messages.push('Korisnik ima maksimalan broj knjiga na zaduzenju!');
+                }
+                if (user.blocked) {
+                    messages.push('Korisnik je blokiran!!!');
+                }
+                res.json(messages);
             }
         })
     }

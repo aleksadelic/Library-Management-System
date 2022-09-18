@@ -37,7 +37,7 @@ export class BookService {
       book: book,
       username: username
     }
-    return this.http.post(`${this.uri}/users/rentBook`, data);
+    return this.http.post(`${this.uri}/books/rentBook`, data);
   }
 
   getBook(id: number) {
@@ -141,6 +141,14 @@ export class BookService {
       id: id
     }
     return this.http.post(`${this.uri}/books/rejectBookRequest`, data);
+  }
+
+  returnBook(username, id) {
+    const data = {
+      username: username,
+      id: id
+    }
+    return this.http.post(`${this.uri}/books/returnBook`, data);
   }
 
 }

@@ -18,5 +18,7 @@ bookRouter.route('/acceptBookRequest').post((req, res) => new book_controller_1.
 bookRouter.route('/rejectBookRequest').post((req, res) => new book_controller_1.BookController().rejectBookRequest(req, res));
 bookRouter.route('/getAllBookRequests').get((req, res) => new book_controller_1.BookController().gettAllBookRequests(req, res));
 bookRouter.route('/getRequestImage').post((req, res) => new book_controller_1.BookController().getRequestImage(req, res));
+bookRouter.route('/rentBook').post((req, res) => new book_controller_1.BookController().rentBook(req, res));
+bookRouter.route('/returnBook').post((req, res) => new book_controller_1.BookController().returnBook(req, res));
 exports.default = bookRouter;
 //# sourceMappingURL=book.routes.js.map

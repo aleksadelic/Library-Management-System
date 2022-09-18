@@ -51,4 +51,12 @@ bookRouter.route('/getRequestImage').post(
     (req, res) => new BookController().getRequestImage(req, res)
 )
 
+bookRouter.route('/rentBook').post(
+    (req, res) => new BookController().rentBook(req, res)
+)
+
+bookRouter.route('/returnBook').post(
+    (req, res) => new BookController().returnBook(req, res)
+)
+
 export default bookRouter;

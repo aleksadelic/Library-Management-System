@@ -73,10 +73,10 @@ export class UserService {
     return this.http.post(`${this.uri}/users/getMyRentals`, data);
   }
 
-  checkUserRentals(username, title) {
+  checkUserRentals(username, id) {
     const data = {
       username: username,
-      title: title
+      id: id
     }
     return this.http.post(`${this.uri}/users/checkUserRentals`, data);
   }
@@ -202,4 +202,19 @@ export class UserService {
     return this.http.post(`${this.uri}/users/unblockUser`, data);
   }
 
+  updateDeadline(username, deadline) {
+    const data = {
+      username: username,
+      deadline: deadline
+    }
+
+    return this.http.post(`${this.uri}/users/updateDeadline`, data);
+  }
+
+  getUserNotifications(username) {
+    const data = {
+      username: username
+    }
+    return this.http.post(`${this.uri}/users/getUserNotifications`, data);
+  }
 }

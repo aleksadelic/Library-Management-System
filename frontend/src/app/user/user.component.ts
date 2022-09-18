@@ -17,6 +17,7 @@ export class UserComponent implements OnInit {
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem('logged in'));
     this.getBookOfTheDay();
+    this.getUserNotifications();
   }
 
   user: User;
@@ -54,4 +55,13 @@ export class UserComponent implements OnInit {
       reader.readAsDataURL(image);
     })
   }
+
+  notifications: string[] = [];
+
+  getUserNotifications() {
+    this.userService.getUserNotifications(this.user.username).subscribe((messages: string[]) => {
+      this.notifications = messages;
+    })
+  }
+
 }

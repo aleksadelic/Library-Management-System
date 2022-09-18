@@ -1,7 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { BookService } from '../book.service';
 import { BookImage } from '../models/bookImage';
 import { RentalImage } from '../models/rentalImage';
+import { User } from '../models/user';
 
 @Component({
   selector: 'app-rented-book-card',
@@ -10,15 +12,30 @@ import { RentalImage } from '../models/rentalImage';
 })
 export class RentedBookCardComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private bookService: BookService) { }
 
   ngOnInit(): void {
+    this.user = JSON.parse(localStorage.getItem('logged in'));
   }
 
   @Input() rentalImage: RentalImage;
+  user: User;
+
+  message: string;
 
   seeBook() {
     this.router.navigate(['/book', {myBookId: JSON.stringify(this.rentalImage.rental.book.id)}]);
+  }
+
+  returnBook() {
+    this.bookService.returnBook(this.user.username, this.rentalImage.rental.book.id).subscribe(resp => {
+      if (resp['message'] == 'ok') {
+        this.message = 'Knjiga uspesno vracena';
+        location.reload();
+      } else {
+        this.message = 'Greska';
+      }
+    })
   }
 
 }

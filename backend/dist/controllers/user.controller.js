@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const user_1 = __importDefault(require("../models/user"));
-const book_1 = __importDefault(require("../models/book"));
 const rentingHistory_1 = __importDefault(require("../models/rentingHistory"));
 const registrationRequest_1 = __importDefault(require("../models/registrationRequest"));
 class UserController {
@@ -144,7 +143,8 @@ class UserController {
                                         tel: req.body.data[5],
                                         email: req.body.data[6],
                                         type: 0,
-                                        image: filename
+                                        image: filename,
+                                        deadline: 14
                                     });
                                     user.save((err, resp) => {
                                         if (err) {
@@ -240,42 +240,9 @@ class UserController {
                 }
             });
         };
-        this.rentBook = (req, res) => {
-            let book = req.body.book;
-            let username = req.body.username;
-            user_1.default.findOne({ 'username': username }, (err, user) => {
-                if (err) {
-                    console.log(err);
-                }
-                else {
-                    if (user == null) {
-                        res.json({ 'message': 'error' });
-                        return;
-                    }
-                    let rental = {
-                        book: book,
-                        daysLeft: 30
-                    };
-                    user_1.default.updateOne({ 'username': username }, { $push: { 'rentals': rental } }, (err, resp) => {
-                        if (err) {
-                            console.log(err);
-                        }
-                    });
-                    book_1.default.updateOne({ 'title': book.title }, { $inc: { 'available': -1, 'rentals': 1, 'totalRentals': 1 } }, (err, resp) => {
-                        if (err) {
-                            console.log(err);
-                        }
-                        else {
-                            res.json({ 'message': 'ok' });
-                        }
-                    });
-                }
-            });
-        };
         this.checkUserRentals = (req, res) => {
             let username = req.body.username;
-            let title = req.body.title;
-            console.log(title);
+            let id = req.body.id;
             let messages = [];
             user_1.default.findOne({ 'username': username }, (err, user) => {
                 if (err) {
@@ -293,8 +260,8 @@ class UserController {
                         if (user.rentals[i].daysLeft < 0) {
                             messages.push('Postoje zaduzenja za koja je istekao rok!');
                         }
-                        console.log(title + ' = ' + user.rentals[i].book.title);
-                        if (user.rentals[i].book.title === title) {
+                        console.log(id + ' = ' + user.rentals[i].book.id);
+                        if (user.rentals[i].book.id == id) {
                             messages.push('Knjiga je vec zaduzena!');
                         }
                     }
@@ -372,7 +339,8 @@ class UserController {
                         email: request.email,
                         type: request.type,
                         image: request.image,
-                        rentals: request.rentals
+                        rentals: request.rentals,
+                        deadline: 14
                     });
                     user.save((err, resp) => {
                         if (err) {
@@ -444,6 +412,43 @@ class UserController {
                 }
                 else {
                     res.json({ 'message': 'ok' });
+                }
+            });
+        };
+        this.updateDeadline = (req, res) => {
+            let username = req.body.username;
+            let deadline = req.body.deadline;
+            user_1.default.updateOne({ 'username': username }, { $set: { 'deadline': deadline } }, (err, resp) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json({ 'message': 'ok' });
+                }
+            });
+        };
+        this.getUsersNotifications = (req, res) => {
+            let username = req.body.username;
+            var messages = [];
+            user_1.default.findOne({ 'username': username }, (err, user) => {
+                if (err)
+                    console.log(err);
+                else {
+                    for (let i = 0; i < user.rentals.length; i++) {
+                        if (user.rentals[i].daysLeft <= 2 && user.rentals[i].daysLeft >= 0) {
+                            messages.push('Istice rok za vracanje knjige ' + user.rentals[i].book.title);
+                        }
+                        else if (user.rentals[i].daysLeft < 0) {
+                            messages.push('Istekao rok za vracanje knjige ' + user.rentals[i].book.title);
+                        }
+                    }
+                    if (user.rentals.length == 3) {
+                        messages.push('Korisnik ima maksimalan broj knjiga na zaduzenju!');
+                    }
+                    if (user.blocked) {
+                        messages.push('Korisnik je blokiran!!!');
+                    }
+                    res.json(messages);
                 }
             });
         };

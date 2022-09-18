@@ -3,6 +3,9 @@ import { Db } from 'mongodb';
 import BookRequestModel from '../models/bookRequest';
 import BookModel from '../models/book';
 import BookCounterModel from '../models/bookCounter';
+import UserModel from '../models/user';
+import RentingHistoryModel from '../models/rentingHistory';
+import book from '../models/book';
 
 const fs = require('fs');
 
@@ -279,6 +282,113 @@ export class BookController {
                 res.sendFile(filepath);
             }
         })
+    }
+
+    rentBook = (req: express.Request, res: express.Response) => {
+        let book = req.body.book;
+        let username = req.body.username;
+        
+        UserModel.findOne({'username': username}, (err, user) => {
+            if (err) {
+                console.log(err);
+            } else {
+                if (user == null) {
+                    res.json({'message':'error'});
+                    return;
+                }
+                let rental = {
+                    book: book,
+                    daysLeft: 30,
+                    rentalDate: new Date()
+                }
+                UserModel.updateOne({'username': username}, {$push: {'rentals': rental}}, (err, resp) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                })
+                BookModel.updateOne({'id': book.id}, {$inc: {'available': -1, 'rentals': 1, 'totalRentals': 1}}, (err, resp) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        res.json({'message':'ok'});
+                    }
+                })
+            }
+        })
+    }
+
+    returnBook = (req: express.Request, res: express.Response) => {
+        let username = req.body.username;
+        let id = req.body.id;
+
+        UserModel.findOne({'username': username}, (err, user) => {
+            if (err) {
+                console.log(err);
+            } else {
+                var rental;
+                for (let i = 0; i < user.rentals.length; i++) {
+                    if (user.rentals[i].book.id == id) {
+                        rental = user.rentals[i];
+                        break;
+                    }
+                }
+
+                console.log("VRACAM " + rental.book.title);
+
+                UserModel.updateOne({'username': username}, {$pull: {'rentals': {'book': {'id': id}}}}, (err, resp) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        BookModel.updateOne({'id': id}, {$inc: {'available': 1, 'rentals': -1}}, (err, resp) => {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                let rentalRecord = {
+                                    title: rental.book.title,
+                                    id: rental.book.id,
+                                    authors: rental.book.authors,
+                                    rentalDate: rental.rentalDate,
+                                    returnDate: new Date()
+                                }
+
+                                RentingHistoryModel.findOne({'username': username}, (err, record) => {
+                                    if (err) {
+                                        console.log(err);
+                                    } else {
+                                        if (record == null) {
+                                            let newRecord = new RentingHistoryModel({
+                                                username: username,
+                                                rentalRecords: []
+                                            });
+                                            newRecord.save((err, resp) => {
+                                                if (err) console.log(err);
+                                                else {
+                                                    RentingHistoryModel.updateOne({'username': username}, {$push: {'rentalRecords': rentalRecord}}, (err, resp) => {
+                                                        if (err) {
+                                                            console.log(err);
+                                                        } else {
+                                                            res.json({'message':'ok'});
+                                                        }
+                                                    })
+                                                }
+                                            })
+                                        } else {
+                                            RentingHistoryModel.updateOne({'username': username}, {$push: {'rentalRecords': rentalRecord}}, (err, resp) => {
+                                                if (err) {
+                                                    console.log(err);
+                                                } else {
+                                                    res.json({'message':'ok'});
+                                                }
+                                            })
+                                        }
+                                    }
+                                })
+                            }
+                        })
+                    }
+                })
+            }
+        })     
     }
 
 }

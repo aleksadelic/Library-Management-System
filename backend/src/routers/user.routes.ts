@@ -31,10 +31,6 @@ userRouter.route('/getMyRentals').post(
     (req, res) => new UserController().getMyRentals(req, res)
 )
 
-userRouter.route('/rentBook').post(
-    (req, res) => new UserController().rentBook(req, res)
-)
-
 userRouter.route('/checkUserRentals').post(
     (req, res) => new UserController().checkUserRentals(req, res)
 )
@@ -81,6 +77,14 @@ userRouter.route('/blockUser').post(
 
 userRouter.route('/unblockUser').post(
     (req, res) => new UserController().unblockUser(req, res)
+)
+
+userRouter.route('/updateDeadline').post(
+    (req, res) => new UserController().updateDeadline(req, res)
+)
+
+userRouter.route('/getUserNotifications').post(
+    (req, res) => new UserController().getUsersNotifications(req, res)
 )
 
 export default userRouter;

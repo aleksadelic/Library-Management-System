@@ -7,6 +7,8 @@ exports.BookController = void 0;
 const bookRequest_1 = __importDefault(require("../models/bookRequest"));
 const book_1 = __importDefault(require("../models/book"));
 const bookCounter_1 = __importDefault(require("../models/bookCounter"));
+const user_1 = __importDefault(require("../models/user"));
+const rentingHistory_1 = __importDefault(require("../models/rentingHistory"));
 const fs = require('fs');
 class BookController {
     constructor() {
@@ -281,6 +283,116 @@ class BookController {
                         request.image = 'default.png';
                     var filepath = 'D:\\Aleksa\\3. godina\\2. semestar\\PIA\\Projekat\\backend\\book_images\\' + request.image;
                     res.sendFile(filepath);
+                }
+            });
+        };
+        this.rentBook = (req, res) => {
+            let book = req.body.book;
+            let username = req.body.username;
+            user_1.default.findOne({ 'username': username }, (err, user) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    if (user == null) {
+                        res.json({ 'message': 'error' });
+                        return;
+                    }
+                    let rental = {
+                        book: book,
+                        daysLeft: 30,
+                        rentalDate: new Date()
+                    };
+                    user_1.default.updateOne({ 'username': username }, { $push: { 'rentals': rental } }, (err, resp) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                    });
+                    book_1.default.updateOne({ 'id': book.id }, { $inc: { 'available': -1, 'rentals': 1, 'totalRentals': 1 } }, (err, resp) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        else {
+                            res.json({ 'message': 'ok' });
+                        }
+                    });
+                }
+            });
+        };
+        this.returnBook = (req, res) => {
+            let username = req.body.username;
+            let id = req.body.id;
+            user_1.default.findOne({ 'username': username }, (err, user) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    var rental;
+                    for (let i = 0; i < user.rentals.length; i++) {
+                        if (user.rentals[i].book.id == id) {
+                            rental = user.rentals[i];
+                            break;
+                        }
+                    }
+                    console.log("VRACAM " + rental.book.title);
+                    user_1.default.updateOne({ 'username': username }, { $pull: { 'rentals': { 'book': { 'id': id } } } }, (err, resp) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        else {
+                            book_1.default.updateOne({ 'id': id }, { $inc: { 'available': 1, 'rentals': -1 } }, (err, resp) => {
+                                if (err) {
+                                    console.log(err);
+                                }
+                                else {
+                                    let rentalRecord = {
+                                        title: rental.book.title,
+                                        id: rental.book.id,
+                                        authors: rental.book.authors,
+                                        rentalDate: rental.rentalDate,
+                                        returnDate: new Date()
+                                    };
+                                    rentingHistory_1.default.findOne({ 'username': username }, (err, record) => {
+                                        if (err) {
+                                            console.log(err);
+                                        }
+                                        else {
+                                            if (record == null) {
+                                                let newRecord = new rentingHistory_1.default({
+                                                    username: username,
+                                                    rentalRecords: []
+                                                });
+                                                newRecord.save((err, resp) => {
+                                                    if (err)
+                                                        console.log(err);
+                                                    else {
+                                                        rentingHistory_1.default.updateOne({ 'username': username }, { $push: { 'rentalRecords': rentalRecord } }, (err, resp) => {
+                                                            if (err) {
+                                                                console.log(err);
+                                                            }
+                                                            else {
+                                                                res.json({ 'message': 'ok' });
+                                                            }
+                                                        });
+                                                    }
+                                                });
+                                            }
+                                            else {
+                                                rentingHistory_1.default.updateOne({ 'username': username }, { $push: { 'rentalRecords': rentalRecord } }, (err, resp) => {
+                                                    if (err) {
+                                                        console.log(err);
+                                                    }
+                                                    else {
+                                                        res.json({ 'message': 'ok' });
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
                 }
             });
         };

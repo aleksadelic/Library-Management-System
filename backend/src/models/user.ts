@@ -35,6 +35,9 @@ let User = new Schema({
     },
     blocked: {
         type: Boolean
+    },
+    deadline: {
+        type: Number
     }
 });
 
