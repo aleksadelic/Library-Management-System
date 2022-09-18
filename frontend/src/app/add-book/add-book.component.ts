@@ -16,7 +16,7 @@ export class AddBookComponent implements OnInit {
 
   title: string;
   authors: string[];
-  genre: string[];
+  genre: string[] = [];
   publisher: string;
   publishYear: number;
   language: string;

@@ -399,4 +399,48 @@ export class UserController {
         })
     }
 
+    promoteUser = (req: express.Request, res: express.Response) => {
+        let username = req.body.username;
+        UserModel.updateOne({'username': username}, {$set: {'type': 1}}, (err, resp) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.json({'message':'ok'});
+            }
+        })
+    }
+
+    demoteUser = (req: express.Request, res: express.Response) => {
+        let username = req.body.username;
+        UserModel.updateOne({'username': username}, {$set: {'type': 0}}, (err, resp) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.json({'message':'ok'});
+            }
+        })
+    }
+
+    blockUser = (req: express.Request, res: express.Response) => {
+        let username = req.body.username;
+        UserModel.updateOne({'username': username}, {$set: {'blocked': true}}, (err, resp) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.json({'message':'ok'});
+            }
+        })
+    }
+
+    unblockUser = (req: express.Request, res: express.Response) => {
+        let username = req.body.username;
+        UserModel.updateOne({'username': username}, {$set: {'blocked': false}}, (err, resp) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.json({'message':'ok'});
+            }
+        })
+    }
+
 }

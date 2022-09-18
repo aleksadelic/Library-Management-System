@@ -67,4 +67,20 @@ userRouter.route('/rejectRequest').post(
     (req, res) => new UserController().rejectRequest(req, res)
 )
 
+userRouter.route('/promoteUser').post(
+    (req, res) => new UserController().promoteUser(req, res)
+)
+
+userRouter.route('/demoteUser').post(
+    (req, res) => new UserController().demoteUser(req, res)
+)
+
+userRouter.route('/blockUser').post(
+    (req, res) => new UserController().blockUser(req, res)
+)
+
+userRouter.route('/unblockUser').post(
+    (req, res) => new UserController().unblockUser(req, res)
+)
+
 export default userRouter;

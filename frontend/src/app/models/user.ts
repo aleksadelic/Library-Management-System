@@ -11,4 +11,5 @@ export class User {
     type: number;
     image: any;
     rentals: Rental[];
+    blocked: boolean;
 }

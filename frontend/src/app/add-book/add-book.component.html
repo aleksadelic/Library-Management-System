@@ -15,7 +15,15 @@
     <tr>
         <td>Zanr:</td>
         <td>
-            <input type="text" name="genre" [(ngModel)]="genre">
+            <!--<input type="text" name="genre" [(ngModel)]="genre">-->
+            <select name="genre" multiple [(ngModel)]="genre">
+                <option value="drama">Drama</option>
+                <option value="edukativni">Edukativni</option>
+                <option value="roman">Roman</option>
+                <option value="fikcija">Fikcija</option>
+                <option value="ljubavni">Ljubavni</option>
+                <option value="komedija">Komedija</option>
+            </select>
         </td>
     </tr>
     <tr>

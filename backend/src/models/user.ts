@@ -32,6 +32,9 @@ let User = new Schema({
     },
     rentals: {
         type: Array
+    },
+    blocked: {
+        type: Boolean
     }
 });
 

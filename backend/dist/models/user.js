@@ -35,6 +35,9 @@ let User = new Schema({
     },
     rentals: {
         type: Array
+    },
+    blocked: {
+        type: Boolean
     }
 });
 exports.default = mongoose_1.default.model('UserModel', User, 'users');

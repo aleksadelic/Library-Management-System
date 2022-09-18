@@ -174,4 +174,32 @@ export class UserService {
     return this.http.post(`${this.uri}/users/rejectRequest`, data);
   }
 
+  promoteUser(username) {
+    const data = {
+      username: username
+    }
+    return this.http.post(`${this.uri}/users/promoteUser`, data);
+  }
+
+  demoteUser(username) {
+    const data = {
+      username: username
+    }
+    return this.http.post(`${this.uri}/users/demoteUser`, data);
+  }
+
+  blockUser(username) {
+    const data = {
+      username: username
+    }
+    return this.http.post(`${this.uri}/users/blockUser`, data);
+  }
+
+  unblockUser(username) {
+    const data = {
+      username: username
+    }
+    return this.http.post(`${this.uri}/users/unblockUser`, data);
+  }
+
 }

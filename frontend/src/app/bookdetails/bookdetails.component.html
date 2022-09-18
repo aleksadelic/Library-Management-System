@@ -6,7 +6,7 @@
     Iznajmljivanja: {{myBook.book.rentals}}
     <br>
 </div>
-<button (click)="seeBook()">Vidi knjigu</button>
+<button *ngIf="user!=null && !user.blocked" (click)="seeBook()">Vidi knjigu</button>
 <button *ngIf="user!=null && user.type==2" (click)="deleteBook()">Izbrisi knjigu</button>
 {{message}}
 <hr/>

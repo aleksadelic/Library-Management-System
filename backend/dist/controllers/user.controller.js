@@ -403,6 +403,50 @@ class UserController {
                 }
             });
         };
+        this.promoteUser = (req, res) => {
+            let username = req.body.username;
+            user_1.default.updateOne({ 'username': username }, { $set: { 'type': 1 } }, (err, resp) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json({ 'message': 'ok' });
+                }
+            });
+        };
+        this.demoteUser = (req, res) => {
+            let username = req.body.username;
+            user_1.default.updateOne({ 'username': username }, { $set: { 'type': 0 } }, (err, resp) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json({ 'message': 'ok' });
+                }
+            });
+        };
+        this.blockUser = (req, res) => {
+            let username = req.body.username;
+            user_1.default.updateOne({ 'username': username }, { $set: { 'blocked': true } }, (err, resp) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json({ 'message': 'ok' });
+                }
+            });
+        };
+        this.unblockUser = (req, res) => {
+            let username = req.body.username;
+            user_1.default.updateOne({ 'username': username }, { $set: { 'blocked': false } }, (err, resp) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json({ 'message': 'ok' });
+                }
+            });
+        };
     }
 }
 exports.UserController = UserController;
