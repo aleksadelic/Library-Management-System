@@ -162,4 +162,12 @@ export class BookService {
     return this.http.post(`${this.uri}/books/advancedSearch`, data);
   }
 
+  makeReservation(username, id) {
+    const data = {
+      username: username,
+      id: id
+    }
+    return this.http.post(`${this.uri}/books/makeReservation`, data);
+  }
+
 }

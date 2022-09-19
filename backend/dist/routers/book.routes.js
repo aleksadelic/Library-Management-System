@@ -21,5 +21,6 @@ bookRouter.route('/getRequestImage').post((req, res) => new book_controller_1.Bo
 bookRouter.route('/rentBook').post((req, res) => new book_controller_1.BookController().rentBook(req, res));
 bookRouter.route('/returnBook').post((req, res) => new book_controller_1.BookController().returnBook(req, res));
 bookRouter.route('/advancedSearch').post((req, res) => new book_controller_1.BookController().advancedSearch(req, res));
+bookRouter.route('/makeReservation').post((req, res) => new book_controller_1.BookController().makeReservation(req, res));
 exports.default = bookRouter;
 //# sourceMappingURL=book.routes.js.map

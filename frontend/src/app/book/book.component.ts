@@ -29,6 +29,7 @@ export class BookComponent implements OnInit {
   user: User;
   isAvailable: boolean;
   rentingAvailable: boolean;
+  alreadyRented: boolean;
   rentMessage: string = "";
   messages: string[] = [];
   bookRating: string = "Nema recenzija";
@@ -51,6 +52,11 @@ export class BookComponent implements OnInit {
       } else {
         this.messages = resp;
         this.rentingAvailable = false;
+        if (this.messages.includes('Knjiga je vec zaduzena!')) {
+          this.alreadyRented = true;
+        } else {
+          this.alreadyRented = false;
+        }
       }
     })
   }
@@ -136,4 +142,17 @@ export class BookComponent implements OnInit {
     const file = event.target.files[0];
     this.newImage = file;
   }
+
+  reservationMessage: string;
+
+  makeReservation() {
+    this.bookService.makeReservation(this.user.username, this.book.id).subscribe(resp => {
+      if (resp['message'] != 'ok') {
+        this.reservationMessage = 'Neuspesna rezervacija!';
+      } else {
+        this.reservationMessage = 'Uspesna rezervacija!';
+      }
+    })
+  }
+
 }

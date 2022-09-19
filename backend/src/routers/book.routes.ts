@@ -63,4 +63,8 @@ bookRouter.route('/advancedSearch').post(
     (req, res) => new BookController().advancedSearch(req, res)
 )
 
+bookRouter.route('/makeReservation').post(
+    (req, res) => new BookController().makeReservation(req, res)
+)
+
 export default bookRouter;

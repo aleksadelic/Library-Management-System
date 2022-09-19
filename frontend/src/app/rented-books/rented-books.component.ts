@@ -30,7 +30,7 @@ export class RentedBooksComponent implements OnInit {
     this.userService.getMyRentals(this.user.username).subscribe((rentals: Rental[]) => {
       console.log(rentals);
       this.rentals = rentals;
-      if (this.rentals != null)
+      if (this.rentals != null && this.rentals.length > 0)
         this.getBooksImages();
       else
         this.noRentedBooks = true;
