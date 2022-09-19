@@ -439,6 +439,35 @@ class UserController {
                 }
             });
         };
+        this.extendDeadline = (req, res) => {
+            let username = req.body.username;
+            let id = req.body.id;
+            user_1.default.findOne({ 'username': username }, (err, user) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    deadline_1.default.findOne({ 'name': 'deadline' }, (err, deadline) => {
+                        if (err)
+                            console.log(err);
+                        else {
+                            for (let i = 0; i < user.rentals.length; i++) {
+                                if (user.rentals[i].book.id == id) {
+                                    user.rentals[i].hasExtended = true;
+                                    user.rentals[i].daysLeft += deadline.extension;
+                                }
+                            }
+                            user_1.default.updateOne({ 'username': username }, { $set: { 'rentals': user.rentals } }, (err, resp) => {
+                                if (err)
+                                    console.log(err);
+                                else
+                                    res.json({ 'message': 'ok' });
+                            });
+                        }
+                    });
+                }
+            });
+        };
         this.getUsersNotifications = (req, res) => {
             let username = req.body.username;
             var messages = [];

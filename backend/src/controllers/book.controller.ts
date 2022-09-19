@@ -7,6 +7,7 @@ import UserModel from '../models/user';
 import RentingHistoryModel from '../models/rentingHistory';
 import NotificationModel from '../models/notification';
 import book from '../models/book';
+import DeadlineModel from '../models/deadline';
 
 const fs = require('fs');
 
@@ -322,14 +323,20 @@ export class BookController {
                     res.json({'message':'error'});
                     return;
                 }
-                let rental = {
-                    book: book,
-                    daysLeft: 30,
-                    rentalDate: new Date()
-                }
-                UserModel.updateOne({'username': username}, {$push: {'rentals': rental}}, (err, resp) => {
-                    if (err) {
-                        console.log(err);
+                DeadlineModel.findOne({'name': 'deadline'}, (err, deadline) => {
+                    if (err) console.log(err);
+                    else {
+                        let rental = {
+                            book: book,
+                            daysLeft: deadline.deadline,
+                            rentalDate: new Date(),
+                            hasExtended: false
+                        }
+                        UserModel.updateOne({'username': username}, {$push: {'rentals': rental}}, (err, resp) => {
+                            if (err) {
+                                console.log(err);
+                            }
+                        })
                     }
                 })
                 BookModel.updateOne({'id': book.id}, {$inc: {'available': -1, 'rentals': 1, 'totalRentals': 1}}, (err, resp) => {

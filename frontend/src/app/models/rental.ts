@@ -4,4 +4,5 @@ export class Rental {
     book: Book;
     daysLeft: number;
     rentalDate: Date;
+    hasExtended: boolean;
 }

@@ -10,6 +10,7 @@ const bookCounter_1 = __importDefault(require("../models/bookCounter"));
 const user_1 = __importDefault(require("../models/user"));
 const rentingHistory_1 = __importDefault(require("../models/rentingHistory"));
 const notification_1 = __importDefault(require("../models/notification"));
+const deadline_1 = __importDefault(require("../models/deadline"));
 const fs = require('fs');
 class BookController {
     constructor() {
@@ -330,14 +331,21 @@ class BookController {
                         res.json({ 'message': 'error' });
                         return;
                     }
-                    let rental = {
-                        book: book,
-                        daysLeft: 30,
-                        rentalDate: new Date()
-                    };
-                    user_1.default.updateOne({ 'username': username }, { $push: { 'rentals': rental } }, (err, resp) => {
-                        if (err) {
+                    deadline_1.default.findOne({ 'name': 'deadline' }, (err, deadline) => {
+                        if (err)
                             console.log(err);
+                        else {
+                            let rental = {
+                                book: book,
+                                daysLeft: deadline.deadline,
+                                rentalDate: new Date(),
+                                hasExtended: false
+                            };
+                            user_1.default.updateOne({ 'username': username }, { $push: { 'rentals': rental } }, (err, resp) => {
+                                if (err) {
+                                    console.log(err);
+                                }
+                            });
                         }
                     });
                     book_1.default.updateOne({ 'id': book.id }, { $inc: { 'available': -1, 'rentals': 1, 'totalRentals': 1 } }, (err, resp) => {

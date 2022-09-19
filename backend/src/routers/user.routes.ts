@@ -99,4 +99,8 @@ userRouter.route('/getNumberOfReadBooksByGenre').post(
     (req, res) => new UserController().getNumberOfReadBooksByGenre(req, res)
 )
 
+userRouter.route('/extendDeadline').post(
+    (req, res) => new UserController().extendDeadline(req, res)
+)
+
 export default userRouter;

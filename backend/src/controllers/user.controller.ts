@@ -436,6 +436,32 @@ export class UserController {
         })
     }
 
+    extendDeadline = (req: express.Request, res: express.Response) => {
+        let username = req.body.username;
+        let id = req.body.id;
+        UserModel.findOne({'username': username}, (err, user) => {
+            if (err) {
+                console.log(err);
+            } else {
+                DeadlineModel.findOne({'name': 'deadline'}, (err, deadline) => {
+                    if (err) console.log(err);
+                    else {
+                        for (let i = 0; i < user.rentals.length; i++) {
+                            if (user.rentals[i].book.id == id) {
+                                user.rentals[i].hasExtended = true;
+                                user.rentals[i].daysLeft += deadline.extension;
+                            }
+                        }
+                        UserModel.updateOne({'username': username}, {$set: {'rentals': user.rentals}}, (err, resp) => {
+                            if (err) console.log(err);
+                            else res.json({'message':'ok'});
+                        })
+                    }
+                })
+            }
+        })
+    }
+
     getUsersNotifications = (req: express.Request, res: express.Response) => {
         let username = req.body.username;
         var messages: string[] = [];

@@ -4,6 +4,7 @@ import { BookService } from '../book.service';
 import { BookImage } from '../models/bookImage';
 import { RentalImage } from '../models/rentalImage';
 import { User } from '../models/user';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-rented-book-card',
@@ -12,7 +13,7 @@ import { User } from '../models/user';
 })
 export class RentedBookCardComponent implements OnInit {
 
-  constructor(private router: Router, private bookService: BookService) { }
+  constructor(private router: Router, private bookService: BookService, private userService: UserService) { }
 
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem('logged in'));
@@ -31,6 +32,17 @@ export class RentedBookCardComponent implements OnInit {
     this.bookService.returnBook(this.user.username, this.rentalImage.rental.book.id).subscribe(resp => {
       if (resp['message'] == 'ok') {
         this.message = 'Knjiga uspesno vracena';
+        location.reload();
+      } else {
+        this.message = 'Greska';
+      }
+    })
+  }
+
+  extendDeadline() {
+    this.userService.extendDeadline(this.user.username, this.rentalImage.rental.book.id).subscribe(resp => {
+      if (resp['message'] == 'ok') {
+        this.message = 'Rok za vracanje produzen';
         location.reload();
       } else {
         this.message = 'Greska';

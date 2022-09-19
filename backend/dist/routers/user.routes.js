@@ -32,5 +32,6 @@ userRouter.route('/getDeadline').get((req, res) => new user_controller_1.UserCon
 userRouter.route('/getUserNotifications').post((req, res) => new user_controller_1.UserController().getUsersNotifications(req, res));
 userRouter.route('/getNumberOfReadBooksInLastYear').post((req, res) => new user_controller_1.UserController().getNumberOfReadBooksByGenre(req, res));
 userRouter.route('/getNumberOfReadBooksByGenre').post((req, res) => new user_controller_1.UserController().getNumberOfReadBooksByGenre(req, res));
+userRouter.route('/extendDeadline').post((req, res) => new user_controller_1.UserController().extendDeadline(req, res));
 exports.default = userRouter;
 //# sourceMappingURL=user.routes.js.map

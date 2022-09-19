@@ -6,5 +6,6 @@
 </div>
 <button (click)="seeBook()">Vidi knjigu</button>
 <button (click)="returnBook()">Vrati knjigu</button>
+<button *ngIf="!rentalImage.rental.hasExtended" (click)="extendDeadline()">Produzi rok</button>
 {{message}}
 <hr>
