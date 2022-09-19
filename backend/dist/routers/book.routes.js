@@ -20,5 +20,6 @@ bookRouter.route('/getAllBookRequests').get((req, res) => new book_controller_1.
 bookRouter.route('/getRequestImage').post((req, res) => new book_controller_1.BookController().getRequestImage(req, res));
 bookRouter.route('/rentBook').post((req, res) => new book_controller_1.BookController().rentBook(req, res));
 bookRouter.route('/returnBook').post((req, res) => new book_controller_1.BookController().returnBook(req, res));
+bookRouter.route('/advancedSearch').post((req, res) => new book_controller_1.BookController().advancedSearch(req, res));
 exports.default = bookRouter;
 //# sourceMappingURL=book.routes.js.map

@@ -152,4 +152,14 @@ export class BookService {
     return this.http.post(`${this.uri}/books/returnBook`, data);
   }
 
+  advancedSearch(searchParam, genre, publishYear, publisher) {
+    const data = {
+      searchParam: searchParam,
+      genre: genre,
+      publishYear: publishYear,
+      publisher: publisher
+    }
+    return this.http.post(`${this.uri}/books/advancedSearch`, data);
+  }
+
 }

@@ -419,4 +419,35 @@ export class BookController {
         })     
     }
 
+    advancedSearch = (req: express.Request, res: express.Response) => {
+        let searchParam = req.body.searchParam;
+        let genre = req.body.genre;
+        let publishYear = req.body.publishYear;
+        let publisher = req.body.publisher;
+
+        var regexBasic = new RegExp([searchParam].join(""), "i");
+        var regexPublisher = new RegExp([publisher].join(""), "i");
+
+        let years = publishYear.split('-');
+        var yearLow: number;
+        var yearHigh: number;
+        if (years[0] == '') yearLow = 0;
+        else yearLow = parseInt(years[0]);
+        if (years[1] == '') yearHigh = Number.MAX_SAFE_INTEGER;
+        else yearHigh = parseInt(years[1]);
+
+        BookModel.find({ $or: [{title: regexBasic, publisher: regexPublisher}, {authors: regexBasic, publisher: regexPublisher}] }, (err, books) => {
+            if (err) {
+                console.log(err);
+            } else {
+                var results = books.filter((value, index, arr) => {
+                    if (genre != '' && !value.genre.includes(genre, 0)) return false;
+                    if (value.publishYear < yearLow || value.publishYear > yearHigh) return false;
+                    return true;
+                })
+                res.json(results);
+            }
+        })
+    }
+
 }

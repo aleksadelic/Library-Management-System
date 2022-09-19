@@ -45,6 +45,14 @@ export class MainMenuComponent implements OnInit {
   searchParam: string;
 
   search() {
+    if (!this.isAdvanced) {
+      this.basicSearch();
+    } else {
+      this.advancedSearch();
+    }
+  }
+
+  basicSearch() {
     this.bookImages = [];
     return this.bookService.searchBooks(this.searchParam).subscribe((books: Book[]) => {
       this.books = books;
@@ -68,6 +76,21 @@ export class MainMenuComponent implements OnInit {
         reader.readAsDataURL(image);
       })
     }
+  }
+
+  publishYear: string = '-';
+  genre: string[] = [];
+  publisher: string;
+  isAdvanced: boolean = false;
+
+  advancedSearch() {
+    if (this.publishYear == '')
+      this.publishYear = '-';
+    this.bookImages = [];
+    return this.bookService.advancedSearch(this.searchParam, this.genre, this.publishYear, this.publisher).subscribe((books: Book[]) => {
+      this.books = books;
+      this.getSearchImages();
+    })
   }
 
 }

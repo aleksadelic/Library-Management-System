@@ -59,4 +59,8 @@ bookRouter.route('/returnBook').post(
     (req, res) => new BookController().returnBook(req, res)
 )
 
+bookRouter.route('/advancedSearch').post(
+    (req, res) => new BookController().advancedSearch(req, res)
+)
+
 export default bookRouter;

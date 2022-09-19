@@ -9,9 +9,24 @@
     <br>
     <button (click)="logout()">Odjavi se</button>
 </div>
-<h2>Pretraga:</h2>
+<h2 *ngIf="!isAdvanced">Pretraga:</h2>
+<h2 *ngIf="isAdvanced">Napredna pretraga:</h2>
+<input type="checkbox" name="isAdvanced" [(ngModel)]="isAdvanced"> Napredna pretraga
 <form>
-    <input type="text" name="param" [(ngModel)]="searchParam">
+    Naziv/autor: <input type="text" name="param" [(ngModel)]="searchParam"> <br>
+    <div *ngIf="isAdvanced">
+        Zanr:
+        <select name="genre" multiple [(ngModel)]="genre">
+            <option value="drama">Drama</option>
+            <option value="edukativni">Edukativni</option>
+            <option value="roman">Roman</option>
+            <option value="fikcija">Fikcija</option>
+            <option value="ljubavni">Ljubavni</option>
+            <option value="komedija">Komedija</option>
+        </select>
+        Godina izdanja: <input type="text" name="publishYear" [(ngModel)]="publishYear">
+        Izdavac: <input type="text" name="publisher" [(ngModel)]="publisher">
+    </div>
     <button (click)="search()">Pretrazi</button>
 </form>
 <div *ngFor="let bookImg of bookImages">
