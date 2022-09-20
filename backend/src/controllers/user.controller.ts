@@ -535,22 +535,53 @@ export class UserController {
 
     getNumberOfReadBooksInLastYear = (req: express.Request, res: express.Response) => {
         let username = req.body.username;
-        RentingHistoryModel.findOne({'username': username}, (err, record) => {
+        RentingHistoryModel.findOne({'username': username}, (err, history) => {
             if (err) console.log(err);
             else {
-
+                var date = new Date();
+                var dataYear = new Array(12).fill(0);
+                for (let record of history.rentalRecords) {
+                    var index = 11 - (date.getMonth() - record.returnDate.getMonth()) % 12;
+                    dataYear[index]++;
+                }
+                console.log(dataYear);
+                return res.json(dataYear);
             }
         })
     }
 
     getNumberOfReadBooksByGenre = (req: express.Request, res: express.Response) => {
         let username = req.body.username;
-        RentingHistoryModel.findOne({'username': username}, (err, record) => {
-            if (err) console.log(err);
-            else {
-                
-            }
+        BookModel.find({}, (err, books) => {
+            RentingHistoryModel.findOne({'username': username}, (err, history) => {
+                if (err) console.log(err);
+                else {
+                    var genreMap = new Map();
+                    for (let record of history.rentalRecords) {
+                        for (let book of books) {
+                            if (record.id == book.id) {
+                                for (let genre of book.genre) {
+                                    if (genreMap.has(genre)) {
+                                        var count = genreMap.get(genre);
+                                        genreMap.set(genre, count + 1);
+                                    } else {
+                                        genreMap.set(genre, 1);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    var data: number[] = [];
+                    var labels: string[] = [];
+                    for (let key of genreMap.keys()) {
+                        labels.push(key);
+                    }
+                    for (let value of genreMap.values()) {
+                        data.push(value);
+                    }
+                    res.json({'labels': labels, 'data': data});
+                }
+            })
         })
     }
-
 }

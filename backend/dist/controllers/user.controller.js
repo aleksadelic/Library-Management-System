@@ -546,20 +546,55 @@ class UserController {
         };
         this.getNumberOfReadBooksInLastYear = (req, res) => {
             let username = req.body.username;
-            rentingHistory_1.default.findOne({ 'username': username }, (err, record) => {
+            rentingHistory_1.default.findOne({ 'username': username }, (err, history) => {
                 if (err)
                     console.log(err);
                 else {
+                    var date = new Date();
+                    var dataYear = new Array(12).fill(0);
+                    for (let record of history.rentalRecords) {
+                        var index = 11 - (date.getMonth() - record.returnDate.getMonth()) % 12;
+                        dataYear[index]++;
+                    }
+                    console.log(dataYear);
+                    return res.json(dataYear);
                 }
             });
         };
         this.getNumberOfReadBooksByGenre = (req, res) => {
             let username = req.body.username;
-            rentingHistory_1.default.findOne({ 'username': username }, (err, record) => {
-                if (err)
-                    console.log(err);
-                else {
-                }
+            book_1.default.find({}, (err, books) => {
+                rentingHistory_1.default.findOne({ 'username': username }, (err, history) => {
+                    if (err)
+                        console.log(err);
+                    else {
+                        var genreMap = new Map();
+                        for (let record of history.rentalRecords) {
+                            for (let book of books) {
+                                if (record.id == book.id) {
+                                    for (let genre of book.genre) {
+                                        if (genreMap.has(genre)) {
+                                            var count = genreMap.get(genre);
+                                            genreMap.set(genre, count + 1);
+                                        }
+                                        else {
+                                            genreMap.set(genre, 1);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        var data = [];
+                        var labels = [];
+                        for (let key of genreMap.keys()) {
+                            labels.push(key);
+                        }
+                        for (let value of genreMap.values()) {
+                            data.push(value);
+                        }
+                        res.json({ 'labels': labels, 'data': data });
+                    }
+                });
             });
         };
     }
