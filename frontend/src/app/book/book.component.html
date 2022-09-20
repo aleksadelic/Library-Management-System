@@ -62,7 +62,12 @@
 <img [src]="url" class="image">
 <h3 *ngIf="!edit && book!=null">{{book.title}}</h3>
 <div *ngIf="!edit && book!=null">
-    {{book.authors}}
+    {{book.authors}}<br>
+    Na stanju: {{book.available}}<br>
+    Zanr: {{book.genre}}<br>
+    Izdavac: {{book.publisher}}<br>
+    Godina izdanja: {{book.publishYear}}<br>
+    Jezik: {{book.language}}<br>
 </div>
 <br>
 Zaduzenje:
@@ -80,7 +85,24 @@ Ocena: {{bookRating}}
     Nema recenzija za ovu knjigu.
 </div>
 <div *ngIf="book!=null">
-    <div *ngFor="let comm of book.comments">
+    <div *ngFor="let comm of comments">
         <app-comment [comment]="comm"></app-comment>
     </div>
+</div>
+<div *ngIf="(hasRented || alreadyRented) && !hasCommented">
+    <h4>Dodaj komentar</h4>
+    Ocena: <input type="text" name="rating" [(ngModel)]="rating"><br>
+    Komentar: <textarea name="text" maxlength="1000" [(ngModel)]="text"></textarea><br>
+    <button (click)="addComment()">Dodaj komentar</button>
+    {{commMessage}}
+</div>
+<div *ngIf="(hasRented || alreadyRented) && hasCommented">
+    <input type="checkbox" name="editComm" (click)="prepareForCommentUpdate()" [(ngModel)]="editComment"> Azuriraj komentar 
+</div>
+<div *ngIf="editComment">
+    <h4>Azuriraj komentar</h4>
+    Ocena: <input type="text" name="rating" [(ngModel)]="rating"><br>
+    Komentar: <textarea name="text" maxlength="1000" [(ngModel)]="text"></textarea><br>
+    <button (click)="updateComment()">Azuriraj komentar</button>
+    {{commMessage}}
 </div>

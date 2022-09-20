@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const user_1 = __importDefault(require("../models/user"));
+const book_1 = __importDefault(require("../models/book"));
 const rentingHistory_1 = __importDefault(require("../models/rentingHistory"));
 const registrationRequest_1 = __importDefault(require("../models/registrationRequest"));
 const notification_1 = __importDefault(require("../models/notification"));
@@ -281,6 +282,47 @@ class UserController {
                     if (rentingHistory != null) {
                         console.log(rentingHistory);
                         res.json(rentingHistory.rentalRecords);
+                    }
+                }
+            });
+        };
+        this.checkIfUserCanComment = (req, res) => {
+            let username = req.body.username;
+            let id = req.body.id;
+            rentingHistory_1.default.findOne({ 'username': username }, (err, history) => {
+                if (err)
+                    console.log(err);
+                else {
+                    var hasRented = false;
+                    for (let record of history.rentalRecords) {
+                        if (record.id == id) {
+                            hasRented = true;
+                            break;
+                        }
+                    }
+                    if (hasRented) {
+                        book_1.default.findOne({ 'id': id }, (err, book) => {
+                            if (err)
+                                console.log(err);
+                            else {
+                                var hasCommented = false;
+                                for (let comment of book.comments) {
+                                    if (comment.username == username) {
+                                        hasCommented = true;
+                                        break;
+                                    }
+                                }
+                                if (hasCommented) {
+                                    res.json({ 'hasRented': true, 'hasCommented': true });
+                                }
+                                else {
+                                    res.json({ 'hasRented': true, 'hasCommented': false });
+                                }
+                            }
+                        });
+                    }
+                    else {
+                        res.json({ 'hasRented': false, 'hasCommented': false });
                     }
                 }
             });

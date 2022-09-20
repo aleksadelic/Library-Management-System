@@ -1,9 +1,37 @@
 <img [src]="myBook.url" class="image">
 <div style="padding: 5px;">
-    <h3>{{myBook.book.title}}</h3>
-    {{myBook.book.authors}}
-    <br>
-    Iznajmljivanja: {{myBook.book.rentals}}
+    <!--<h3>{{myBook.book.title}}</h3>
+    {{myBook.book.authors}}<br>
+    Zanr: {{myBook.book.genre}}<br>
+    Izdavac: {{myBook.book.publisher}}<br>
+    Godina izdanja: {{myBook.book.publishYear}}<br>
+    Jezik: {{myBook.book.language}}<br>-->
+    <table>
+        <tr>
+            <td>Naslov:</td>
+            <td>{{myBook.book.title}}</td>
+        </tr>
+        <tr>
+            <td>Autori:</td>
+            <td>{{myBook.book.authors}}</td>
+        </tr>
+        <tr>
+            <td>Zanr:</td>
+            <td>{{myBook.book.genre}}</td>
+        </tr>
+        <tr>
+            <td>Izadavac:</td>
+            <td>{{myBook.book.publisher}}</td>
+        </tr>
+        <!--<tr>
+            <td>Godina izdanja:</td>
+            <td>{{myBook.book.publishYear}}</td>
+        </tr>
+        <tr>
+            <td>Jezik:</td>
+            <td>{{myBook.book.language}}</td>
+        </tr>-->
+    </table>
     <br>
 </div>
 <button *ngIf="user!=null && !user.blocked" (click)="seeBook()">Vidi knjigu</button>

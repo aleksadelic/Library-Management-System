@@ -16,6 +16,7 @@ userRouter.route('/getUserImage').post((req, res) => new user_controller_1.UserC
 userRouter.route('/getRequestImage').post((req, res) => new user_controller_1.UserController().getRequestImage(req, res));
 userRouter.route('/getMyRentals').post((req, res) => new user_controller_1.UserController().getMyRentals(req, res));
 userRouter.route('/checkUserRentals').post((req, res) => new user_controller_1.UserController().checkUserRentals(req, res));
+userRouter.route('/checkIfUserCanComment').post((req, res) => new user_controller_1.UserController().checkIfUserCanComment(req, res));
 userRouter.route('/getRentingHistory').post((req, res) => new user_controller_1.UserController().getRentingHistory(req, res));
 userRouter.route('/getAllUsers').get((req, res) => new user_controller_1.UserController().getAllUsers(req, res));
 userRouter.route('/deleteUser').post((req, res) => new user_controller_1.UserController().deleteUser(req, res));

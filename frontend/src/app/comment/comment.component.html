@@ -1,5 +1,6 @@
 <h2>{{comment.username}}</h2>
+<div *ngIf="comment.edited"><i>azuriran</i></div>
 {{comment.rating}}<br>
 <i>{{comment.text}}</i>
 <br>
-{{comment.datetime}}
+{{dateString}}

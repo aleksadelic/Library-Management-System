@@ -35,6 +35,10 @@ userRouter.route('/checkUserRentals').post(
     (req, res) => new UserController().checkUserRentals(req, res)
 )
 
+userRouter.route('/checkIfUserCanComment').post(
+    (req, res) => new UserController().checkIfUserCanComment(req, res)
+)
+
 userRouter.route('/getRentingHistory').post(
     (req, res) => new UserController().getRentingHistory(req, res)
 )

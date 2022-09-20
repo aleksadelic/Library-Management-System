@@ -67,4 +67,12 @@ bookRouter.route('/makeReservation').post(
     (req, res) => new BookController().makeReservation(req, res)
 )
 
+bookRouter.route('/addComment').post(
+    (req, res) => new BookController().addComment(req, res)
+)
+
+bookRouter.route('/updateComment').post(
+    (req, res) => new BookController().updateComment(req, res)
+)
+
 export default bookRouter;

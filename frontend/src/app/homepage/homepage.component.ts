@@ -26,6 +26,8 @@ export class HomepageComponent implements OnInit {
   }
 
   bookImages: BookImage[] = [];
+  sliderObjects: any[] = [];
+
   getBooksImages() {
     for (var i = 0; i < this.top3Books.length; i++) {
       let book = this.top3Books[i];
@@ -36,10 +38,12 @@ export class HomepageComponent implements OnInit {
           var res = reader.result;
           let bookImage = new BookImage(book, res);
           this.bookImages.push(bookImage);
+          this.sliderObjects.push({image: res, thumbImage: res, title: book.title});
         }, false)
-        
+
         reader.readAsDataURL(image);
       })
     }
   }
+
 }

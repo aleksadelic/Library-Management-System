@@ -3,4 +3,5 @@ export class Comment {
     text: string;
     rating: number;
     datetime: Date;
+    edited: boolean;
 }

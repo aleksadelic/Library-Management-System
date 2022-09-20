@@ -1,6 +1,14 @@
 <a routerLink="/mainMenu">Glavni meni</a> <br>
 <h3>Top 3 knjige:</h3>
-<div *ngFor="let bookImg of bookImages">
+<!--<div *ngFor="let bookImg of bookImages">
     <app-bookdetails [myBook]="bookImg"></app-bookdetails>
-</div> 
-
+</div>--> 
+<div style="width: 840px; height: 500px; text-align:center;margin:0; padding:0;">
+    <ng-image-slider #nav
+      [images]="sliderObjects"
+      [infinite]="false"
+      [autoSlide]="1"
+      [imageSize]="{width: '18%', height: 200}"
+      slideImage="1">
+    </ng-image-slider>
+  </div>

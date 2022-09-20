@@ -243,4 +243,12 @@ export class UserService {
     }
     return this.http.post(`${this.uri}/users/extendDeadline`, data);
   }
+
+  checkIfUserCanComment(username, id) {
+    const data = {
+      username: username,
+      id: id
+    }
+    return this.http.post(`${this.uri}/users/checkIfUserCanComment`, data);
+  }
 }

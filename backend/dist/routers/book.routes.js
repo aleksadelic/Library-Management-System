@@ -22,5 +22,7 @@ bookRouter.route('/rentBook').post((req, res) => new book_controller_1.BookContr
 bookRouter.route('/returnBook').post((req, res) => new book_controller_1.BookController().returnBook(req, res));
 bookRouter.route('/advancedSearch').post((req, res) => new book_controller_1.BookController().advancedSearch(req, res));
 bookRouter.route('/makeReservation').post((req, res) => new book_controller_1.BookController().makeReservation(req, res));
+bookRouter.route('/addComment').post((req, res) => new book_controller_1.BookController().addComment(req, res));
+bookRouter.route('/updateComment').post((req, res) => new book_controller_1.BookController().updateComment(req, res));
 exports.default = bookRouter;
 //# sourceMappingURL=book.routes.js.map

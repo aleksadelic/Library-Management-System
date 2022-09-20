@@ -170,4 +170,24 @@ export class BookService {
     return this.http.post(`${this.uri}/books/makeReservation`, data);
   }
 
+  addComment(username, id, rating, text) {
+    const data = {
+      username: username,
+      id: id,
+      rating: rating,
+      text: text
+    }
+    return this.http.post(`${this.uri}/books/addComment`, data);
+  }
+
+  updateComment(username, id, rating, text) {
+    const data = {
+      username: username,
+      id: id,
+      rating: rating,
+      text: text
+    }
+    return this.http.post(`${this.uri}/books/updateComment`, data);
+  }
+
 }

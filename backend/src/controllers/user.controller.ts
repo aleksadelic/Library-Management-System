@@ -280,6 +280,44 @@ export class UserController {
         })
     }
 
+    checkIfUserCanComment = (req: express.Request, res: express.Response) => {
+        let username = req.body.username;
+        let id = req.body.id;
+        RentingHistoryModel.findOne({'username': username}, (err, history) => {
+            if (err) console.log(err);
+            else {
+                var hasRented = false;
+                for (let record of history.rentalRecords) {
+                    if (record.id == id) {
+                        hasRented = true;
+                        break;
+                    }
+                }
+                if (hasRented) {
+                    BookModel.findOne({'id': id}, (err, book) => {
+                        if (err) console.log(err);
+                        else {
+                            var hasCommented = false;
+                            for (let comment of book.comments) {
+                                if (comment.username == username) {
+                                    hasCommented = true;
+                                    break;
+                                }
+                            }
+                            if (hasCommented) {
+                                res.json({'hasRented': true, 'hasCommented': true});
+                            } else {
+                                res.json({'hasRented': true, 'hasCommented': false});
+                            }
+                        }
+                    })
+                } else {
+                    res.json({'hasRented': false, 'hasCommented': false});
+                }
+            }
+        })
+    }
+
     updateUserAndImage = (req: express.Request, res: express.Response, filename: String) => {
         let oldUsername = req.body.data[0];
         let username = req.body.data[1];

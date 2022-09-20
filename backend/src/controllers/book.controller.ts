@@ -590,4 +590,65 @@ export class BookController {
         })
     }
 
+    addComment = (req: express.Request, res: express.Response) => {
+        let username = req.body.username;
+        let id = req.body.id;
+        let rating = req.body.rating;
+        let text = req.body.text;
+
+        RentingHistoryModel.findOne({'username': username}, (err, history) => {
+            if (err) console.log(err);
+            else {
+                var hasRented = false;
+                for (let record of history.rentalRecords) {
+                    if (record.id == id) {
+                        hasRented = true;
+                        break;
+                    }
+                }
+                if (hasRented) {
+                    let comment = {
+                        username: username,
+                        rating: parseInt(rating),
+                        text: text,
+                        datetime: new Date(),
+                        edited: false
+                    }
+                    BookModel.updateOne({'id': id}, {$push: {'comments': comment}}, (err, resp) => {
+                        if (err) console.log(err);
+                        else res.json({'message':'ok'});
+                    })
+                } else {
+                    res.json({'message':'Korisnik nije zaduzivao knjigu!'});
+                }
+            }
+        })
+        
+    }
+
+    updateComment = (req: express.Request, res: express.Response) => {
+        let username = req.body.username;
+        let id = req.body.id;
+        let rating = req.body.rating;
+        let text = req.body.text;
+
+        BookModel.findOne({'id': id}, (err, book) => {
+            if (err) console.log(err);
+            else {
+                for (let i = 0; i < book.comments.length; i++) {
+                    if (book.comments[i].username == username) {
+                        book.comments[i].rating = rating;
+                        book.comments[i].text = text;
+                        book.comments[i].edited = true
+                        break;
+                    }
+                }
+                BookModel.updateOne({'id': id}, {$set: {'comments': book.comments}}, (err, resp) => {
+                    if (err) console.log(err);
+                    else res.json({'message':'ok'});
+                })
+            }
+        })
+    }
+
 }

@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BookService } from '../book.service';
 import { Book } from '../models/book';
 import { BookImage } from '../models/bookImage';
+import { Comment } from '../models/comment';
 import { User } from '../models/user';
 import { UserService } from '../user.service';
 
@@ -33,6 +34,7 @@ export class BookComponent implements OnInit {
   rentMessage: string = "";
   messages: string[] = [];
   bookRating: string = "Nema recenzija";
+  comments: Comment[] = [];
 
   rentBook() {
     this.bookService.rentBook(this.book, this.user.username).subscribe(resp => {
@@ -58,12 +60,20 @@ export class BookComponent implements OnInit {
           this.alreadyRented = false;
         }
       }
+      this.checkIfUserCanComment();
     })
   }
 
   getBook() {
     this.bookService.getBook(this.id).subscribe((book: Book) => {
       this.book = book;
+      this.comments = book.comments.sort((comm1, comm2) => {
+        if (comm1.datetime < comm2.datetime) {
+          return 1;
+        } else if (comm1.datetime == comm2.datetime) {
+          return 0;
+        } else return -1;
+      })
       this.isAvailable = book.available > 0;
       this.noComments = book.comments == null || book.comments.length == 0;
       this.getBookImage();
@@ -151,6 +161,54 @@ export class BookComponent implements OnInit {
         this.reservationMessage = 'Neuspesna rezervacija!';
       } else {
         this.reservationMessage = 'Uspesna rezervacija!';
+      }
+    })
+  }
+  
+  rating: number;
+  text: string;
+  commMessage: string;
+
+  addComment() {
+    this.bookService.addComment(this.user.username, this.id, this.rating, this.text).subscribe(resp => {
+      if (resp['message']=='ok') {
+        this.commMessage = 'Komentar uspesno dodat!';
+      } else {
+        this.commMessage = resp['message'];
+      }
+    })
+  }
+
+  hasRented: boolean;
+  hasCommented: boolean;
+  editComment: boolean = false;
+
+  checkIfUserCanComment() {
+    this.userService.checkIfUserCanComment(this.user.username, this.id).subscribe(resp => {
+      this.hasRented = resp['hasRented'];
+      this.hasCommented = resp['hasCommented'];
+      console.log(this.hasRented);
+      console.log(this.hasCommented);
+    })
+  }
+
+  prepareForCommentUpdate() {
+    for (let comm of this.comments) {
+      if (comm.username == this.user.username) {
+        this.rating = comm.rating;
+        this.text = comm.text;
+        break;
+      }
+    }
+  }
+
+  updateComment() {
+    this.bookService.updateComment(this.user.username, this.id, this.rating, this.text).subscribe(resp => {
+      if (resp['message']=='ok') {
+        this.commMessage = 'Komentar uspesno azuriran!';
+        location.reload();
+      } else {
+        this.commMessage = resp['message'];
       }
     })
   }
