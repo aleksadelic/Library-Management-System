@@ -293,36 +293,41 @@ class UserController {
                 if (err)
                     console.log(err);
                 else {
-                    var hasRented = false;
-                    for (let record of history.rentalRecords) {
-                        if (record.id == id) {
-                            hasRented = true;
-                            break;
-                        }
-                    }
-                    if (hasRented) {
-                        book_1.default.findOne({ 'id': id }, (err, book) => {
-                            if (err)
-                                console.log(err);
-                            else {
-                                var hasCommented = false;
-                                for (let comment of book.comments) {
-                                    if (comment.username == username) {
-                                        hasCommented = true;
-                                        break;
-                                    }
-                                }
-                                if (hasCommented) {
-                                    res.json({ 'hasRented': true, 'hasCommented': true });
-                                }
-                                else {
-                                    res.json({ 'hasRented': true, 'hasCommented': false });
-                                }
-                            }
-                        });
+                    if (history == null) {
+                        res.json({ 'hasRented': false, 'hasCommented': false });
                     }
                     else {
-                        res.json({ 'hasRented': false, 'hasCommented': false });
+                        var hasRented = false;
+                        for (let record of history.rentalRecords) {
+                            if (record.id == id) {
+                                hasRented = true;
+                                break;
+                            }
+                        }
+                        if (hasRented) {
+                            book_1.default.findOne({ 'id': id }, (err, book) => {
+                                if (err)
+                                    console.log(err);
+                                else {
+                                    var hasCommented = false;
+                                    for (let comment of book.comments) {
+                                        if (comment.username == username) {
+                                            hasCommented = true;
+                                            break;
+                                        }
+                                    }
+                                    if (hasCommented) {
+                                        res.json({ 'hasRented': true, 'hasCommented': true });
+                                    }
+                                    else {
+                                        res.json({ 'hasRented': true, 'hasCommented': false });
+                                    }
+                                }
+                            });
+                        }
+                        else {
+                            res.json({ 'hasRented': false, 'hasCommented': false });
+                        }
                     }
                 }
             });
@@ -337,8 +342,12 @@ class UserController {
             let tel = req.body.data[6];
             let email = req.body.data[7];
             let image = filename;
-            user_1.default.updateOne({ 'username': oldUsername }, { $set: { 'username': username, 'password': password, 'firstname': firstname,
-                    'lastname': lastname, 'address': address, 'tel': tel, 'email': email, 'image': image } }, (err, resp) => {
+            user_1.default.updateOne({ 'username': oldUsername }, {
+                $set: {
+                    'username': username, 'password': password, 'firstname': firstname,
+                    'lastname': lastname, 'address': address, 'tel': tel, 'email': email, 'image': image
+                }
+            }, (err, resp) => {
                 if (err) {
                     console.log(err);
                 }
@@ -356,8 +365,12 @@ class UserController {
             let address = req.body.address;
             let tel = req.body.tel;
             let email = req.body.email;
-            user_1.default.updateOne({ 'username': oldUsername }, { $set: { 'username': username, 'password': password, 'firstname': firstname,
-                    'lastname': lastname, 'address': address, 'tel': tel, 'email': email } }, (err, resp) => {
+            user_1.default.updateOne({ 'username': oldUsername }, {
+                $set: {
+                    'username': username, 'password': password, 'firstname': firstname,
+                    'lastname': lastname, 'address': address, 'tel': tel, 'email': email
+                }
+            }, (err, resp) => {
                 if (err) {
                     console.log(err);
                 }

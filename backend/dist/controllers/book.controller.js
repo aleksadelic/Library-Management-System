@@ -146,19 +146,159 @@ class BookController {
             let publishYear = req.body.publishYear;
             let language = req.body.language;
             let available = req.body.available;
-            book_1.default.updateOne({ 'id': id }, {
-                $set: {
-                    'title': title, 'authors': authors, 'genre': genre,
-                    'publisher': publisher, 'publishYear': publishYear, 'language': language, 'available': available
-                }
-            }, (err, resp) => {
-                if (err) {
+            reservation_1.default.find({ 'bookId': id, 'condition': true }, (err, reservations) => {
+                if (err)
                     console.log(err);
+                console.log(reservations);
+                if (reservations.length >= available) {
+                    book_1.default.findOneAndUpdate({ 'id': id }, {
+                        $set: {
+                            'title': title, 'authors': authors, 'genre': genre,
+                            'publisher': publisher, 'publishYear': publishYear, 'language': language, 'available': 0
+                        }, $inc: { 'rentals': available, 'totalRentals': available }
+                    }, (err, book) => {
+                        if (err)
+                            console.log(err);
+                        else {
+                            console.log(reservations);
+                            for (let reservation of reservations) {
+                                console.log("REZERVACIJA " + reservation);
+                                deadline_1.default.findOne({ 'name': 'deadline' }, (err, deadline) => {
+                                    let rental = {
+                                        book: book,
+                                        daysLeft: deadline.deadline,
+                                        rentalDate: new Date(),
+                                        hasExtended: false
+                                    };
+                                    var targetUsername = reservation.username;
+                                    var resId = reservation.id;
+                                    user_1.default.findOneAndUpdate({ 'username': targetUsername }, { $push: { 'rentals': rental } }, (err, user) => {
+                                        if (err)
+                                            console.log(err);
+                                        else {
+                                            console.log(targetUsername);
+                                            reservation_1.default.deleteOne({ 'id': resId }, (err, resp) => {
+                                                if (err)
+                                                    console.log(err);
+                                            });
+                                            var flag = true;
+                                            if (user.rentals.length >= 2)
+                                                flag = false;
+                                            for (let rental of user.rentals) {
+                                                if (rental.daysLeft < 0)
+                                                    flag = false;
+                                            }
+                                            if (!flag) {
+                                                reservation_1.default.updateMany({ 'username': user.username }, { $set: { 'condition': false } }, (err, resp) => {
+                                                    if (err)
+                                                        console.log(err);
+                                                    //else res.json({ 'message': 'ok' });
+                                                });
+                                            }
+                                        }
+                                    });
+                                    notification_1.default.findOne({ 'username': targetUsername }, (err, notif) => {
+                                        var notification = 'Zaduzena rezervisana knjiga - ' + book.title;
+                                        if (notif) {
+                                            notification_1.default.updateOne({ 'username': targetUsername }, { $push: { 'notifications': notification } }, (err, resp) => {
+                                                if (err)
+                                                    console.log(err);
+                                                //else res.json({ 'message': 'ok' });
+                                            });
+                                        }
+                                        else {
+                                            let newNotifModel = new notification_1.default({
+                                                username: targetUsername,
+                                                notifications: [notification]
+                                            });
+                                            newNotifModel.save((err, resp) => {
+                                                if (err)
+                                                    console.log(err);
+                                                //else res.json({ 'message': 'ok' });
+                                            });
+                                        }
+                                    });
+                                });
+                            }
+                            res.json({ 'message': 'ok' });
+                        }
+                    });
                 }
                 else {
-                    res.json({ 'message': 'ok' });
+                    book_1.default.findOneAndUpdate({ 'id': id }, {
+                        $set: {
+                            'title': title, 'authors': authors, 'genre': genre,
+                            'publisher': publisher, 'publishYear': publishYear, 'language': language, 'available': available - reservations.length
+                        }, $inc: { 'rentals': reservations.length, 'totalRentals': reservations.length }
+                    }, (err, book) => {
+                        if (err)
+                            console.log(err);
+                        else {
+                            console.log(reservations);
+                            for (let reservation of reservations) {
+                                console.log("REZERVACIJA " + reservation);
+                                deadline_1.default.findOne({ 'name': 'deadline' }, (err, deadline) => {
+                                    let rental = {
+                                        book: book,
+                                        daysLeft: deadline.deadline,
+                                        rentalDate: new Date(),
+                                        hasExtended: false
+                                    };
+                                    var targetUsername = reservation.username;
+                                    var resId = reservation.id;
+                                    user_1.default.findOneAndUpdate({ 'username': targetUsername }, { $push: { 'rentals': rental } }, (err, user) => {
+                                        if (err)
+                                            console.log(err);
+                                        else {
+                                            console.log(targetUsername);
+                                            reservation_1.default.deleteOne({ 'id': resId }, (err, resp) => {
+                                                if (err)
+                                                    console.log(err);
+                                            });
+                                            var flag = true;
+                                            if (user.rentals.length >= 2)
+                                                flag = false;
+                                            for (let rental of user.rentals) {
+                                                if (rental.daysLeft < 0)
+                                                    flag = false;
+                                            }
+                                            if (!flag) {
+                                                reservation_1.default.updateMany({ 'username': user.username }, { $set: { 'condition': false } }, (err, resp) => {
+                                                    if (err)
+                                                        console.log(err);
+                                                    //else res.json({ 'message': 'ok' });
+                                                });
+                                            }
+                                        }
+                                    });
+                                    notification_1.default.findOne({ 'username': targetUsername }, (err, notif) => {
+                                        var notification = 'Zaduzena rezervisana knjiga - ' + book.title;
+                                        if (notif) {
+                                            notification_1.default.updateOne({ 'username': targetUsername }, { $push: { 'notifications': notification } }, (err, resp) => {
+                                                if (err)
+                                                    console.log(err);
+                                                //else res.json({ 'message': 'ok' });
+                                            });
+                                        }
+                                        else {
+                                            let newNotifModel = new notification_1.default({
+                                                username: targetUsername,
+                                                notifications: [notification]
+                                            });
+                                            newNotifModel.save((err, resp) => {
+                                                if (err)
+                                                    console.log(err);
+                                                //else res.json({ 'message': 'ok' });
+                                            });
+                                        }
+                                    });
+                                });
+                            }
+                            res.json({ 'message': 'ok' });
+                        }
+                    });
                 }
-            });
+            }).sort({ 'id': 1 }).limit(available);
         };
         this.getAllBooks = (req, res) => {
             book_1.default.find({}, (err, books) => {
@@ -356,7 +496,8 @@ class BookController {
                                 }
                                 else {
                                     var flag = true;
-                                    if (user.rentals.length >= 3)
+                                    console.log(user.rentals);
+                                    if (user.rentals.length >= 2)
                                         flag = false;
                                     for (let rental of user.rentals) {
                                         if (rental.daysLeft < 0)
@@ -505,7 +646,7 @@ class BookController {
                                                     console.log(err);
                                             });
                                             var flag = true;
-                                            if (user.rentals.length >= 3)
+                                            if (user.rentals.length >= 2)
                                                 flag = false;
                                             for (let rental of user.rentals) {
                                                 if (rental.daysLeft < 0)

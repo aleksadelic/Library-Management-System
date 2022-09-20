@@ -11,19 +11,19 @@ export class UserController {
         let username = req.body.data[0];
         let email = req.body.data[6];
 
-        UserModel.findOne({'username': username}, (err, user) => {
+        UserModel.findOne({ 'username': username }, (err, user) => {
             if (err) {
                 console.log(err);
             } else {
                 if (user) {
-                    res.json({"message":"Korisnik sa zadatim korisnickim imenom vec postoji!"});
+                    res.json({ "message": "Korisnik sa zadatim korisnickim imenom vec postoji!" });
                 } else {
-                    UserModel.findOne({'email': email}, (err, user) => {
+                    UserModel.findOne({ 'email': email }, (err, user) => {
                         if (err) {
                             console.log(err);
                         } else {
                             if (user) {
-                                res.json({"message":"Korisnik sa zadatim e-mail vec postoji!"});
+                                res.json({ "message": "Korisnik sa zadatim e-mail vec postoji!" });
                             } else {
                                 let request = new RegistrationRequestModel({
                                     username: req.body.data[0],
@@ -36,12 +36,12 @@ export class UserController {
                                     type: 0,
                                     image: filename
                                 });
-                        
+
                                 request.save((err, resp) => {
                                     if (err) {
                                         console.log(err);
                                     } else {
-                                        res.json({"message":"ok"});
+                                        res.json({ "message": "ok" });
                                     }
                                 })
                             }
@@ -56,7 +56,7 @@ export class UserController {
         let username = req.body.username;
         let password = req.body.password;
 
-        UserModel.findOne({'username': username, 'password': password}, (err, user) => {
+        UserModel.findOne({ 'username': username, 'password': password }, (err, user) => {
             if (err) {
                 console.log(err);
             } else {
@@ -69,7 +69,7 @@ export class UserController {
         let username = req.body.username;
         let password = req.body.password;
 
-        UserModel.findOne({'username': username, 'password': password, 'type': 2}, (err, user) => {
+        UserModel.findOne({ 'username': username, 'password': password, 'type': 2 }, (err, user) => {
             if (err) {
                 console.log(err);
             } else {
@@ -79,7 +79,7 @@ export class UserController {
     }
 
     getAllUsers = (req: express.Request, res: express.Response) => {
-        UserModel.find({$or: [{'type': 0}, {'type': 1}]}, (err, users) => {
+        UserModel.find({ $or: [{ 'type': 0 }, { 'type': 1 }] }, (err, users) => {
             if (err) {
                 console.log(err);
             } else {
@@ -90,20 +90,20 @@ export class UserController {
 
     deleteUser = (req: express.Request, res: express.Response) => {
         let username = req.body.username;
-        UserModel.find({'username': username}, (err, user) => {
+        UserModel.find({ 'username': username }, (err, user) => {
             if (err) {
                 console.log(err);
             } else {
                 if (user.rentals == null || user.rentals.length == 0) {
-                    UserModel.deleteOne({'username': username}, (err, resp) => {
+                    UserModel.deleteOne({ 'username': username }, (err, resp) => {
                         if (err) {
                             console.log(err);
                         } else {
-                            res.json({'message':'ok'});
+                            res.json({ 'message': 'ok' });
                         }
                     })
                 } else {
-                    res.json({'message':'Korisnik ima zaduzene knjige!'});
+                    res.json({ 'message': 'Korisnik ima zaduzene knjige!' });
                 }
             }
         })
@@ -113,19 +113,19 @@ export class UserController {
         let username = req.body.data[0];
         let email = req.body.data[6];
 
-        UserModel.findOne({'username': username}, (err, user) => {
+        UserModel.findOne({ 'username': username }, (err, user) => {
             if (err) {
                 console.log(err);
             } else {
                 if (user) {
-                    res.json({"message":"Korisnik sa zadatim korisnickim imenom vec postoji!"});
+                    res.json({ "message": "Korisnik sa zadatim korisnickim imenom vec postoji!" });
                 } else {
-                    UserModel.findOne({'email': email}, (err, user) => {
+                    UserModel.findOne({ 'email': email }, (err, user) => {
                         if (err) {
                             console.log(err);
                         } else {
                             if (user) {
-                                res.json({"message":"Korisnik sa zadatim e-mail vec postoji!"});
+                                res.json({ "message": "Korisnik sa zadatim e-mail vec postoji!" });
                             } else {
                                 let user = new UserModel({
                                     username: req.body.data[0],
@@ -139,12 +139,12 @@ export class UserController {
                                     image: filename,
                                     deadline: 14
                                 });
-                        
+
                                 user.save((err, resp) => {
                                     if (err) {
                                         console.log(err);
                                     } else {
-                                        res.json({"message":"ok"});
+                                        res.json({ "message": "ok" });
                                     }
                                 })
                             }
@@ -170,20 +170,20 @@ export class UserController {
         let oldPassword = req.body.oldPassword;
         let newPassword = req.body.newPassword;
 
-        UserModel.findOne({'username': username}, (err, user) => {
+        UserModel.findOne({ 'username': username }, (err, user) => {
             if (err) {
                 console.log(err);
             } else {
                 if (user.password == oldPassword) {
-                    UserModel.updateOne({'username': username}, {$set: {'password': newPassword}}, (err, resp) => {
+                    UserModel.updateOne({ 'username': username }, { $set: { 'password': newPassword } }, (err, resp) => {
                         if (err) {
                             console.log(err);
                         } else {
-                            res.json({"message":"ok"});
+                            res.json({ "message": "ok" });
                         }
                     })
                 } else {
-                    res.json({"message":"error"});
+                    res.json({ "message": "error" });
                 }
             }
         })
@@ -191,12 +191,12 @@ export class UserController {
 
     uploadImage = (req: express.Request, res: express.Response) => {
         console.log(req.body);
-        res.json({ message: "Uspesno uploadovan fajl!"});
+        res.json({ message: "Uspesno uploadovan fajl!" });
     }
 
     getUserImage = (req: express.Request, res: express.Response) => {
         let username = req.body.username;
-        UserModel.findOne({'username': username}, (err, user) => {
+        UserModel.findOne({ 'username': username }, (err, user) => {
             if (err) {
                 console.log(err);
             } else {
@@ -211,7 +211,7 @@ export class UserController {
 
     getRequestImage = (req: express.Request, res: express.Response) => {
         let username = req.body.username;
-        RegistrationRequestModel.findOne({'username': username}, (err, request) => {
+        RegistrationRequestModel.findOne({ 'username': username }, (err, request) => {
             if (err) {
                 console.log(err);
             } else {
@@ -225,7 +225,7 @@ export class UserController {
 
     getMyRentals = (req: express.Request, res: express.Response) => {
         let username = req.body.username;
-        UserModel.findOne({'username': username}, (err, user) => {
+        UserModel.findOne({ 'username': username }, (err, user) => {
             if (err) {
                 console.log(err);
             } else {
@@ -240,12 +240,12 @@ export class UserController {
 
         let messages: string[] = [];
 
-        UserModel.findOne({'username': username}, (err, user) => {
+        UserModel.findOne({ 'username': username }, (err, user) => {
             if (err) {
                 console.log(err);
             } else {
                 if (user == null) {
-                    res.json({'message':'error'});
+                    res.json({ 'message': 'error' });
                     return;
                 }
                 if (user.rentals.length >= 3) {
@@ -268,11 +268,11 @@ export class UserController {
     getRentingHistory = (req: express.Request, res: express.Response) => {
         let username = req.body.username;
 
-        RentingHistoryModel.findOne({'username': username}, (err, rentingHistory) => {
+        RentingHistoryModel.findOne({ 'username': username }, (err, rentingHistory) => {
             if (err) {
                 console.log(err);
             } else {
-                if (rentingHistory != null){
+                if (rentingHistory != null) {
                     console.log(rentingHistory);
                     res.json(rentingHistory.rentalRecords);
                 }
@@ -283,36 +283,40 @@ export class UserController {
     checkIfUserCanComment = (req: express.Request, res: express.Response) => {
         let username = req.body.username;
         let id = req.body.id;
-        RentingHistoryModel.findOne({'username': username}, (err, history) => {
+        RentingHistoryModel.findOne({ 'username': username }, (err, history) => {
             if (err) console.log(err);
             else {
-                var hasRented = false;
-                for (let record of history.rentalRecords) {
-                    if (record.id == id) {
-                        hasRented = true;
-                        break;
+                if (history == null) {
+                    res.json({ 'hasRented': false, 'hasCommented': false });
+                } else {
+                    var hasRented = false;
+                    for (let record of history.rentalRecords) {
+                        if (record.id == id) {
+                            hasRented = true;
+                            break;
+                        }
                     }
-                }
-                if (hasRented) {
-                    BookModel.findOne({'id': id}, (err, book) => {
-                        if (err) console.log(err);
-                        else {
-                            var hasCommented = false;
-                            for (let comment of book.comments) {
-                                if (comment.username == username) {
-                                    hasCommented = true;
-                                    break;
+                    if (hasRented) {
+                        BookModel.findOne({ 'id': id }, (err, book) => {
+                            if (err) console.log(err);
+                            else {
+                                var hasCommented = false;
+                                for (let comment of book.comments) {
+                                    if (comment.username == username) {
+                                        hasCommented = true;
+                                        break;
+                                    }
+                                }
+                                if (hasCommented) {
+                                    res.json({ 'hasRented': true, 'hasCommented': true });
+                                } else {
+                                    res.json({ 'hasRented': true, 'hasCommented': false });
                                 }
                             }
-                            if (hasCommented) {
-                                res.json({'hasRented': true, 'hasCommented': true});
-                            } else {
-                                res.json({'hasRented': true, 'hasCommented': false});
-                            }
-                        }
-                    })
-                } else {
-                    res.json({'hasRented': false, 'hasCommented': false});
+                        })
+                    } else {
+                        res.json({ 'hasRented': false, 'hasCommented': false });
+                    }
                 }
             }
         })
@@ -329,12 +333,16 @@ export class UserController {
         let email = req.body.data[7];
         let image = filename;
 
-        UserModel.updateOne({'username': oldUsername}, {$set: {'username': username, 'password': password, 'firstname': firstname, 
-            'lastname': lastname, 'address': address, 'tel': tel, 'email': email, 'image': image}}, (err, resp) => {
+        UserModel.updateOne({ 'username': oldUsername }, {
+            $set: {
+                'username': username, 'password': password, 'firstname': firstname,
+                'lastname': lastname, 'address': address, 'tel': tel, 'email': email, 'image': image
+            }
+        }, (err, resp) => {
             if (err) {
                 console.log(err);
             } else {
-                res.json({'message':'ok'});
+                res.json({ 'message': 'ok' });
             }
         })
     }
@@ -349,12 +357,16 @@ export class UserController {
         let tel = req.body.tel;
         let email = req.body.email;
 
-        UserModel.updateOne({'username': oldUsername}, {$set: {'username': username, 'password': password, 'firstname': firstname, 
-            'lastname': lastname, 'address': address, 'tel': tel, 'email': email}}, (err, resp) => {
+        UserModel.updateOne({ 'username': oldUsername }, {
+            $set: {
+                'username': username, 'password': password, 'firstname': firstname,
+                'lastname': lastname, 'address': address, 'tel': tel, 'email': email
+            }
+        }, (err, resp) => {
             if (err) {
                 console.log(err);
             } else {
-                res.json({'message':'ok'});
+                res.json({ 'message': 'ok' });
             }
         })
     }
@@ -362,7 +374,7 @@ export class UserController {
     acceptRequest = (req: express.Request, res: express.Response) => {
         let username = req.body.username;
 
-        RegistrationRequestModel.findOne({'username': username}, (err, request) => {
+        RegistrationRequestModel.findOne({ 'username': username }, (err, request) => {
             if (err) {
                 console.log(err);
             } else {
@@ -384,11 +396,11 @@ export class UserController {
                     if (err) {
                         console.log(err);
                     } else {
-                        RegistrationRequestModel.deleteOne({'username': username}, (err, resp) => {
+                        RegistrationRequestModel.deleteOne({ 'username': username }, (err, resp) => {
                             if (err) {
                                 console.log(err);
                             } else {
-                                res.json({"message":"ok"});
+                                res.json({ "message": "ok" });
                             }
                         })
                     }
@@ -399,55 +411,55 @@ export class UserController {
 
     rejectRequest = (req: express.Request, res: express.Response) => {
         let username = req.body.username;
-        RegistrationRequestModel.deleteOne({'username': username}, (err, resp) => {
+        RegistrationRequestModel.deleteOne({ 'username': username }, (err, resp) => {
             if (err) {
                 console.log(err);
             } else {
-                res.json({"message":"ok"});
+                res.json({ "message": "ok" });
             }
         })
     }
 
     promoteUser = (req: express.Request, res: express.Response) => {
         let username = req.body.username;
-        UserModel.updateOne({'username': username}, {$set: {'type': 1}}, (err, resp) => {
+        UserModel.updateOne({ 'username': username }, { $set: { 'type': 1 } }, (err, resp) => {
             if (err) {
                 console.log(err);
             } else {
-                res.json({'message':'ok'});
+                res.json({ 'message': 'ok' });
             }
         })
     }
 
     demoteUser = (req: express.Request, res: express.Response) => {
         let username = req.body.username;
-        UserModel.updateOne({'username': username}, {$set: {'type': 0}}, (err, resp) => {
+        UserModel.updateOne({ 'username': username }, { $set: { 'type': 0 } }, (err, resp) => {
             if (err) {
                 console.log(err);
             } else {
-                res.json({'message':'ok'});
+                res.json({ 'message': 'ok' });
             }
         })
     }
 
     blockUser = (req: express.Request, res: express.Response) => {
         let username = req.body.username;
-        UserModel.updateOne({'username': username}, {$set: {'blocked': true}}, (err, resp) => {
+        UserModel.updateOne({ 'username': username }, { $set: { 'blocked': true } }, (err, resp) => {
             if (err) {
                 console.log(err);
             } else {
-                res.json({'message':'ok'});
+                res.json({ 'message': 'ok' });
             }
         })
     }
 
     unblockUser = (req: express.Request, res: express.Response) => {
         let username = req.body.username;
-        UserModel.updateOne({'username': username}, {$set: {'blocked': false}}, (err, resp) => {
+        UserModel.updateOne({ 'username': username }, { $set: { 'blocked': false } }, (err, resp) => {
             if (err) {
                 console.log(err);
             } else {
-                res.json({'message':'ok'});
+                res.json({ 'message': 'ok' });
             }
         })
     }
@@ -455,17 +467,17 @@ export class UserController {
     updateDeadline = (req: express.Request, res: express.Response) => {
         let deadline = req.body.deadline;
         let extension = req.body.extension;
-        DeadlineModel.updateOne({'name': 'deadline'}, {$set: {'deadline': deadline, 'extension': extension}}, (err, resp) => {
+        DeadlineModel.updateOne({ 'name': 'deadline' }, { $set: { 'deadline': deadline, 'extension': extension } }, (err, resp) => {
             if (err) {
                 console.log(err);
             } else {
-                res.json({'message':'ok'});
+                res.json({ 'message': 'ok' });
             }
         })
     }
 
     getDeadline = (req: express.Request, res: express.Response) => {
-        DeadlineModel.findOne({'name': 'deadline'}, (err, deadline) => {
+        DeadlineModel.findOne({ 'name': 'deadline' }, (err, deadline) => {
             if (err) {
                 console.log(err);
             } else {
@@ -477,11 +489,11 @@ export class UserController {
     extendDeadline = (req: express.Request, res: express.Response) => {
         let username = req.body.username;
         let id = req.body.id;
-        UserModel.findOne({'username': username}, (err, user) => {
+        UserModel.findOne({ 'username': username }, (err, user) => {
             if (err) {
                 console.log(err);
             } else {
-                DeadlineModel.findOne({'name': 'deadline'}, (err, deadline) => {
+                DeadlineModel.findOne({ 'name': 'deadline' }, (err, deadline) => {
                     if (err) console.log(err);
                     else {
                         for (let i = 0; i < user.rentals.length; i++) {
@@ -490,9 +502,9 @@ export class UserController {
                                 user.rentals[i].daysLeft += deadline.extension;
                             }
                         }
-                        UserModel.updateOne({'username': username}, {$set: {'rentals': user.rentals}}, (err, resp) => {
+                        UserModel.updateOne({ 'username': username }, { $set: { 'rentals': user.rentals } }, (err, resp) => {
                             if (err) console.log(err);
-                            else res.json({'message':'ok'});
+                            else res.json({ 'message': 'ok' });
                         })
                     }
                 })
@@ -504,7 +516,7 @@ export class UserController {
         let username = req.body.username;
         var messages: string[] = [];
 
-        UserModel.findOne({'username': username}, (err, user) => {
+        UserModel.findOne({ 'username': username }, (err, user) => {
             if (err) console.log(err);
             else {
                 for (let i = 0; i < user.rentals.length; i++) {
@@ -520,7 +532,7 @@ export class UserController {
                 if (user.blocked) {
                     messages.push('Korisnik je blokiran!!!');
                 }
-                NotificationModel.findOne({'username': username}, (err, notif) => {
+                NotificationModel.findOne({ 'username': username }, (err, notif) => {
                     if (err) console.log(err);
                     else {
                         if (notif && notif.notifications) {
@@ -535,7 +547,7 @@ export class UserController {
 
     getNumberOfReadBooksInLastYear = (req: express.Request, res: express.Response) => {
         let username = req.body.username;
-        RentingHistoryModel.findOne({'username': username}, (err, history) => {
+        RentingHistoryModel.findOne({ 'username': username }, (err, history) => {
             if (err) console.log(err);
             else {
                 var date = new Date();
@@ -553,7 +565,7 @@ export class UserController {
     getNumberOfReadBooksByGenre = (req: express.Request, res: express.Response) => {
         let username = req.body.username;
         BookModel.find({}, (err, books) => {
-            RentingHistoryModel.findOne({'username': username}, (err, history) => {
+            RentingHistoryModel.findOne({ 'username': username }, (err, history) => {
                 if (err) console.log(err);
                 else {
                     var genreMap = new Map();
@@ -579,7 +591,7 @@ export class UserController {
                     for (let value of genreMap.values()) {
                         data.push(value);
                     }
-                    res.json({'labels': labels, 'data': data});
+                    res.json({ 'labels': labels, 'data': data });
                 }
             })
         })
