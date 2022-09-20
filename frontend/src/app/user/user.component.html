@@ -1,10 +1,5 @@
 <a routerLink="/mainMenu">Glavni meni</a> <br>
-<a routerLink="/rentedBooks">Zaduzene knjige</a> <br>
-<a routerLink="/rentingHistory">Istorija zaduzenja</a> <br>
-<a *ngIf="user.type==0 && !user.blocked" routerLink="/bookRequest">Dodaj knjigu</a> <br>
-<a *ngIf="user.type==1 && !user.blocked" routerLink="/addBook">Dodaj knjigu</a> <br>
-<a *ngIf="user.type==1 && !user.blocked" routerLink="/bookRequests">Zahtevi za dodavanje knjiga</a> <br> <br>
-Knjiga dana:
+<h4>Knjiga dana</h4>
 <br>
 <div *ngIf="bookOfTheDay != null">
     {{bookOfTheDay.title}} - {{bookOfTheDay.authors}} <br>
@@ -15,5 +10,8 @@ Knjiga dana:
 <h3>Obavestenja</h3>
 <div style="color: red;" *ngFor="let not of notifications">
     {{not}}
+</div>
+<div *ngIf="notifications==null||notifications.length==0">
+    Nema obavestenja
 </div>
 <button (click)="logout()">Odjavi se</button>

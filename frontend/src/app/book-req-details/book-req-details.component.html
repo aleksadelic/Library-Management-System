@@ -1,16 +1,16 @@
-<img [src]="requestImage.image" class="image">
-<div style="padding: 5px;">
+<div style="float: left; padding: 5px;">
+    <img [src]="requestImage.image" class="image"><br>
+    <button (click)="acceptRequest()" style="color: green;">Prihvati zahtev</button><br>
+    <button (click)="rejectRequest()" style="color: red;">Odbij zahtev</button>
+</div>
+{{message}}
+<div>
     <h3>{{requestImage.request.username}}</h3>
-    <h3>{{requestImage.request.title}}</h3>
+    <b>{{requestImage.request.title}}</b><br>
     {{requestImage.request.authors}}<br>
     {{requestImage.request.genre}}<br>
     {{requestImage.request.publisher}}<br>
     {{requestImage.request.publishYear}}<br>
     {{requestImage.request.language}}
 </div>
-<div style="right: 5px;">
-    <button (click)="acceptRequest()" style="color: green;">Prihvati zahtev</button>
-    <button (click)="rejectRequest()" style="color: red;">Odbij zahtev</button>
-</div>
-{{message}}
-<hr/>
+<hr>

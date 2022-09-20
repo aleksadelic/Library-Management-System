@@ -27,7 +27,7 @@ export class UserComponent implements OnInit {
   getBookOfTheDay() {
     this.bookService.getBookOfTheDay().subscribe((book: Book) => {
       this.bookOfTheDay = book;
-      if (book.comments != null) {
+      if (book.comments != null && book.comments.length > 0) {
         let rating = 0;
         for (var i = 0; i < book.comments.length; i++) {
           rating += book.comments[i].rating;

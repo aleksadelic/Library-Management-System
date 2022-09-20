@@ -128,7 +128,7 @@ export class BookComponent implements OnInit {
 
   updateBook() {
     if (this.book.image == this.newImage) {
-      this.bookService.updateBookAndNotImage(this.book.title, this.newTitle, this.newAuthors, this.newGenre, this.newPublisher, this.newPublishYear, 
+      this.bookService.updateBookAndNotImage(this.book.id, this.newTitle, this.newAuthors, this.newGenre, this.newPublisher, this.newPublishYear, 
         this.newLanguage, this.newAvailable).subscribe(resp => {
           if (resp['message'] != 'ok') {
             this.updateMessage = 'Neuspesno azuriranje knjige!';
@@ -137,7 +137,7 @@ export class BookComponent implements OnInit {
           }
       })
     } else {
-      this.bookService.updateBookAndImage(this.book.title, this.newTitle, this.newAuthors, this.newGenre, this.newPublisher, this.newPublishYear, 
+      this.bookService.updateBookAndImage(this.book.id, this.newTitle, this.newAuthors, this.newGenre, this.newPublisher, this.newPublishYear, 
         this.newLanguage, this.newAvailable, this.newImage).subscribe(resp => {
           if (resp['message'] != 'ok') {
             this.updateMessage = 'Neuspesno azuriranje knjige!';

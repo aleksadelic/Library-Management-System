@@ -1,3 +1,5 @@
+<a *ngIf="!user" routerLink="">&#8592;Pocetna strana</a>
+<a *ngIf="user" routerLink="/user">&#8592;Pocetna strana</a>
 <div *ngIf="user==null">
     Prijavite se <a routerLink="/login">ovde.</a> <br>
     Nemate nalog? Registrujte se <a routerLink="/register">ovde.</a> <br>
@@ -9,20 +11,39 @@
     <br>
     <button (click)="logout()">Odjavi se</button>
 </div>
+<br>
+<div *ngIf="user!=null">
+    <a routerLink="/rentedBooks">Zaduzene knjige</a> <br>
+    <a routerLink="/rentingHistory">Istorija zaduzenja</a> <br>
+    <a *ngIf="user.type==0 && !user.blocked" routerLink="/bookRequest">Dodaj knjigu</a> <br>
+    <a *ngIf="user.type==1 && !user.blocked" routerLink="/addBook">Dodaj knjigu</a> <br>
+    <a *ngIf="user.type==1 && !user.blocked" routerLink="/bookRequests">Zahtevi za dodavanje knjiga</a> <br> <br>
+</div>
 <h2 *ngIf="!isAdvanced">Pretraga:</h2>
 <h2 *ngIf="isAdvanced">Napredna pretraga:</h2>
-<input type="checkbox" name="isAdvanced" [(ngModel)]="isAdvanced"> Napredna pretraga
+<div *ngIf="user!=null && !user.blocked">
+    <input type="checkbox" name="isAdvanced" [(ngModel)]="isAdvanced"> Napredna pretraga
+</div>
 <form>
     Naziv/autor: <input type="text" name="param" [(ngModel)]="searchParam"> <br>
     <div *ngIf="isAdvanced">
         Zanr:
         <select name="genre" multiple [(ngModel)]="genre">
-            <option value="drama">Drama</option>
-            <option value="edukativni">Edukativni</option>
             <option value="roman">Roman</option>
-            <option value="fikcija">Fikcija</option>
-            <option value="ljubavni">Ljubavni</option>
-            <option value="komedija">Komedija</option>
+                <option value="knjizevnost apsurda">Knjizevnost apsurda</option>
+                <option value="pustolovni roman">Pustolovni roman</option>
+                <option value="obrazovni roman">Obrazovni roman</option>
+                <option value="realizam">Realizam</option>
+                <option value="ljubavni roman">Ljubavni roman</option>
+                <option value="satira">Satira</option>
+                <option value="fantastika">Fantastika</option>
+                <option value="politicki roman">Politicki roman</option>
+                <option value="fikcija">Fikcija</option>
+                <option value="knjizevnost za decu">Knjizevnost za decu</option>
+                <option value="basna">Basna</option>
+                <option value="novela">Novela</option>
+                <option value="istorijska fikcija">Istorijska fikcija</option>
+                <option value="filozofski roman">Filozofski roman</option>
         </select>
         Godina izdanja: <input type="text" name="publishYear" [(ngModel)]="publishYear">
         Izdavac: <input type="text" name="publisher" [(ngModel)]="publisher">

@@ -1,5 +1,42 @@
-<div *ngIf="user.type==1 || user.type==2">
-    <input type="checkbox" name="edit" [(ngModel)]="edit" (click)="prepareForUpdate()"> Uredi knjigu
+<div style="float: left">
+    <img [src]="url" class="image"><br>
+    <h3>Komentari</h3>
+    <div *ngIf="noComments">
+        Nema recenzija za ovu knjigu.
+    </div>
+    <div *ngIf="book!=null">
+        <div *ngFor="let comm of comments">
+            <app-comment [comment]="comm"></app-comment>
+        </div>
+    </div>
+    <div *ngIf="(hasRented || alreadyRented) && !hasCommented">
+        <h4>Dodaj komentar</h4>
+        Ocena: <input type="text" name="rating" [(ngModel)]="rating"><br>
+        Komentar: <textarea name="text" maxlength="1000" [(ngModel)]="text"></textarea><br>
+        <button (click)="addComment()">Dodaj komentar</button>
+        {{commMessage}}
+    </div>
+    <div *ngIf="(hasRented || alreadyRented) && hasCommented">
+        <input type="checkbox" name="editComm" (click)="prepareForCommentUpdate()" [(ngModel)]="editComment"> Azuriraj
+        komentar
+    </div>
+    <div *ngIf="editComment">
+        <h4>Azuriraj komentar</h4>
+        Ocena: <input type="text" name="rating" [(ngModel)]="rating"><br>
+        Komentar: <textarea name="text" maxlength="1000" [(ngModel)]="text"></textarea><br>
+        <button (click)="updateComment()">Azuriraj komentar</button>
+        {{commMessage}}
+    </div>
+</div>
+<h3 *ngIf="!edit && book!=null">{{book.title}}</h3>
+<div *ngIf="!edit && book!=null">
+    {{book.authors}}<br><br>
+    Na stanju: {{book.available}}<br>
+    Zanr: {{book.genre}}<br>
+    Izdavac: {{book.publisher}}<br>
+    Godina izdanja: {{book.publishYear}}<br>
+    Jezik: {{book.language}}<br>
+    Ocena: {{bookRating}}<br>
 </div>
 <div *ngIf="edit">
     <table>
@@ -18,7 +55,23 @@
         <tr>
             <td>Zanr</td>
             <td>
-                <input type="text" placeholder="{{book.genre}}" name="title" [(ngModel)]="newGenre">
+                <select name="genre" multiple [(ngModel)]="newGenre">
+                    <option value="roman">Roman</option>
+                    <option value="knjizevnost apsurda">Knjizevnost apsurda</option>
+                    <option value="pustolovni roman">Pustolovni roman</option>
+                    <option value="obrazovni roman">Obrazovni roman</option>
+                    <option value="realizam">Realizam</option>
+                    <option value="ljubavni roman">Ljubavni roman</option>
+                    <option value="satira">Satira</option>
+                    <option value="fantastika">Fantastika</option>
+                    <option value="politicki roman">Politicki roman</option>
+                    <option value="fikcija">Fikcija</option>
+                    <option value="knjizevnost za decu">Knjizevnost za decu</option>
+                    <option value="basna">Basna</option>
+                    <option value="novela">Novela</option>
+                    <option value="istorijska fikcija">Istorijska fikcija</option>
+                    <option value="filozofski roman">Filozofski roman</option>
+                </select>
             </td>
         </tr>
         <tr>
@@ -59,18 +112,11 @@
     </table>
     {{updateMessage}}
 </div>
-<img [src]="url" class="image">
-<h3 *ngIf="!edit && book!=null">{{book.title}}</h3>
-<div *ngIf="!edit && book!=null">
-    {{book.authors}}<br>
-    Na stanju: {{book.available}}<br>
-    Zanr: {{book.genre}}<br>
-    Izdavac: {{book.publisher}}<br>
-    Godina izdanja: {{book.publishYear}}<br>
-    Jezik: {{book.language}}<br>
+<div *ngIf="user.type==1 || user.type==2">
+    <input type="checkbox" name="edit" [(ngModel)]="edit" (click)="prepareForUpdate()"> Uredi knjigu
 </div>
 <br>
-Zaduzenje:
+<h3>Zaduzenje:</h3>
 <button *ngIf="isAvailable && rentingAvailable" (click)="rentBook()">Zaduzi knjigu</button>
 <div *ngIf="!isAvailable" class="error">Knjiga trenutno nije dostupna</div>
 <div *ngFor="let msg of messages" class="error">
@@ -79,30 +125,3 @@ Zaduzenje:
 <div [class.error]="rentMessage!='Knjiga uspesno zaduzena!'">{{rentMessage}}</div>
 <button *ngIf="!isAvailable && !alreadyRented" (click)="makeReservation()">Rezervisi knjigu</button><br>
 <div>{{reservationMessage}}</div>
-Ocena: {{bookRating}}
-<h3>Komentari</h3>
-<div *ngIf="noComments">
-    Nema recenzija za ovu knjigu.
-</div>
-<div *ngIf="book!=null">
-    <div *ngFor="let comm of comments">
-        <app-comment [comment]="comm"></app-comment>
-    </div>
-</div>
-<div *ngIf="(hasRented || alreadyRented) && !hasCommented">
-    <h4>Dodaj komentar</h4>
-    Ocena: <input type="text" name="rating" [(ngModel)]="rating"><br>
-    Komentar: <textarea name="text" maxlength="1000" [(ngModel)]="text"></textarea><br>
-    <button (click)="addComment()">Dodaj komentar</button>
-    {{commMessage}}
-</div>
-<div *ngIf="(hasRented || alreadyRented) && hasCommented">
-    <input type="checkbox" name="editComm" (click)="prepareForCommentUpdate()" [(ngModel)]="editComment"> Azuriraj komentar 
-</div>
-<div *ngIf="editComment">
-    <h4>Azuriraj komentar</h4>
-    Ocena: <input type="text" name="rating" [(ngModel)]="rating"><br>
-    Komentar: <textarea name="text" maxlength="1000" [(ngModel)]="text"></textarea><br>
-    <button (click)="updateComment()">Azuriraj komentar</button>
-    {{commMessage}}
-</div>

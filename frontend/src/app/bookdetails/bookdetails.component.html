@@ -1,15 +1,14 @@
-<img [src]="myBook.url" class="image">
-<div style="padding: 5px;">
-    <!--<h3>{{myBook.book.title}}</h3>
-    {{myBook.book.authors}}<br>
-    Zanr: {{myBook.book.genre}}<br>
-    Izdavac: {{myBook.book.publisher}}<br>
-    Godina izdanja: {{myBook.book.publishYear}}<br>
-    Jezik: {{myBook.book.language}}<br>-->
+<div style="float: left; padding: 5px;">
+    <img [src]="myBook.url" class="image"><br>
+    <button *ngIf="user!=null && !user.blocked" (click)="seeBook()">Vidi knjigu</button><br>
+    <button *ngIf="user!=null && user.type==2" (click)="deleteBook()">Izbrisi knjigu</button>
+    {{message}}
+</div>
+<div>
     <table>
         <tr>
             <td>Naslov:</td>
-            <td>{{myBook.book.title}}</td>
+            <td><b>{{myBook.book.title}}</b></td>
         </tr>
         <tr>
             <td>Autori:</td>
@@ -23,18 +22,16 @@
             <td>Izadavac:</td>
             <td>{{myBook.book.publisher}}</td>
         </tr>
-        <!--<tr>
+        <tr>
             <td>Godina izdanja:</td>
             <td>{{myBook.book.publishYear}}</td>
         </tr>
         <tr>
             <td>Jezik:</td>
             <td>{{myBook.book.language}}</td>
-        </tr>-->
+        </tr>
     </table>
     <br>
 </div>
-<button *ngIf="user!=null && !user.blocked" (click)="seeBook()">Vidi knjigu</button>
-<button *ngIf="user!=null && user.type==2" (click)="deleteBook()">Izbrisi knjigu</button>
-{{message}}
+
 <hr/>

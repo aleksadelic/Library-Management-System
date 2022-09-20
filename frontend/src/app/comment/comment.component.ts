@@ -15,10 +15,12 @@ export class CommentComponent implements OnInit {
     /*this.dateString = this.date.getDate() + "." + (this.date.getMonth() + 1) + "." + this.date.getFullYear() + 
       " " + this.date.getHours() + ":" + this.date.getMinutes() + ":" + this.date.getSeconds();*/
     this.dateString = this.date.toLocaleString();
+    this.starsArr = new Array(this.comment.rating);
   }
 
   date: Date;
   dateString: string;
+  starsArr: any[];
 
   @Input() comment: Comment;
 

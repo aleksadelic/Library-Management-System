@@ -512,9 +512,9 @@ export class BookController {
                                         newNotifModel.save((err, resp) => {
                                             if (err) console.log(err);
                                             else res.json({ 'message': 'ok' });
-                                        }) 
+                                        })
                                     }
-                                    
+
                                 })
                             })
                         }
@@ -596,7 +596,7 @@ export class BookController {
         let rating = req.body.rating;
         let text = req.body.text;
 
-        RentingHistoryModel.findOne({'username': username}, (err, history) => {
+        RentingHistoryModel.findOne({ 'username': username }, (err, history) => {
             if (err) console.log(err);
             else {
                 var hasRented = false;
@@ -614,16 +614,16 @@ export class BookController {
                         datetime: new Date(),
                         edited: false
                     }
-                    BookModel.updateOne({'id': id}, {$push: {'comments': comment}}, (err, resp) => {
+                    BookModel.updateOne({ 'id': id }, { $push: { 'comments': comment } }, (err, resp) => {
                         if (err) console.log(err);
-                        else res.json({'message':'ok'});
+                        else res.json({ 'message': 'ok' });
                     })
                 } else {
-                    res.json({'message':'Korisnik nije zaduzivao knjigu!'});
+                    res.json({ 'message': 'Korisnik nije zaduzivao knjigu!' });
                 }
             }
         })
-        
+
     }
 
     updateComment = (req: express.Request, res: express.Response) => {
@@ -632,7 +632,7 @@ export class BookController {
         let rating = req.body.rating;
         let text = req.body.text;
 
-        BookModel.findOne({'id': id}, (err, book) => {
+        BookModel.findOne({ 'id': id }, (err, book) => {
             if (err) console.log(err);
             else {
                 for (let i = 0; i < book.comments.length; i++) {
@@ -643,9 +643,9 @@ export class BookController {
                         break;
                     }
                 }
-                BookModel.updateOne({'id': id}, {$set: {'comments': book.comments}}, (err, resp) => {
+                BookModel.updateOne({ 'id': id }, { $set: { 'comments': book.comments } }, (err, resp) => {
                     if (err) console.log(err);
-                    else res.json({'message':'ok'});
+                    else res.json({ 'message': 'ok' });
                 })
             }
         })

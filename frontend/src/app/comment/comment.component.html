@@ -1,6 +1,9 @@
-<h2>{{comment.username}}</h2>
+<h3>{{comment.username}}</h3>
 <div *ngIf="comment.edited"><i>azuriran</i></div>
-{{comment.rating}}<br>
+<span *ngFor="let i of starsArr">
+    &#11088;
+</span>
+<br>
 <i>{{comment.text}}</i>
 <br>
 {{dateString}}

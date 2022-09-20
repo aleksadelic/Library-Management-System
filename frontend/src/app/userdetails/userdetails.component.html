@@ -1,6 +1,7 @@
 <img [src]="image" class="image">
 <div>
-    <b>{{user.username}}</b> <span *ngIf="user.type==1" style="color: blue;"> Moderator</span> <br>
+    <b>{{user.username}}</b> <span *ngIf="user.type==1" style="color: blue;"> Moderator</span>
+    <span *ngIf="user.blocked" style="color: red;"> Blokiran</span> <br>
     {{user.firstname}} {{user.lastname}} <br>
     {{user.address}} <br>
     {{user.email}} <br>
@@ -9,10 +10,10 @@
 <div style="right: 5px;">
     <button (click)="updateUser()">Azuriraj korisnika</button>
     <button (click)="deleteUser()">Obrisi korisnika</button>
-    <button (click)="promoteUser()">Podigni privilegije</button>
-    <button (click)="demoteUser()">Spusti privilegije</button>
-    <button (click)="blockUser()">Blokiraj korisnika</button>
-    <button (click)="unblockUser()">Deblokiraj korisnika</button>
+    <button style="color: green;" (click)="promoteUser()">Podigni privilegije</button>
+    <button style="color: red;" (click)="demoteUser()">Spusti privilegije</button>
+    <button style="color: red;" (click)="blockUser()">Blokiraj korisnika</button>
+    <button style="color: green;" (click)="unblockUser()">Deblokiraj korisnika</button>
 </div>
 {{message}}
 <hr>

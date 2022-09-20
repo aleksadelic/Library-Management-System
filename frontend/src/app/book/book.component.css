@@ -1,6 +1,7 @@
 .image {
     max-width: 300px;
     max-height: 480px;
+    padding-right: 20px;
 }
 
 .error {
