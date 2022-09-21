@@ -15,9 +15,11 @@ export class AdminUsersComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllUsers();
+    this.user = JSON.parse(localStorage.getItem('logged in'));
   }
 
   users: User[] = [];
+  user: User;
 
   getAllUsers() {
     this.userService.getAllUsers().subscribe((users: User[]) => {

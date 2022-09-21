@@ -107,4 +107,8 @@ userRouter.route('/extendDeadline').post(
     (req, res) => new UserController().extendDeadline(req, res)
 )
 
+userRouter.route('/checkIfUserMadeReservation').post(
+    (req, res) => new UserController().checkIfUserMadeReservation(req, res)
+)
+
 export default userRouter;

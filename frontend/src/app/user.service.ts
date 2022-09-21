@@ -251,4 +251,13 @@ export class UserService {
     }
     return this.http.post(`${this.uri}/users/checkIfUserCanComment`, data);
   }
+
+  checkIfUserMadeRerservation(username, id) {
+    const data = {
+      username: username,
+      id: id
+    }
+    return this.http.post(`${this.uri}/users/checkIfUserMadeReservation`, data);
+  }
+
 }

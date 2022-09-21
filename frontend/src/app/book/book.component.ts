@@ -21,6 +21,7 @@ export class BookComponent implements OnInit {
     this.id = JSON.parse(this.route.snapshot.paramMap.get('myBookId'));
     this.getBook();
     this.checkUserRentals();
+    this.checkIfUserMadeReservation();
   }
 
   id: number;
@@ -40,6 +41,8 @@ export class BookComponent implements OnInit {
     this.bookService.rentBook(this.book, this.user.username).subscribe(resp => {
       if (resp['message'] == 'ok') {
         this.rentMessage = "Knjiga uspesno zaduzena!";
+        alert('Knjiga uspesno zaduzena!');
+        location.reload();
       } else {
         this.rentMessage = "Neuspesno zaduzenje knjige!"
       }
@@ -134,6 +137,8 @@ export class BookComponent implements OnInit {
             this.updateMessage = 'Neuspesno azuriranje knjige!';
           } else {
             this.updateMessage = 'Knjiga azurirana!';
+            alert('Knjiga azurirana!');
+            location.reload();
           }
       })
     } else {
@@ -143,6 +148,8 @@ export class BookComponent implements OnInit {
             this.updateMessage = 'Neuspesno azuriranje knjige!';
           } else {
             this.updateMessage = 'Knjiga azurirana!';
+            alert('Knjiga azurirana!');
+            location.reload();
           }
       })
     }
@@ -161,6 +168,8 @@ export class BookComponent implements OnInit {
         this.reservationMessage = 'Neuspesna rezervacija!';
       } else {
         this.reservationMessage = 'Uspesna rezervacija!';
+        alert('Uspesna rezervacija!');
+        location.reload();
       }
     })
   }
@@ -209,6 +218,18 @@ export class BookComponent implements OnInit {
         location.reload();
       } else {
         this.commMessage = resp['message'];
+      }
+    })
+  }
+
+  madeReservation: boolean = false;
+
+  checkIfUserMadeReservation() {
+    this.userService.checkIfUserMadeRerservation(this.user.username, this.id).subscribe(resp => {
+      this.madeReservation = resp['madeReservation'];
+      console.log(this.madeReservation);
+      if (this.madeReservation) {
+        this.reservationMessage = 'Knjiga je rezervisana';
       }
     })
   }

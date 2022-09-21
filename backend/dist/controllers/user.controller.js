@@ -10,6 +10,7 @@ const rentingHistory_1 = __importDefault(require("../models/rentingHistory"));
 const registrationRequest_1 = __importDefault(require("../models/registrationRequest"));
 const notification_1 = __importDefault(require("../models/notification"));
 const deadline_1 = __importDefault(require("../models/deadline"));
+const reservation_1 = __importDefault(require("../models/reservation"));
 class UserController {
     constructor() {
         this.register = (req, res, filename) => {
@@ -608,6 +609,18 @@ class UserController {
                         res.json({ 'labels': labels, 'data': data });
                     }
                 });
+            });
+        };
+        this.checkIfUserMadeReservation = (req, res) => {
+            let username = req.body.username;
+            let id = req.body.id;
+            reservation_1.default.findOne({ 'username': username, 'bookId': id }, (err, resp) => {
+                if (resp) {
+                    res.json({ 'madeReservation': true });
+                }
+                else {
+                    res.json({ 'madeReservation': false });
+                }
             });
         };
     }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BookService } from '../book.service';
 import { Book } from '../models/book';
 import { BookImage } from '../models/bookImage';
+import { User } from '../models/user';
 
 @Component({
   selector: 'app-admin-books',
@@ -14,9 +15,11 @@ export class AdminBooksComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllBooks();
+    this.user = JSON.parse(localStorage.getItem('logged in'));
   }
 
   books: Book[] = [];
+  user: User;
 
   getAllBooks() {
     this.bookService.getAllBooks().subscribe((books: Book[]) => {

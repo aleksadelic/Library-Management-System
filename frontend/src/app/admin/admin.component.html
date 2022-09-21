@@ -1,5 +1,10 @@
-<a routerLink="/adminUsers">Korisnici</a> <br>
-<a routerLink="/adminBooks">Knjige</a> <br>
-<a routerLink="/updateSettings">Postavke</a> <br>
+<div *ngIf="user.type==2">
+    <a routerLink="/adminUsers">Korisnici</a> <br>
+    <a routerLink="/adminBooks">Knjige</a> <br>
+    <a routerLink="/updateSettings">Postavke</a> <br>
 
-<button (click)="logout()">Odjavi se</button>
+    <button (click)="logout()">Odjavi se</button>
+</div>
+<div *ngIf="user.type!=2">
+    ZABRANJEN PRISTUP
+</div>

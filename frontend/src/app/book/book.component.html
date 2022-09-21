@@ -123,5 +123,5 @@
     {{msg}}
 </div>
 <div [class.error]="rentMessage!='Knjiga uspesno zaduzena!'">{{rentMessage}}</div>
-<button *ngIf="!isAvailable && !alreadyRented" (click)="makeReservation()">Rezervisi knjigu</button><br>
+<button *ngIf="!isAvailable && !alreadyRented && !madeReservation" (click)="makeReservation()">Rezervisi knjigu</button><br>
 <div>{{reservationMessage}}</div>

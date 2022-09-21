@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Deadline } from '../models/deadline';
+import { User } from '../models/user';
 import { UserService } from '../user.service';
 
 @Component({
@@ -13,8 +14,10 @@ export class AdminSettingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getDeadline();
+    this.user = JSON.parse(localStorage.getItem('logged in'));
   }
 
+  user: User;
   deadline: number;
   extension: number;
   message: string;

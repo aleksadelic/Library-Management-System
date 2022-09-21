@@ -5,6 +5,7 @@ import RentingHistoryModel from '../models/rentingHistory';
 import RegistrationRequestModel from '../models/registrationRequest';
 import NotificationModel from '../models/notification';
 import DeadlineModel from '../models/deadline';
+import ReservationModel from '../models/reservation';
 
 export class UserController {
     register = (req: express.Request, res: express.Response, filename: String) => {
@@ -596,4 +597,18 @@ export class UserController {
             })
         })
     }
+
+    checkIfUserMadeReservation = (req: express.Request, res: express.Response) => {
+        let username = req.body.username;
+        let id = req.body.id;
+
+        ReservationModel.findOne({'username': username, 'bookId': id}, (err, resp) => {
+            if (resp) {
+                res.json({'madeReservation': true});
+            } else {
+                res.json({'madeReservation': false});
+            }
+        })
+    }
+
 }
